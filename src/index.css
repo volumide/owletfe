@@ -1,3 +1,91 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url(/src/assets/fonts/CabinetGrotesk_Complete/CabinetGrotesk-Regular.ttf), url(/src/assets/fonts/CabinetGrotesk_Complete/CabinetGrotesk-Medium.ttf), url(/src/assets/fonts/CabinetGrotesk_Complete/CabinetGrotesk-Bold.ttf);
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Regular.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Medium.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Semibold.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Bold.ttf);
+}
+
+body {
+  font-family: "General Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+h1 {
+  font-family: "Cabinet Grotesk";
+  font-style: normal;
+  font-size: 48px;
+  line-height: 56px;
+}
+h2 {
+  font-family: "Cabinet Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+}
+h3 {
+  font-family: "Cabinet Grotesk";
+  font-style: normal;
+  font-size: 32px;
+  line-height: 40px;
+}
+h4 {
+  font-family: "Cabinet Grotesk";
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.sub_heading {
+  font-family: "Cabinet Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+button {
+  font-family: "General Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+small {
+  font-family: "General Sans";
+  font-style: normal;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.nobile_body {
+  font-family: "General Sans";
+  font-style: normal;
+  font-size: 14px;
+  line-height: 24px;
+}
+.sub_heading_mobile {
+  font-family: "Cabinet Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.nobile_button {
+  font-family: "General Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+}
