@@ -1,5 +1,13 @@
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+
 function App() {
-  return <>Owlet pay</>
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <p>Home</p>
+    }
+  ])
+  return <RouterProvider router={router}></RouterProvider>
 }
 
 export default App
