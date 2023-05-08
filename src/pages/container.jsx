@@ -12,7 +12,9 @@ const Container = () => {
     <div className="">
       <div className="border-b">
         <div className=" container px-[100px] py-[35px] mx-auto flex items-center justify-between">
-          <h2>LOGO</h2>
+          <h2>
+            <Link to="/">LOGO</Link>
+          </h2>
           <div className="links ">
             {links.map((link, index) => (
               <Link to={link.to} className="px-5 mx-1 " key={index + link.name}>
