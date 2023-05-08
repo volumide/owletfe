@@ -7,9 +7,9 @@ const Auth = ({ children, header, caption, bg = false }) => {
       <div className=" w-2/4 h-full">
         <div className="w-2/4 mx-auto">
           <h2 className="mt-[46px]">LOGO</h2>
-          <div className="form mt-[110px]">
+          <div className="form mt-[110px] ">
             <h1>{header}</h1>
-            <p className="text-ddgray">{caption}</p>
+            <p className="text-ddgray mb-[24px]">{caption}</p>
             {children}
           </div>
         </div>

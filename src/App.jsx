@@ -3,6 +3,7 @@ import Button from "./components/button"
 import Input from "./components/input"
 import SignIn from "./pages/auth/signin"
 import SignUp from "./pages/auth/signup"
+import ForgotPassword from "./pages/auth/forgot-password"
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +23,10 @@ function App() {
     {
       path: "/sign-up",
       element: <SignUp />
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword />
     }
   ])
   return <RouterProvider router={router}></RouterProvider>
