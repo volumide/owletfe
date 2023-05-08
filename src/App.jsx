@@ -1,7 +1,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import Button from "./components/button"
 import Input from "./components/input"
-import Auth from "./pages/auth/common/common"
+import SignIn from "./pages/auth/signin"
+import SignUp from "./pages/auth/signup"
 
 function App() {
   const router = createBrowserRouter([
@@ -15,8 +16,12 @@ function App() {
       )
     },
     {
-      path: "/auth",
-      element: <Auth />
+      path: "/sign-in",
+      element: <SignIn />
+    },
+    {
+      path: "/sign-up",
+      element: <SignUp />
     }
   ])
   return <RouterProvider router={router}></RouterProvider>
