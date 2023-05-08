@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-// import Button from "./components/button"
+import Button from "./components/button"
 import Input from "./components/input"
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
       path: "/",
       element: (
         <div>
-          {/* <Button>Hello</Button> */}
+          <Button>Hello</Button>
           <Input label="Amount" />
         </div>
       )
