@@ -1,13 +1,7 @@
 import { Link, Outlet } from "react-router-dom"
+import { placeholder } from "../utls/links"
 
 const Container = () => {
-  const links = [
-    { name: "Phone Airtime", to: "/" },
-    { name: "Internet Data", to: "/" },
-    { name: "Tv Subscription", to: "/" },
-    { name: "Electricity Bill", to: "/" },
-    { name: "Education", to: "" }
-  ]
   return (
     <div className="">
       <div className="border-b">
@@ -16,9 +10,9 @@ const Container = () => {
             <Link to="/">LOGO</Link>
           </h2>
           <div className="links ">
-            {links.map((link, index) => (
-              <Link to={link.to} className="px-5 mx-1 " key={index + link.name}>
-                {link.name}
+            {placeholder.map((link, index) => (
+              <Link to={`/owlet/${link.link}`} className="px-5 mx-1 " key={index + link.link}>
+                {link.caption}
               </Link>
             ))}
           </div>

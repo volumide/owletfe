@@ -4,6 +4,7 @@ import SignUp from "./pages/auth/signup"
 import ForgotPassword from "./pages/auth/forgot-password"
 import Home from "./pages/home"
 import Container from "./pages/container"
+import Placeholder from "./pages/placeholder"
 
 function App() {
   const router = createBrowserRouter([
@@ -14,6 +15,10 @@ function App() {
         {
           index: true,
           element: <Home />
+        },
+        {
+          path: "/owlet/:name",
+          element: <Placeholder />
         }
       ]
     },
