@@ -9,7 +9,7 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-3  w-full gap-6 my-[56px]">
         {placeholder.map((i) => (
-          <Link className={` p-3 h-[292px] rounded-[32px] flex flex-col items-center justify-center bg-[${i.bg}]`} key={i} to={`/owlet/${i.link}`}>
+          <Link className={` p-3 h-[292px] rounded-[32px] flex flex-col items-center justify-center ${i.bg}`} key={i} to={`/owlet/${i.link}`}>
             <div className="h-[70px] ">
               <img src={i.icon} className="h-full" />
             </div>

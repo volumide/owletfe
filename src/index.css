@@ -33,12 +33,14 @@ h2 {
   font-size: 40px;
   line-height: 48px;
 }
+
 h3 {
   font-family: "Cabinet Grotesk";
   font-style: normal;
   font-size: 32px;
   line-height: 40px;
 }
+
 h4 {
   font-family: "Cabinet Grotesk";
   font-size: 24px;
@@ -74,6 +76,7 @@ small {
   font-size: 14px;
   line-height: 24px;
 }
+
 .sub_heading_mobile {
   font-family: "Cabinet Grotesk";
   font-style: normal;
@@ -88,4 +91,21 @@ small {
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
+}
+
+.phone {
+  background: #eefbf4;
+}
+.bill {
+  background: #faf1ff;
+}
+.sub {
+  background: #f2f1fc;
+}
+.elect {
+  background: #fff6ed;
+}
+
+.ed {
+  background: #ecf8ff;
 }
