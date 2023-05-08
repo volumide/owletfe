@@ -3,7 +3,7 @@ import Button from "../../components/button"
 import Input from "../../components/input"
 const ForgotPassword = () => {
   return (
-    <Auth header="Reset Password" caption="To reset your password, we will email you instructions">
+    <Auth header="Reset Password" caption="To reset your password, we will email you instructions" bg={true}>
       <form>
         <Input label="Email Address" type="email" />
         <div className="flex items-center  p-0">

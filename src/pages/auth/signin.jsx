@@ -4,7 +4,7 @@ import Auth from "./common/common"
 
 const SignIn = () => {
   return (
-    <Auth header="Welcome Back" caption="Sign in into your abc payment account">
+    <Auth header="Welcome Back" caption="Sign in into your abc payment account" bg={true}>
       <form>
         <Input label="Email Address" type="email" />
         <Input label="Password" type="password" />
