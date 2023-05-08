@@ -3,12 +3,19 @@ import SignIn from "./pages/auth/signin"
 import SignUp from "./pages/auth/signup"
 import ForgotPassword from "./pages/auth/forgot-password"
 import Home from "./pages/home"
+import Container from "./pages/container"
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />
+      element: <Container />,
+      children: [
+        {
+          index: true,
+          element: <Home />
+        }
+      ]
     },
     {
       path: "/sign-in",
