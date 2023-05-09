@@ -71,6 +71,13 @@ const Form = ({ type, proceed, next }) => {
         ) : (
           <>
             <Confirm />
+            <Button bg="transaprent" otherClass="border border-2">
+              <i className="fa-solid fa-building-columns mr-3" />
+              Pay with Bank Transfer
+            </Button>
+            <Button bg="transaprent" otherClass="border border-2 my-5">
+              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+            </Button>
           </>
         )}
       </form>
