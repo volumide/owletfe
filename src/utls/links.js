@@ -8,5 +8,5 @@ export const placeholder = [
   { icon: internet, caption: "Internet Bill", bg: "bill", link: "internet-bill" },
   { icon: tv, caption: " Tv Subscription ", bg: "sub", link: "tv-subscription" },
   { icon: electricity, caption: "Electricity Bill", bg: "elect", link: "electricity-bill" },
-  { icon: education, caption: "Education", bg: "elect", link: "education" }
+  { icon: education, caption: "Education", bg: "ed", link: "education" }
 ]
