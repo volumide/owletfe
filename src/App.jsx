@@ -19,6 +19,10 @@ function App() {
         {
           path: "/owlet/:name",
           element: <Placeholder />
+        },
+        {
+          path: "/owlet/:name/:type",
+          element: <Placeholder />
         }
       ]
     },
