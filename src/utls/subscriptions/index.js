@@ -9,7 +9,7 @@ const links = {
   "internet-bill": intertenetData,
   "tv-subscription": subTv,
   "electricity-bill": electricity,
-  education: edu
+  "education": edu
 }
 
 export default links
