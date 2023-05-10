@@ -3,7 +3,7 @@ import Button from "../components/button"
 const Transaction = () => {
   return (
     <div>
-      <div className="w-[644px]  border-2 rounded-[24px] mx-auto py-[48px] px-[69px] mt-[40px]">
+      <div className="w-[600px]  border-2 rounded-[24px] mx-auto py-[48px] px-[69px] mt-[40px]">
         <p className="text-center text-[32px]">Transaction Details</p>
         <div className="mt-[44px] text-center">
           <p>Smile Airtime Payment</p>
