@@ -1,3 +1,3 @@
-const edu = [{ name: "waec", title: "Waec Result Checker PIn" }]
+const edu = [{ name: "waec", title: "Waec Result Checker Pin" }]
 
 export default edu

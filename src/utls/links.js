@@ -10,3 +10,11 @@ export const placeholder = [
   { icon: electricity, caption: "Electricity Bill", bg: "elect", link: "electricity-bill" },
   { icon: education, caption: "Education", bg: "ed", link: "education" }
 ]
+
+export const description = {
+  "phone": { link: "Buy Phone Airtime", caption: "Select one of the distros below to proceed" },
+  "internet-bill": { link: "Buy Internet Data", caption: "Select one of the services we provide below to proceed" },
+  "tv-subscription": { link: "Pay Tv Subscription", caption: "Select one of the tv service below to proceed" },
+  "electricity-bill": { link: "Pay Electricity Bill", caption: "Select one of the distros below to proceed" },
+  "education": { link: "Education Payment", caption: "Select the one applicable to you" }
+}

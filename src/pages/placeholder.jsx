@@ -4,6 +4,7 @@ import links from "../utls/subscriptions"
 import Input from "../components/input"
 import Button from "../components/button"
 import { useEffect, useState } from "react"
+import { description } from "../utls/links"
 const Placeholder = () => {
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
@@ -18,14 +19,15 @@ const Placeholder = () => {
   return (
     <div className="h-screen  flex container mx-auto px-[100px]">
       <div className="w-2/6 shrink-0  border-r h-full py-10">
-        <h3 className="flex items-center gap-2">
+        <p className="flex items-center gap-2 text-3xl">
           {proceed && (
             <>
               <i className="fa-solid fa-arrow-left-long my-5 font-bold text-xl cursor-pointer" role="button" onClick={next} />
             </>
           )}
-          {name.toUpperCase().split("-").join(" ")}
-        </h3>
+          {description[name].link}
+        </p>
+        <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
           <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="block my-5">
             {link.title}
