@@ -17,6 +17,7 @@ const Placeholder = () => {
   useEffect(() => {
     setProceed(false)
   }, [type])
+
   return (
     <div className="h-screen  flex container mx-auto px-[100px]">
       <div className="w-2/6 shrink-0  border-r h-full py-10">
@@ -31,8 +32,8 @@ const Placeholder = () => {
         <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
           <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="my-5 flex items-center gap-2">
-            <div className="w-[40px] h-[40px] border-2 p-1 rounded-full">
-              <img src={logos.electric.beninEelectric} alt="" />
+            <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
+              <img src={logos[link.cat][link.logo]} alt="" className="w-full h-full object-contain" />
             </div>
             {link.title}
           </Link>
@@ -107,25 +108,3 @@ const Confirm = () => {
     </>
   )
 }
-
-// subscription
-
-// Confirm Details
-// Please confirm the details below are correct
-// Bouquet
-// ExtraView Access ₦2,900 + Dstv
-// Premium ₦21,000
-// Smartcard Number
-// 01234567890
-// Phone Number
-// +2340123456789
-// Amount
-// ₦23,900 + ₦100 (convenience fee)
-// Total payable amount
-// ₦24,000
-// Transaction ID
-// 16805310982987817437742341
-// Transaction Status
-// Initiated
-// Pay with Bank Transfer
-// Pay with Card

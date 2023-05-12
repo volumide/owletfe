@@ -2,52 +2,62 @@ const electricity = [
   {
     name: "ikeja",
     title: "Ikeja Electric",
-    logo: "ikejaELectric"
+    logo: "ikejaElectric",
+    cat: "electricity"
   },
   {
     name: "Eko",
     title: "Eko Electric",
-    logo: "ekoElectric"
+    logo: "ekoElectric",
+    cat: "electricity"
   },
   {
     name: "Abuja",
     title: "Abuja Electric",
-    logo: "abujaElectric"
+    logo: "abujaElectric",
+    cat: "electricity"
   },
   {
     name: "Kano",
     title: "Kano Electric",
-    logo: "kanoELectric"
+    logo: "kanoELectric",
+    cat: "electricity"
   },
   {
     name: "Pothacourt",
     title: "Pothacourt Electric",
-    logo: "phElectric"
+    logo: "phElectric",
+    cat: "electricity"
   },
   {
     name: "Jos",
     title: "Jos Electric",
-    logo: "josELectric"
+    logo: "josELectric",
+    cat: "electricity"
   },
   {
     name: "Kaduna",
     title: "Kaduna Electric",
-    logo: "kdELectric"
+    logo: "kdELectric",
+    cat: "electricity"
   },
   {
     name: "Emugu",
     title: "Enugu Electric",
-    logo: "enuguELectric"
+    logo: "enuguELectric",
+    cat: "electricity"
   },
   {
     name: "Benin",
     title: "Benin Electric",
-    logo: "beninEelectric"
+    logo: "beninEelectric",
+    cat: "electricity"
   },
   {
     name: "Ibadan",
     title: "Ibadan Electric",
-    logo: "ibELectric"
+    logo: "ibELectric",
+    cat: "electricity"
   }
 ]
 

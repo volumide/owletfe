@@ -9,7 +9,7 @@ import enuguELectric from "../assets/services/enugu-electric.png"
 import glo from "../assets/services/glo.png"
 import gotv from "../assets/services/gotv.png"
 import ibELectric from "../assets/services/ib-electric.png"
-import ikejaELectric from "../assets/services/ikeja-electric.png"
+import ikejaElectric from "../assets/services/ikeja-electric.png"
 import internet from "../assets/services/internet.png"
 import josELectric from "../assets/services/jos-electric.png"
 import kanoELectric from "../assets/services/kano-electric.png"
@@ -23,8 +23,8 @@ import mtn from "../assets/services/mtn.png"
 const logos = {
   education: { waec },
   tv: { dstv, gotv, startime, showmax },
-  electric: { ibELectric, ikejaELectric, ekoElectric, josELectric, kanoELectric, phElectric, beninEelectric, enuguELectric, abujaElectric, kdELectric },
-  phone: { "9mobile": nineMobile, airtel, glo, internet, smile, mtn }
+  electricity: { ibELectric, ikejaElectric, ekoElectric, josELectric, kanoELectric, phElectric, beninEelectric, enuguELectric, abujaElectric, kdELectric },
+  phone: { nineMobile, airtel, glo, internet, smile, mtn }
 }
 
 export default logos
