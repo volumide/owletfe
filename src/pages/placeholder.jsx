@@ -6,6 +6,7 @@ import Button from "../components/button"
 import { useEffect, useState } from "react"
 import { description } from "../utls/links"
 import forms from "../utls/form"
+import logos from "../utls/logo"
 const Placeholder = () => {
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
@@ -29,7 +30,10 @@ const Placeholder = () => {
         </p>
         <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
-          <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="block my-5">
+          <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="my-5 flex items-center gap-2">
+            <div className="w-[40px] h-[40px] border-2 p-1 rounded-full">
+              <img src={logos.electric.beninEelectric} alt="" />
+            </div>
             {link.title}
           </Link>
         ))}

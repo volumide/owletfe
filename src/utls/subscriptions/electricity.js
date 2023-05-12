@@ -2,52 +2,52 @@ const electricity = [
   {
     name: "ikeja",
     title: "Ikeja Electric",
-    logo: ""
+    logo: "ikejaELectric"
   },
   {
     name: "Eko",
     title: "Eko Electric",
-    logo: ""
+    logo: "ekoElectric"
   },
   {
     name: "Abuja",
     title: "Abuja Electric",
-    logo: ""
+    logo: "abujaElectric"
   },
   {
     name: "Kano",
     title: "Kano Electric",
-    logo: ""
+    logo: "kanoELectric"
   },
   {
     name: "Pothacourt",
     title: "Pothacourt Electric",
-    logo: ""
+    logo: "phElectric"
   },
   {
     name: "Jos",
     title: "Jos Electric",
-    logo: ""
+    logo: "josELectric"
   },
   {
     name: "Kaduna",
     title: "Kaduna Electric",
-    logo: ""
+    logo: "kdELectric"
   },
   {
     name: "Emugu",
     title: "Enugu Electric",
-    logo: ""
+    logo: "enuguELectric"
   },
   {
     name: "Benin",
     title: "Benin Electric",
-    logo: ""
+    logo: "beninEelectric"
   },
   {
     name: "Ibadan",
     title: "Ibadan Electric",
-    logo: ""
+    logo: "ibELectric"
   }
 ]
 

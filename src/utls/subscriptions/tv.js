@@ -1,8 +1,8 @@
 const subTv = [
-  { name: "dstv", title: "DSTV subscription", logo: "" },
-  { name: "gotv", title: "GoTv", logo: "" },
-  { name: "startime", title: "StartTime Subscription", logo: "" },
-  { name: "showmax", title: "ShowMAX" }
+  { name: "dstv", title: "DSTV subscription", logo: "dstv" },
+  { name: "gotv", title: "GoTv", logo: "gotv" },
+  { name: "startime", title: "StartTime Subscription", logo: "startime" },
+  { name: "showmax", title: "ShowMAX", logo: "startime" }
 ]
 
 export default subTv
