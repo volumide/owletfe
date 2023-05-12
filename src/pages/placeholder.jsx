@@ -4,12 +4,15 @@ import links from "../utls/subscriptions"
 import Input from "../components/input"
 import Button from "../components/button"
 import { useEffect, useState } from "react"
-import { description } from "../utls/links"
+import { description, placeholder } from "../utls/links"
 import forms from "../utls/form"
 import logos from "../utls/logo"
 const Placeholder = () => {
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
+  const [currentLogo, setCurrentLogo] = useState("")
+
+  const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const next = () => {
     setProceed(!proceed)
   }
@@ -31,7 +34,7 @@ const Placeholder = () => {
         </p>
         <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
-          <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="my-5 flex items-center gap-2">
+          <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="my-5 flex items-center gap-2" onClick={() => setCurrentLogo(logos[link.cat][link.logo])}>
             <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
               <img src={logos[link.cat][link.logo]} alt="" className="w-full h-full object-contain" />
             </div>
@@ -42,10 +45,15 @@ const Placeholder = () => {
       <div className="w-4/6 grow-0 py-10 px-[127px]">
         {type ? (
           <>
+            <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
+              <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+            </div>
             <Form type={type} proceed={proceed} next={next} form={forms[description[name].form]} />
           </>
         ) : (
-          "no content"
+          <div className="w-[100px] h-[100px] bg-[#f4f4f4] p-5 rounded-full overflow-hidden mx-auto mt-20">
+            <img src={placeholder[emptyIcon].icon} alt="" className="w-full h-full object-contain grayscale" />
+          </div>
         )}
       </div>
     </div>
