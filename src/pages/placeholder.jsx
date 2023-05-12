@@ -5,11 +5,11 @@ import Input from "../components/input"
 import Button from "../components/button"
 import { useEffect, useState } from "react"
 import { description } from "../utls/links"
+import forms from "../utls/form"
 const Placeholder = () => {
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
   const next = () => {
-    console.log(proceed)
     setProceed(!proceed)
   }
 
@@ -25,7 +25,7 @@ const Placeholder = () => {
               <i className="fa-solid fa-arrow-left-long my-5 font-bold text-xl cursor-pointer" role="button" onClick={next} />
             </>
           )}
-          {description[name].link}
+          {description[name].title}
         </p>
         <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
@@ -37,7 +37,7 @@ const Placeholder = () => {
       <div className="w-4/6 grow-0 py-10 px-[127px]">
         {type ? (
           <>
-            <Form type={type} proceed={proceed} next={next} />
+            <Form type={type} proceed={proceed} next={next} form={forms[description[name].form]} />
           </>
         ) : (
           "no content"
@@ -48,19 +48,22 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-const Form = ({ type, proceed, next }) => {
+const Form = ({ type, proceed, next, form = [] }) => {
   return (
     <>
       <form action="">
         {!proceed ? (
           <>
             <h3>{type}</h3>
-            <Input label="Country" />
+            {form.map((i) => (
+              <Input label={i.label} type={i?.type || "text"} name={i.name} key={i.label} />
+            ))}
+            {/* <Input label="Country" />
             <Input label="Product Type" />
             <Input type="number" label="Account ID" />
             <Input type="number" label="Amount" />
             <Input type="number" label="Phone" />
-            <Input type="email" label="Email" />
+            <Input type="email" label="Email" /> */}
             <div className="flex gap-3 mt-[32px]">
               <Button bg="transaprent" otherClass="border" disabled={!proceed}>
                 Cancel

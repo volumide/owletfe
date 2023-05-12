@@ -1,4 +1,4 @@
-const phone = [
+const phoneForm = [
   { label: "Account ID", name: "account_id" },
   { label: "Country", name: "country" },
   { label: "Amount", name: "amount" },
@@ -6,4 +6,4 @@ const phone = [
   { label: "Email Address", name: "email", type: "email" }
 ]
 
-export default phone
+export default phoneForm

@@ -1,5 +1,5 @@
 const eduForm = [
-  { label: "Exam TYpe", name: "exam_type" },
+  { label: "Exam Type", name: "exam_type" },
   { label: "Quantity", name: "quantity" },
   { label: "Amount", name: "amount" },
   { label: "Phone Number", name: "phone", type: "number" },

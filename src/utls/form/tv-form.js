@@ -1,4 +1,4 @@
-const eduForm = [
+const tvForn = [
   { label: "Smart Card Number", name: "sm_number" },
   { label: "What do you want to do NUmber", name: "what_to_do" },
   { label: "Amount", name: "amount" },
@@ -6,4 +6,4 @@ const eduForm = [
   { label: "Email Address", name: "email", type: "email" }
 ]
 
-export default eduForm
+export default tvForn

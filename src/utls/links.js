@@ -12,9 +12,9 @@ export const placeholder = [
 ]
 
 export const description = {
-  "phone": { link: "Buy Phone Airtime", caption: "Select one of the distros below to proceed" },
-  "internet-bill": { link: "Buy Internet Data", caption: "Select one of the services we provide below to proceed" },
-  "tv-subscription": { link: "Pay Tv Subscription", caption: "Select one of the tv service below to proceed" },
-  "electricity-bill": { link: "Pay Electricity Bill", caption: "Select one of the distros below to proceed" },
-  "education": { link: "Education Payment", caption: "Select the one applicable to you" }
+  "phone": { title: "Buy Phone Airtime", caption: "Select one of the distros below to proceed", form: "phoneForm" },
+  "internet-bill": { title: "Buy Internet Data", caption: "Select one of the services we provide below to proceed", form: "internetForm" },
+  "tv-subscription": { title: "Pay Tv Subscription", caption: "Select one of the tv service below to proceed", form: "tvForn" },
+  "electricity-bill": { title: "Pay Electricity Bill", caption: "Select one of the distros below to proceed", form: "electForm" },
+  "education": { title: "Education Payment", caption: "Select the one applicable to you", form: "eduForm" }
 }

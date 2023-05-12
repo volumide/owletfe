@@ -1,4 +1,4 @@
-const eduForm = [
+const internetForm = [
   { label: "Package", name: "package_type", type: "text" },
   { label: "Amount", name: "amount", type: "text" },
   { label: "Phone Number", name: "phone", type: "number" },
@@ -6,4 +6,4 @@ const eduForm = [
   { label: "Number of Pins ", name: "pin", type: "text" }
 ]
 
-export default eduForm
+export default internetForm
