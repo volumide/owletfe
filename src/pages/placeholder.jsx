@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import links from "../utls/subscriptions"
 import Input from "../components/input"
 import Button from "../components/button"
@@ -49,6 +49,7 @@ const Placeholder = () => {
 export default Placeholder
 
 const Form = ({ type, proceed, next, form = [] }) => {
+  const naviate = useNavigate()
   return (
     <>
       <form action="">
@@ -58,12 +59,6 @@ const Form = ({ type, proceed, next, form = [] }) => {
             {form.map((i) => (
               <Input label={i.label} type={i?.type || "text"} name={i.name} key={i.label} />
             ))}
-            {/* <Input label="Country" />
-            <Input label="Product Type" />
-            <Input type="number" label="Account ID" />
-            <Input type="number" label="Amount" />
-            <Input type="number" label="Phone" />
-            <Input type="email" label="Email" /> */}
             <div className="flex gap-3 mt-[32px]">
               <Button bg="transaprent" otherClass="border" disabled={!proceed}>
                 Cancel
@@ -80,7 +75,7 @@ const Form = ({ type, proceed, next, form = [] }) => {
               <i className="fa-solid fa-building-columns mr-3" />
               Pay with Bank Transfer
             </Button>
-            <Button bg="transaprent" otherClass="border border-2 my-5">
+            <Button bg="transaprent" otherClass="border border-2 my-5" onClick={() => naviate("/transaction")}>
               <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
             </Button>
           </>
