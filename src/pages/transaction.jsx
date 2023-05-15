@@ -2,8 +2,8 @@ import Button from "../components/button"
 import logo from "../utls/logo"
 const Transaction = () => {
   return (
-    <div className="px-[16px]">
-      <div className="md:w-[500px]  border-2 rounded-[24px] mx-auto py-[48px] px-[59px] mt-[40px]">
+    <div className="p-[16px] ">
+      <div className="md:w-[500px]  border-2 border-input  rounded-[24px] mx-auto py-[48px] px-[59px]  md:my-[40px]">
         <p className="text-center text-[24px] md:text-[32px]">Transaction Details</p>
 
         <div className="w-[70px] h-[70px] p-2 mx-auto  border-2 my-[44px] rounded-full">
