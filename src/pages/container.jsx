@@ -3,19 +3,19 @@ import { placeholder } from "../utls/links"
 
 const Container = () => {
   return (
-    <div className="">
-      <div className="border-b">
-        <div className=" container px-[100px] py-[35px] mx-auto flex items-center justify-between">
+    <>
+      <div className="border-b overflow-hidden  px-[16px]">
+        <div className=" md:container lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
           <h2>
             <Link to="/">LOGO</Link>
           </h2>
-          <div className="links ">
+          {/* <div className="links ">
             {placeholder.map((link, index) => (
               <Link to={`/owlet/${link.link}`} className="px-5 mx-1 " key={index + link.link}>
                 {link.caption}
               </Link>
             ))}
-          </div>
+          </div> */}
           <div className="auth">
             <Link to="/sign-in" className="px-10  font-black underline">
               Log In
@@ -27,7 +27,7 @@ const Container = () => {
         </div>
       </div>
       <Outlet />
-    </div>
+    </>
   )
 }
 export default Container

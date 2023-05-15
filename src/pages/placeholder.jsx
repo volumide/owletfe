@@ -8,13 +8,19 @@ import { description, placeholder } from "../utls/links"
 import forms from "../utls/form"
 import logos from "../utls/logo"
 const Placeholder = () => {
+  const navigate = useNavigate()
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
   const [currentLogo, setCurrentLogo] = useState("")
-
+  const [mobileView, setMobileView] = useState(false)
+  const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const next = () => {
     setProceed(!proceed)
+  }
+
+  const mobile = () => {
+    if (screenSize <= 640) setMobileView(true)
   }
 
   useEffect(() => {
@@ -22,27 +28,44 @@ const Placeholder = () => {
   }, [type])
 
   return (
-    <div className="h-screen  flex container mx-auto px-[100px]">
-      <div className="w-2/6 shrink-0  border-r h-full py-10">
-        <p className="flex items-center gap-2 text-3xl">
-          {proceed && (
-            <>
-              <i className="fa-solid fa-arrow-left-long my-5 font-bold text-xl cursor-pointer" role="button" onClick={next} />
-            </>
-          )}
-          {description[name].title}
-        </p>
-        <p className="text-ddgray">{description[name].caption}</p>
-        {links[name].map((link) => (
-          <Link to={`/owlet/${name}/${link.title}`} key={link.name} className="my-5 flex items-center gap-2" onClick={() => setCurrentLogo(logos[link.cat][link.logo])}>
-            <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
-              <img src={logos[link.cat][link.logo]} alt="" className="w-full h-full object-contain" />
-            </div>
-            {link.title}
-          </Link>
-        ))}
-      </div>
-      <div className="w-4/6 grow-0 py-10 px-[127px]">
+    <div className="h-screen md:flex md:container mx-auto px-[16px] md:px-[100px]">
+      {screenSize <= 640 && (
+        <button className="h-[50px] w-[50px] bg-input  text-center rounded-full flex justify-center items-center mt-5" onClick={() => navigate(-1)}>
+          <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" />
+        </button>
+      )}
+
+      {!mobileView && !type && (
+        <div className="md:w-2/6 shrink-0  md:border-r h-full py-10">
+          <p className="flex items-center gap-4 ">
+            {proceed && (
+              <>
+                <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" onClick={next} />
+              </>
+            )}
+            <span className="text-2xl">{description[name].title}</span>
+          </p>
+          <p className="text-ddgray">{description[name].caption}</p>
+          {links[name].map((link) => (
+            <Link
+              to={`/owlet/${name}/${link.title}`}
+              key={link.name}
+              className="my-5 flex items-center gap-2"
+              onClick={() => {
+                mobile()
+                setCurrentLogo(logos[link.cat][link.logo])
+              }}
+            >
+              <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
+                <img src={logos[link.cat][link.logo]} alt="" className="w-full h-full object-contain" />
+              </div>
+              {link.title}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <div className="md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px]">
         {type ? (
           <>
             <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">

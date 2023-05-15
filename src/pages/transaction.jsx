@@ -2,9 +2,9 @@ import Button from "../components/button"
 import logo from "../utls/logo"
 const Transaction = () => {
   return (
-    <div>
-      <div className="w-[500px]  border-2 rounded-[24px] mx-auto py-[48px] px-[59px] mt-[40px]">
-        <p className="text-center text-[32px]">Transaction Details</p>
+    <div className="px-[16px]">
+      <div className="md:w-[500px]  border-2 rounded-[24px] mx-auto py-[48px] px-[59px] mt-[40px]">
+        <p className="text-center text-[24px] md:text-[32px]">Transaction Details</p>
 
         <div className="w-[70px] h-[70px] p-2 mx-auto  border-2 my-[44px] rounded-full">
           <img src={logo.tv.startime} alt="" className="w-full h-full object-contain" />
@@ -23,8 +23,8 @@ const Transaction = () => {
           ))}
         </div>
 
-        <div className="flex gap-11 mt-[48px]">
-          <Button bg="transaparent" otherClass="border  ">
+        <div className="md:flex gap-11 mt-[48px]">
+          <Button bg="transaparent" otherClass="border mb-[16px] md:mb-0">
             Report Transaction
           </Button>
           <Button>Download Receipt</Button>
