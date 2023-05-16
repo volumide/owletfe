@@ -93,12 +93,11 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-const Form = ({ type, proceed, next, service, variant, form = [] }) => {
+const Form = ({ type, proceed, next, service, form = [] }) => {
   const password = "Olumide1"
   const userName = "volumide42@gmail.com"
   const url = "https://sandbox.vtpass.com/api/"
   const naviate = useNavigate()
-  const [variation, setVariaion] = useState()
 
   const handleForm = async (data) => {
     const intiDt = new Date()
@@ -127,18 +126,6 @@ const Form = ({ type, proceed, next, service, variant, form = [] }) => {
       naviate("/transaction")
     } else alert("transaction failed")
   }
-
-  const getVariationCodes = async (variant) => {
-    const req = await axios.get(`${url}service-variations?serviceID=${variant}`)
-    const { data: response } = req
-    setVariaion(response)
-    console.log(response)
-  }
-
-  useEffect(() => {
-    if (variant) getVariationCodes(variant)
-    return () => getVariationCodes(variant)
-  }, [])
 
   const { handleSubmit, control } = useForm(handleForm)
   const international = [
