@@ -3,12 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import links from "../utls/subscriptions"
 import Input from "../components/input"
 import Button from "../components/button"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
 import forms from "../utls/form"
 import logos from "../utls/logo"
 import { useForm } from "react-hook-form"
 import axios from "axios"
+import AppContext from "../context/app-context"
 const Placeholder = () => {
   const navigate = useNavigate()
   const { name, type } = useParams()
@@ -98,7 +99,10 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
   const userName = "volumide42@gmail.com"
   const url = "https://sandbox.vtpass.com/api/"
   const naviate = useNavigate()
-
+  const { formObj, setFormObj } = useContext(AppContext)
+  // const [formDt, setFormDt] = useState()
+  let formDt = {}
+  console.log(type)
   const handleForm = async (data) => {
     const intiDt = new Date()
     const date = intiDt.getUTCDate()
@@ -111,6 +115,8 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
     data["request_id"] = request_id
     data["serviceID"] = service
     localStorage.setItem("_payload", JSON.stringify(data))
+    console.log(data)
+    setFormObj(data)
     next()
   }
 
@@ -129,24 +135,28 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
 
   const { handleSubmit, control } = useForm(handleForm)
   const international = [
-    { label: "Account ID", name: "account_id" },
-    { label: "Country", name: "country" }
+    { label: "Country", name: "country", select: true },
+    { label: "Product Type", name: "product_type", select: true },
+    { label: "Operator ", name: "operator", select: true }
   ]
 
+  if (type === "International Airtime") form = [...international, ...form]
+
+  console.log(form)
   return (
     <>
       <form onSubmit={handleSubmit(handleForm)}>
         {!proceed ? (
           <>
             <h3>{type}</h3>
-            {/* internaiona airtime */}
-            {type === "International Airtime" && international.map((i) => <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />)}
+
+            {/* internaiona airtime
+            {type === "International Airtime" && international.map((i) => <>{i.select ? <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select /> : <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />}</>)} */}
 
             {form.map((i) => (
-              <>
-                <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />
-              </>
+              <>{i.select ? <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select={true} /> : <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />}</>
             ))}
+
             <div className="flex gap-3 mt-[32px]">
               <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
                 Cancel
@@ -156,7 +166,7 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
           </>
         ) : (
           <>
-            <Confirm />
+            <Confirm form={form} name={formObj} />
             <Button bg="transaprent" otherClass="border border-2">
               <i className="fa-solid fa-building-columns mr-3" />
               Pay with Bank Transfer
@@ -171,20 +181,27 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
   )
 }
 
-const Confirm = () => {
+const Confirm = ({ form = [], name }) => {
   return (
     <>
       <h3>Confirm Details</h3>
       <p>Confirm the details below are corect</p>
       <div className="bg-[#F4F6FA] p-5 rounded-[24px] my-10">
-        <div className="my-[16px]">
+        {form.map((i) => (
+          <div className="my-[16px]" key={i.name}>
+            <h1 className="text-base font[600]">{i.label}</h1>
+            <p>{name[i.name]}</p>
+          </div>
+        ))}
+
+        {/* <div className="my-[16px]">
           <h1 className="text-base font[600]">Phone Number</h1>
           <p>+2340123456789</p>
         </div>
         <div className="my-[16px]">
           <h1 className="text-base font[700]">Phone Number</h1>
           <p>+2340123456789</p>
-        </div>
+        </div> */}
       </div>
     </>
   )

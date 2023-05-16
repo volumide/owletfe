@@ -16,8 +16,8 @@ export const getAirtimeProduct = async (code) => {
   return response
 }
 
-export const getAirtimeOperator = async (code) => {
-  const req = await axios.get(`${url}get-international-airtime-operator?code=${code}&product_type_id=4`, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
+export const getAirtimeOperator = async (code, productId) => {
+  const req = await axios.get(`${url}get-international-airtime-operator?code=${code}&product_type_id=${productId}`, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
   const { data: response } = req
   return response
 }
