@@ -6,7 +6,9 @@ import { useState } from "react"
 const Container = () => {
   const [show, setShow] = useState(false)
   // window.addEventListener("click", () => toggle())
-  const toggle = () => setShow(!show)
+  const toggle = () => {
+    if (window.innerWidth <= 768) setShow(!show)
+  }
   return (
     <>
       <div className="border-b border-b-input overflow-hidden  px-[16px]">
@@ -14,24 +16,24 @@ const Container = () => {
           <h2>
             <Link to="/">LOGO</Link>
           </h2>
-          <button className={`w-[50px] h-[50px] bg-input rounded-full p-3 flex items-center justify-center md:hidden`} onClick={toggle}>
+          <button className={`w-[50px] h-[50px] bg-input rounded-full p-3 flex items-center justify-center lg:hidden`} onClick={toggle}>
             <img src={menu} alt="" />
           </button>
 
-          <div className={`${show ? "absolute h-full w-full text-center left-0 p-5 top-[121px] bg-white z-10" : " hidden md:block"}`} onClick={toggle}>
-            <div className="md:flex block md:items-center md:justify-between">
+          <div className={`${show ? "absolute h-full w-full text-center left-0 p-5 top-[121px] bg-white z-10" : " hidden lg:block"}`} onClick={toggle}>
+            <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
                 {placeholder.map((link, index) => (
-                  <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block md:inline my-[16px]" key={index + link.link}>
+                  <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
                     {link.caption}
                   </Link>
                 ))}
               </div>
               <div className="auth">
-                <Link to="/sign-in" className="px-10  font-black underline md:inline-block block my-[16px]">
+                <Link to="/sign-in" className="px-10  font-black underline lg:inline-block block my-[16px]">
                   Log In
                 </Link>
-                <Link to="/sign-up" className="px-10 py-5 rounded-full md:inline w-2/4 mx-auto bg-primary block">
+                <Link to="/sign-up" className="px-10 py-5 rounded-full lg:inline w-2/4 mx-auto bg-primary block">
                   Sign Up
                 </Link>
               </div>

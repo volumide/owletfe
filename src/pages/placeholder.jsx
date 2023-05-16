@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
 import forms from "../utls/form"
 import logos from "../utls/logo"
+import { useForm } from "react-hook-form"
+import axios from "axios"
 const Placeholder = () => {
   const navigate = useNavigate()
   const { name, type } = useParams()
@@ -16,9 +18,10 @@ const Placeholder = () => {
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const formSum = useRef(null)
-  const next = () => {
-    setProceed(!proceed)
-  }
+
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
+  const next = () => setProceed(!proceed)
 
   const mobile = () => {
     if (screenSize <= 640) setMobileView(true)
@@ -42,7 +45,7 @@ const Placeholder = () => {
         <p className="text-ddgray">{description[name].caption}</p>
         {links[name].map((link) => (
           <Link
-            to={`/owlet/${name}/${link.title}`}
+            to={`/owlet/${name}/${link.title}?service=${link.service || link.name}`}
             key={link.name}
             className="my-5 flex items-center gap-2"
             onClick={() => {
@@ -60,6 +63,7 @@ const Placeholder = () => {
       </div>
     </>
   )
+
   const MainForm = () => (
     <div className="md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px] h-full" ref={formSum}>
       {type ? (
@@ -67,7 +71,7 @@ const Placeholder = () => {
           <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
             <img src={currentLogo} alt="" className="w-full h-full object-contain" />
           </div>
-          <Form type={type} proceed={proceed} next={next} form={forms[description[name].form]} />
+          <Form type={type} proceed={proceed} next={next} service={queries.service} form={forms[description[name].form]} />
         </>
       ) : (
         <div className="w-[100px] h-[100px] bg-[#f4f4f4] p-5 rounded-full overflow-hidden mx-auto mt-20">
@@ -89,24 +93,78 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-const Form = ({ type, proceed, next, form = [] }) => {
+const Form = ({ type, proceed, next, service, variant, form = [] }) => {
+  const password = "Olumide1"
+  const userName = "volumide42@gmail.com"
+  const url = "https://sandbox.vtpass.com/api/"
   const naviate = useNavigate()
+  const [variation, setVariaion] = useState()
+
+  const handleForm = async (data) => {
+    const intiDt = new Date()
+    const date = intiDt.getUTCDate()
+    const month = intiDt.getUTCMonth() + 1
+    const year = intiDt.getFullYear()
+    const hr = intiDt.getHours()
+    const sec = intiDt.getSeconds()
+
+    const request_id = `${year}0${month}${date}${hr}${sec}OWLET`
+    data["request_id"] = request_id
+    data["serviceID"] = service
+    localStorage.setItem("_payload", JSON.stringify(data))
+    next()
+  }
+
+  // send data for successful transaction
+  const sendData = async () => {
+    const formData = JSON.parse(localStorage.getItem("_payload"))
+    const req = await axios.post(`${url}pay`, formData, {
+      headers: { "Authorization": `Basic ${window.btoa(`${userName}:${password}`)}` }
+    })
+    const { data: response } = req
+    if (response.response_description === "TRANSACTION SUCCESSFUL") {
+      localStorage.removeItem("_payload")
+      naviate("/transaction")
+    } else alert("transaction failed")
+  }
+
+  const getVariationCodes = async (variant) => {
+    const req = await axios.get(`${url}service-variations?serviceID=${variant}`)
+    const { data: response } = req
+    setVariaion(response)
+    console.log(response)
+  }
+
+  useEffect(() => {
+    if (variant) getVariationCodes(variant)
+    return () => getVariationCodes(variant)
+  }, [])
+
+  const { handleSubmit, control } = useForm(handleForm)
+  const international = [
+    { label: "Account ID", name: "account_id" },
+    { label: "Country", name: "country" }
+  ]
+
   return (
     <>
-      <form action="">
+      <form onSubmit={handleSubmit(handleForm)}>
         {!proceed ? (
           <>
             <h3>{type}</h3>
+            {/* internaiona airtime */}
+            {type === "International Airtime" && international.map((i) => <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />)}
+
             {form.map((i) => (
-              <Input label={i.label} type={i?.type || "text"} name={i.name} key={i.label} />
+              <>
+                <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />
+              </>
             ))}
             <div className="flex gap-3 mt-[32px]">
-              <Button bg="transaprent" otherClass="border" disabled={!proceed}>
+              <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
                 Cancel
               </Button>
-              <Button type="button" onClick={next}>
-                Proceed
-              </Button>
+              <Button type="submit">Proceed</Button>
             </div>
           </>
         ) : (
@@ -116,7 +174,7 @@ const Form = ({ type, proceed, next, form = [] }) => {
               <i className="fa-solid fa-building-columns mr-3" />
               Pay with Bank Transfer
             </Button>
-            <Button bg="transaprent" otherClass="border border-2 my-5" onClick={() => naviate("/transaction")}>
+            <Button bg="transaprent" onClick={() => sendData()} otherClass="border border-2 my-5">
               <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
             </Button>
           </>
