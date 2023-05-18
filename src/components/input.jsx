@@ -15,7 +15,6 @@ const Input = ({ children, label, id, width = true, name, control, select, ...pr
         <>
           <select name="" id={id} onChange={onChange} onBlur={onBlur} className={`block mb-[8px]  mt-[8px] rounded-default px-5 py-[16px]  bg-input ${!width ? width : "w-full"} `} {...props}>
             <option></option>
-            <option value="hello">Hello</option>
             {children}
           </select>
         </>

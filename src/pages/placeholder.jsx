@@ -3,13 +3,16 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import links from "../utls/subscriptions"
 import Input from "../components/input"
 import Button from "../components/button"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
 import forms from "../utls/form"
 import logos from "../utls/logo"
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import AppContext from "../context/app-context"
+
+import allForms from "./forms"
+
 const Placeholder = () => {
   const navigate = useNavigate()
   const { name, type } = useParams()
@@ -19,7 +22,6 @@ const Placeholder = () => {
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const formSum = useRef(null)
-
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const next = () => setProceed(!proceed)
@@ -27,10 +29,6 @@ const Placeholder = () => {
   const mobile = () => {
     if (screenSize <= 640) setMobileView(true)
   }
-
-  useEffect(() => {
-    setProceed(false)
-  }, [type])
 
   const SideNavigations = () => (
     <>
@@ -72,7 +70,8 @@ const Placeholder = () => {
           <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
             <img src={currentLogo} alt="" className="w-full h-full object-contain" />
           </div>
-          <Form type={type} proceed={proceed} next={next} service={queries.service} form={forms[description[name].form]} />
+          {allForms[name]}
+          {/* <Form type={type} proceed={proceed} next={next} service={queries.service} form={forms[description[name].form]} countries={countries} /> */}
         </>
       ) : (
         <div className="w-[100px] h-[100px] bg-[#f4f4f4] p-5 rounded-full overflow-hidden mx-auto mt-20">
@@ -94,15 +93,14 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-const Form = ({ type, proceed, next, service, form = [] }) => {
+const Form = ({ type, proceed, next, service, countries, products, ops, form = [] }) => {
   const password = "Olumide1"
   const userName = "volumide42@gmail.com"
   const url = "https://sandbox.vtpass.com/api/"
   const naviate = useNavigate()
   const { formObj, setFormObj } = useContext(AppContext)
-  // const [formDt, setFormDt] = useState()
-  let formDt = {}
-  console.log(type)
+
+  // submit form
   const handleForm = async (data) => {
     const intiDt = new Date()
     const date = intiDt.getUTCDate()
@@ -114,8 +112,8 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
     const request_id = `${year}0${month}${date}${hr}${sec}OWLET`
     data["request_id"] = request_id
     data["serviceID"] = service
-    localStorage.setItem("_payload", JSON.stringify(data))
     console.log(data)
+    localStorage.setItem("_payload", JSON.stringify(data))
     setFormObj(data)
     next()
   }
@@ -134,15 +132,15 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
   }
 
   const { handleSubmit, control } = useForm(handleForm)
+
   const international = [
-    { label: "Country", name: "country", select: true },
-    { label: "Product Type", name: "product_type", select: true },
-    { label: "Operator ", name: "operator", select: true }
+    { label: "Country", name: "country", select: true, options: countries || [] },
+    { label: "Product Type", name: "product_type", select: true, options: products || [] },
+    { label: "Operator ", name: "operator", select: true, options: ops || [] }
   ]
 
   if (type === "International Airtime") form = [...international, ...form]
 
-  console.log(form)
   return (
     <>
       <form onSubmit={handleSubmit(handleForm)}>
@@ -150,11 +148,20 @@ const Form = ({ type, proceed, next, service, form = [] }) => {
           <>
             <h3>{type}</h3>
 
-            {/* internaiona airtime
-            {type === "International Airtime" && international.map((i) => <>{i.select ? <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select /> : <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />}</>)} */}
-
             {form.map((i) => (
-              <>{i.select ? <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select={true} /> : <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />}</>
+              <>
+                {i.select ? (
+                  <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select={true}>
+                    {i.options.map((e) => (
+                      <option value={e.value} key={e.code}>
+                        {e.key}
+                      </option>
+                    ))}
+                  </Input>
+                ) : (
+                  <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />
+                )}
+              </>
             ))}
 
             <div className="flex gap-3 mt-[32px]">
@@ -193,15 +200,10 @@ const Confirm = ({ form = [], name }) => {
             <p>{name[i.name]}</p>
           </div>
         ))}
-
-        {/* <div className="my-[16px]">
-          <h1 className="text-base font[600]">Phone Number</h1>
-          <p>+2340123456789</p>
-        </div>
         <div className="my-[16px]">
-          <h1 className="text-base font[700]">Phone Number</h1>
-          <p>+2340123456789</p>
-        </div> */}
+          <h1 className="text-base font[600]">Transaction satus</h1>
+          <p>Initiated</p>
+        </div>
       </div>
     </>
   )

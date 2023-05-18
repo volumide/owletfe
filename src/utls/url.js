@@ -5,8 +5,11 @@ const userName = "volumide42@gmail.com"
 const url = "https://sandbox.vtpass.com/api/"
 
 export const getCountries = async () => {
+  const getCountries = localStorage.getItem("countries")
+  if (getCountries) return getCountries
   const req = await axios.get(`${url}get-international-airtime-countries`, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
   const { data: response } = req
+  localStorage.setItem("countries", JSON.stringify(response))
   return response
 }
 
