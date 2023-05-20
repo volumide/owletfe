@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import eduForm from "../../utls/form/education-form"
 import { useEffect, useState } from "react"
 import Button from "../../components/button"
 import { getVariationCodes, paySubscripiton } from "../../utls/url"
+import { Confirm } from "../placeholder"
 const Education = () => {
   const defaultForm = eduForm
   const query = new URLSearchParams(window.location.search)
@@ -11,8 +13,14 @@ const Education = () => {
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
   const [packages, setPackages] = useState([])
-  const submit = async () => {
+  const [formData, setData] = useState({})
+
+  const submit = async (data) => {
     setProceed(true)
+    setData(data)
+  }
+
+  const makePayment = async () => {
     const req = await paySubscripiton({
       serviceID: queries.service,
       variation_code: "waecdirect",
@@ -52,6 +60,20 @@ const Education = () => {
           </Button>
           <Button type="submit">Proceed</Button>
         </div>
+        {proceed ? (
+          <>
+            <Confirm form={defaultForm} name={formData} />
+            <Button bg="transaprent" otherClass="border border-2">
+              <i className="fa-solid fa-building-columns mr-3" />
+              Pay with Bank Transfer
+            </Button>
+            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
+              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
       </form>
     </>
   )

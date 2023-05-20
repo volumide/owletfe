@@ -5,32 +5,36 @@ import { useState } from "react"
 import Button from "../../components/button"
 import { useParams } from "react-router-dom"
 import { paySubscripiton, verifyMerchant } from "../../utls/url"
+import { Confirm } from "../placeholder"
 
 const Electricity = () => {
   const electForms = electForm
   const { type } = useParams()
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
-
-  const submit = async () => {
-    setProceed(true)
-    console.log("working...")
+  const [formData, setData] = useState({})
+  const submit = async (data) => {
     const req = await verifyMerchant({
       serviceID: "kano-electric",
       type: "postpaid",
       billersCode: "1010101010101"
     })
-    console.log(req)
+
     if (!req.content.error) {
-      const sendPay = await paySubscripiton({
-        serviceID: "kano-electric",
-        billersCode: "1010101010101",
-        phone: "08011111111",
-        variation_code: "postpaid",
-        amount: "1000"
-      })
-      console.log(sendPay)
+      setProceed(true)
+      setData(data)
     }
+  }
+
+  const makePayment = async () => {
+    const sendPay = await paySubscripiton({
+      serviceID: "kano-electric",
+      billersCode: "1010101010101",
+      phone: "08011111111",
+      variation_code: "postpaid",
+      amount: "1000"
+    })
+    console.log(sendPay)
   }
 
   return (
@@ -65,6 +69,20 @@ const Electricity = () => {
           </Button>
           <Button type="submit">Proceed</Button>
         </div>
+        {proceed ? (
+          <>
+            <Confirm form={electForm} name={formData} />
+            <Button bg="transaprent" otherClass="border border-2">
+              <i className="fa-solid fa-building-columns mr-3" />
+              Pay with Bank Transfer
+            </Button>
+            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
+              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
       </form>
     </>
   )

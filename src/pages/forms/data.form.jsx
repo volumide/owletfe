@@ -4,6 +4,7 @@ import internetForm from "../../utls/form/internet-form"
 import { useEffect, useState } from "react"
 import Button from "../../components/button"
 import { getVariationCodes, paySubscripiton } from "../../utls/url"
+import { Confirm } from "../placeholder"
 
 const InterneData = () => {
   const defaultForm = internetForm
@@ -12,9 +13,14 @@ const InterneData = () => {
   const queries = Object.fromEntries(query.entries())
   const [packages, setPackages] = useState([])
   const [proceed, setProceed] = useState(false)
+  const [formData, setFormData] = useState(defaultForm)
 
   const submit = async (data) => {
     setProceed(true)
+    setFormData(data)
+  }
+
+  const makePayment = async () => {
     const req = await paySubscripiton({
       serviceID: queries.service,
       billersCode: "08011111111",
@@ -23,7 +29,6 @@ const InterneData = () => {
       phone: "08011111111"
     })
     console.log(req)
-    console.log(data)
   }
 
   useEffect(() => {
@@ -31,6 +36,7 @@ const InterneData = () => {
       getVariationCodes(queries.service).then((e) => {
         setPackages(e.content.varations)
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <>
@@ -54,6 +60,20 @@ const InterneData = () => {
           </Button>
           <Button type="submit">Proceed</Button>
         </div>
+        {proceed ? (
+          <>
+            <Confirm form={defaultForm} name={formData} />
+            <Button bg="transaprent" otherClass="border border-2">
+              <i className="fa-solid fa-building-columns mr-3" />
+              Pay with Bank Transfer
+            </Button>
+            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
+              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
       </form>
     </>
   )
