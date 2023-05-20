@@ -1,25 +1,44 @@
 import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import eduForm from "../../utls/form/education-form"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../../components/button"
+import { getVariationCodes, paySubscripiton } from "../../utls/url"
 const Education = () => {
   const defaultForm = eduForm
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
-  const submit = (data) => {
+  const [packages, setPackages] = useState([])
+  const submit = async () => {
     setProceed(true)
-    console.log(data)
+    const req = await paySubscripiton({
+      serviceID: queries.service,
+      variation_code: "waecdirect",
+      amount: "900.00",
+      phone: "08011111111"
+    })
+    console.log(req)
   }
+
+  useEffect
+  getVariationCodes
+  useEffect(() => {
+    if (queries.service)
+      getVariationCodes(queries.service).then((e) => {
+        setPackages(e.content.varations)
+      })
+  }, [])
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
         {defaultForm.map((i) =>
           i.select ? (
             <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
-              {i.options.map((e) => (
-                <option value={e.value} key={e.code}>
-                  {e.key}
+              {packages.map((e) => (
+                <option value={e.variation_code} key={e.code}>
+                  {e.name}
                 </option>
               ))}
             </Input>
