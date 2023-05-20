@@ -5,7 +5,6 @@ import Input from "../components/input"
 import Button from "../components/button"
 import { useContext, useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
-import forms from "../utls/form"
 import logos from "../utls/logo"
 import { useForm } from "react-hook-form"
 import axios from "axios"
@@ -22,8 +21,6 @@ const Placeholder = () => {
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const formSum = useRef(null)
-  const query = new URLSearchParams(window.location.search)
-  const queries = Object.fromEntries(query.entries())
   const next = () => setProceed(!proceed)
 
   const mobile = () => {
@@ -71,7 +68,6 @@ const Placeholder = () => {
             <img src={currentLogo} alt="" className="w-full h-full object-contain" />
           </div>
           {allForms[name]}
-          {/* <Form type={type} proceed={proceed} next={next} service={queries.service} form={forms[description[name].form]} countries={countries} /> */}
         </>
       ) : (
         <div className="w-[100px] h-[100px] bg-[#f4f4f4] p-5 rounded-full overflow-hidden mx-auto mt-20">
@@ -92,6 +88,27 @@ const Placeholder = () => {
   )
 }
 export default Placeholder
+
+export const Confirm = ({ form = [], name }) => {
+  return (
+    <>
+      <h3>Confirm Details</h3>
+      <p>Confirm the details below are corect</p>
+      <div className="bg-[#F4F6FA] p-5 rounded-[24px] my-10">
+        {form.map((i) => (
+          <div className="my-[16px]" key={i.name}>
+            <h1 className="text-base font[600]">{i.label}</h1>
+            <p>{name[i.name]}</p>
+          </div>
+        ))}
+        <div className="my-[16px]">
+          <h1 className="text-base font[600]">Transaction satus</h1>
+          <p>Initiated</p>
+        </div>
+      </div>
+    </>
+  )
+}
 
 const Form = ({ type, proceed, next, service, countries, products, ops, form = [] }) => {
   const password = "Olumide1"
@@ -184,27 +201,6 @@ const Form = ({ type, proceed, next, service, countries, products, ops, form = [
           </>
         )}
       </form>
-    </>
-  )
-}
-
-const Confirm = ({ form = [], name }) => {
-  return (
-    <>
-      <h3>Confirm Details</h3>
-      <p>Confirm the details below are corect</p>
-      <div className="bg-[#F4F6FA] p-5 rounded-[24px] my-10">
-        {form.map((i) => (
-          <div className="my-[16px]" key={i.name}>
-            <h1 className="text-base font[600]">{i.label}</h1>
-            <p>{name[i.name]}</p>
-          </div>
-        ))}
-        <div className="my-[16px]">
-          <h1 className="text-base font[600]">Transaction satus</h1>
-          <p>Initiated</p>
-        </div>
-      </div>
     </>
   )
 }
