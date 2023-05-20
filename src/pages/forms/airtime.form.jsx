@@ -4,7 +4,8 @@ import phoneForm from "../../utls/form/phone-form"
 import Button from "../../components/button"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getCountries } from "../../utls/url"
+import { getCountries, paySubscripiton } from "../../utls/url"
+import { Confirm } from "../placeholder"
 
 const Airtime = () => {
   const { type } = useParams()
@@ -12,17 +13,37 @@ const Airtime = () => {
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
   const [countries, setCountries] = useState([])
+  const [formInput, setFormInput] = useState([])
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
+  const [formData, setData] = useState({})
+
   const submit = (data) => {
     setProceed(true)
-    console.log(data)
+    setData(data)
   }
-
+  const makePayment = async () => {
+    const req = await paySubscripiton({
+      serviceID: queries.service,
+      amount: "900",
+      phone: "08011111111"
+    })
+    console.log(req)
+  }
+  const international = [
+    { label: "Country", name: "country" },
+    { label: "Product Type", name: "product_type" },
+    { label: "Operator", name: "operator" }
+  ]
   useEffect(() => {
-    if (type === "International Airtime")
+    if (type === "International Airtime") {
       getCountries().then((e) => {
-        if (typeof e === "string") setCountries(JSON.parse(e.content.countries))
-        else setCountries(e.content.countries)
+        const res = typeof e === "string" ? JSON.parse(e) : e
+        setCountries(res.content.countries)
       })
+      setFormInput([...international, ...defaultForm])
+    } else setFormInput(defaultForm)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type])
 
   return (
@@ -30,7 +51,7 @@ const Airtime = () => {
       <form onSubmit={handleSubmit(submit)}>
         {type == "International Airtime" ? (
           <>
-            <Input label="Country" control={control} key="country" name="counry" select>
+            <Input label="Country" control={control} key="country" name="country" select>
               {countries.map((country) => (
                 <option value={country.code} key={country.prefix}>
                   {country.name}
@@ -38,10 +59,10 @@ const Airtime = () => {
               ))}
             </Input>
             <Input label="Product Type" control={control} key="product_type" name="product_type" select>
-              <option value="">working</option>
+              <option value="product">working</option>
             </Input>
             <Input label="Operator" control={control} key="operator" name="operator" select>
-              <option value="">working</option>
+              <option value="operator">working</option>
             </Input>
           </>
         ) : (
@@ -66,6 +87,20 @@ const Airtime = () => {
           </Button>
           <Button type="submit">Proceed</Button>
         </div>
+        {proceed ? (
+          <>
+            <Confirm form={formInput} name={formData} />
+            <Button bg="transaprent" otherClass="border border-2">
+              <i className="fa-solid fa-building-columns mr-3" />
+              Pay with Bank Transfer
+            </Button>
+            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
+              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
       </form>
     </>
   )
