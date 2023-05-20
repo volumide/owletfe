@@ -1,31 +1,51 @@
 import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import internetForm from "../../utls/form/internet-form"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../../components/button"
+import { getVariationCodes, paySubscripiton } from "../../utls/url"
 
 const InterneData = () => {
   const defaultForm = internetForm
   const { handleSubmit, control } = useForm()
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
+  const [packages, setPackages] = useState([])
   const [proceed, setProceed] = useState(false)
-  const submit = (data) => {
+
+  const submit = async (data) => {
     setProceed(true)
+    const req = await paySubscripiton({
+      serviceID: queries.service,
+      billersCode: "08011111111",
+      variation_code: "mtn-10mb-100",
+      amount: "900.00",
+      phone: "08011111111"
+    })
+    console.log(req)
     console.log(data)
   }
+
+  useEffect(() => {
+    if (queries.service)
+      getVariationCodes(queries.service).then((e) => {
+        setPackages(e.content.varations)
+      })
+  }, [])
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
         {defaultForm.map((i) =>
-          i.select ? (
+          i.label === "Package" ? (
             <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
-              {i.options.map((e) => (
-                <option value={e.value} key={e.code}>
-                  {e.key}
+              {packages.map((e) => (
+                <option value={e.variation_code} key={e.name}>
+                  {e.name}
                 </option>
               ))}
             </Input>
           ) : (
-            <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} />
+            <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} disabled={i.disabled} />
           )
         )}
         <div className="flex gap-3 mt-[32px]">
