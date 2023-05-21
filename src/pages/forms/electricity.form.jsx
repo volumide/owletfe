@@ -1,19 +1,26 @@
 import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import electForm from "../../utls/form/electricity-form"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import Button from "../../components/button"
 import { useParams } from "react-router-dom"
-import { paySubscripiton, verifyMerchant } from "../../utls/url"
+import { verifyMerchant } from "../../utls/url"
 import { Confirm } from "../placeholder"
+import AppContext from "../../context/app-context"
 
 const Electricity = () => {
   const electForms = electForm
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
   const { type } = useParams()
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
-  const [formData, setData] = useState({})
+  // const [formData, setData] = useState({})
+  const { setForm, formData } = useContext(AppContext)
   const submit = async (data) => {
+    data.serviceID = queries.service
+    setProceed(true)
+    setForm(data)
     const req = await verifyMerchant({
       serviceID: "kano-electric",
       type: "postpaid",
@@ -22,19 +29,8 @@ const Electricity = () => {
 
     if (!req.content.error) {
       setProceed(true)
-      setData(data)
+      setForm(data)
     }
-  }
-
-  const makePayment = async () => {
-    const sendPay = await paySubscripiton({
-      serviceID: "kano-electric",
-      billersCode: "1010101010101",
-      phone: "08011111111",
-      variation_code: "postpaid",
-      amount: "1000"
-    })
-    console.log(sendPay)
   }
 
   return (
@@ -71,14 +67,7 @@ const Electricity = () => {
         </div>
         {proceed ? (
           <>
-            <Confirm form={electForm} name={formData} />
-            <Button bg="transaprent" otherClass="border border-2">
-              <i className="fa-solid fa-building-columns mr-3" />
-              Pay with Bank Transfer
-            </Button>
-            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
-              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
-            </Button>
+            <Confirm form={electForm} name={formData} ev={() => console.log(formData)} />
           </>
         ) : (
           ""

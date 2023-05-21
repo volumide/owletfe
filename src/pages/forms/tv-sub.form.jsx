@@ -2,10 +2,11 @@
 import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import tvForn from "../../utls/form/tv-form"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import Button from "../../components/button"
-import { getVariationCodes, paySubscripiton, verifyMerchant } from "../../utls/url"
+import { getVariationCodes, verifyMerchant } from "../../utls/url"
 import { Confirm } from "../placeholder"
+import AppContext from "../../context/app-context"
 
 const TvForm = () => {
   const tvForms = tvForn
@@ -14,8 +15,9 @@ const TvForm = () => {
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const [packages, setPackages] = useState([])
-  const [formData, setData] = useState({})
+  const { setForm, formData } = useContext(AppContext)
   const submit = async (data) => {
+    data.serviceID = queries.service
     const req = await verifyMerchant({
       serviceID: "dstv",
       billersCode: "1212121212"
@@ -24,19 +26,8 @@ const TvForm = () => {
     console.log(req)
     if (!req.content.error) {
       setProceed(true)
-      setData(data)
+      setForm(data)
     }
-  }
-
-  const makePayment = async () => {
-    const sendPay = await paySubscripiton({
-      serviceID: "dstv",
-      billersCode: "1212121212",
-      phone: "08011111111",
-      amount: "req.content.Renewal_Amount",
-      subscription_type: ""
-    })
-    console.log(sendPay)
   }
 
   useEffect(() => {
@@ -78,13 +69,6 @@ const TvForm = () => {
         {proceed ? (
           <>
             <Confirm form={tvForn} name={formData} />
-            <Button bg="transaprent" otherClass="border border-2">
-              <i className="fa-solid fa-building-columns mr-3" />
-              Pay with Bank Transfer
-            </Button>
-            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
-              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
-            </Button>
           </>
         ) : (
           ""

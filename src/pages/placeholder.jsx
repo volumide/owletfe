@@ -89,7 +89,11 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-export const Confirm = ({ form = [], name }) => {
+export const Confirm = ({ form = [], name, ev }) => {
+  const navigate = useNavigate()
+  const completeTransaction = () => {
+    ev ? ev() : navigate("/transaction")
+  }
   return (
     <>
       <h3>Confirm Details</h3>
@@ -106,6 +110,13 @@ export const Confirm = ({ form = [], name }) => {
           <p>Initiated</p>
         </div>
       </div>
+      <Button bg="transaprent" otherClass="border border-2">
+        <i className="fa-solid fa-building-columns mr-3" />
+        Pay with Bank Transfer
+      </Button>
+      <Button bg="transaprent" onClick={completeTransaction} otherClass="border border-2 my-5">
+        <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
+      </Button>
     </>
   )
 }

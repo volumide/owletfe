@@ -1,6 +1,17 @@
+import { useEffect } from "react"
 import Button from "../components/button"
 import logo from "../utls/logo"
+import { paySubscripiton } from "../utls/url"
 const Transaction = () => {
+  const makePayment = async () => {
+    const res = JSON.parse(localStorage.getItem("fmDt"))
+    const req = await paySubscripiton(res)
+    console.log(req)
+  }
+
+  useEffect(() => {
+    makePayment()
+  }, [])
   return (
     <div className="p-[16px] ">
       <div className="md:w-[500px]  border-2 border-input  rounded-[24px] mx-auto py-[48px] px-[59px]  md:my-[40px]">
