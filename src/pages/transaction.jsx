@@ -8,12 +8,15 @@ const Transaction = () => {
   const [details, setDetails] = useState()
   const [productName, setProductName] = useState()
   const [keys, setkeys] = useState([])
+  const saveLogo = localStorage.getItem("logo")
+  console.log(saveLogo)
   const makePayment = async () => {
     const res = JSON.parse(localStorage.getItem("fmDt"))
     const req = await paySubscripiton(res)
 
     console.log(req)
     const ans = req.content.transactions
+
     if (req.response_description === "TRANSACTION SUCCESSFUL") {
       setSubscription(req)
       setDetails({
@@ -42,7 +45,7 @@ const Transaction = () => {
             <p className="text-center text-[24px] md:text-[32px]">Transaction Details</p>
 
             <div className="w-[70px] h-[70px] p-2 mx-auto  border-2 my-[44px] rounded-full">
-              <img src={logo.tv.startime} alt="" className="w-full h-full object-contain" />
+              <img src={saveLogo} alt="" className="w-full h-full object-contain" />
             </div>
             <div className="mt-[44px] text-center">
               <p>{productName}</p>

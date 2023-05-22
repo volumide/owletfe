@@ -44,6 +44,7 @@ const Placeholder = () => {
             onClick={() => {
               mobile()
               setCurrentLogo(logos[link.cat][link.logo])
+              localStorage.setItem("logo", logos[link.cat][link.logo])
               formSum.current.scrollIntoView()
             }}
           >
