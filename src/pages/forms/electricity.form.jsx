@@ -15,62 +15,72 @@ const Electricity = () => {
   const { type } = useParams()
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
-  // const [formData, setData] = useState({})
+  const [error, setError] = useState()
   const { setForm, formData } = useContext(AppContext)
   const submit = async (data) => {
-    data.serviceID = queries.service
-    setProceed(true)
-    setForm(data)
+    data.serviceID = queries.service + "-electric"
+
     const req = await verifyMerchant({
-      serviceID: "kano-electric",
-      type: "postpaid",
-      billersCode: "1010101010101"
+      serviceID: data.serviceID,
+      type: data.variation_code,
+      billersCode: data.billersCode
     })
 
-    if (!req.content.error) {
-      setProceed(true)
-      setForm(data)
+    console.log(req)
+    if (req.content.error) {
+      setError(req.content.error)
+      return
     }
+    setError("")
+    setProceed(true)
+    setForm(data)
   }
 
   return (
     <>
-      <h4>Prepaid and Postpaid {type} Payment</h4>
-      <p>Prepaid and PZostpaid {type} Payment</p>
-      <div className="py-3 my-5 border-t border-b">
-        <p>
-          Select <span className="font-[700]">&quot;Prepaid”</span> if you load token on your meter
-        </p>
-        <p>
-          Select <span className="font-[700]">“Postpaid”</span> if you get a bill at the end of the month{" "}
-        </p>
-      </div>
+      {!proceed && (
+        <>
+          <h4>Prepaid and Postpaid {type} Payment</h4>
+          <p>Prepaid and PZostpaid {type} Payment</p>
+          {error && <p className="p-5 bg-red-400 text-white my-3 rounded-[16px]">{error}</p>}
+          <div className="py-3 my-5 border-t border-b">
+            <p>
+              Select <span className="font-[700]">&quot;Prepaid”</span> if you load token on your meter
+            </p>
+            <p>
+              Select <span className="font-[700]">“Postpaid”</span> if you get a bill at the end of the month{" "}
+            </p>
+          </div>
+        </>
+      )}
+
       <form onSubmit={handleSubmit(submit)}>
-        {electForms.map((i) =>
-          i.select ? (
-            <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
-              {i.options.map((e) => (
-                <option value={e.toLocaleLowerCase()} key={e}>
-                  {e}
-                </option>
-              ))}
-            </Input>
-          ) : (
-            <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} />
-          )
-        )}
-        <div className="flex gap-3 mt-[32px]">
-          <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
-            Cancel
-          </Button>
-          <Button type="submit">Proceed</Button>
-        </div>
         {proceed ? (
           <>
-            <Confirm form={electForm} name={formData} ev={() => console.log(formData)} />
+            <Confirm form={electForm} name={formData} />
           </>
         ) : (
-          ""
+          <>
+            {electForms.map((i) =>
+              i.select ? (
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
+                  {i.options.map((e) => (
+                    <option value={e.toLocaleLowerCase()} key={e}>
+                      {e}
+                    </option>
+                  ))}
+                </Input>
+              ) : (
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} />
+              )
+            )}
+            <div className="flex gap-3 mt-[32px]">
+              <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
+                Cancel
+              </Button>
+              <Button type="submit">Proceed</Button>
+            </div>
+          </>
         )}
       </form>
     </>

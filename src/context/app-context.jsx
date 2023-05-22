@@ -6,10 +6,13 @@ export default AppContext
 // eslint-disable-next-line react/prop-types
 export const OwletProvider = ({ children }) => {
   const [formData, setFormData] = useState({})
+  const [amount, setAmount] = useState({})
   const setForm = (data = "") => {
     localStorage.setItem("fmDt", JSON.stringify(data))
-    setFormData(data)
+    setFormData({ data })
   }
 
-  return <AppContext.Provider value={{ formData, setForm }}>{children}</AppContext.Provider>
+  const setValue = (amount) => setAmount({ ...amount })
+
+  return <AppContext.Provider value={{ formData, setForm, amount, setValue }}>{children}</AppContext.Provider>
 }

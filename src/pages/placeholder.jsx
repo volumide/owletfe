@@ -1,14 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Link, useNavigate, useParams } from "react-router-dom"
 import links from "../utls/subscriptions"
-import Input from "../components/input"
 import Button from "../components/button"
-import { useContext, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
 import logos from "../utls/logo"
-import { useForm } from "react-hook-form"
-import axios from "axios"
-import AppContext from "../context/app-context"
 
 import allForms from "./forms"
 
@@ -17,6 +13,7 @@ const Placeholder = () => {
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
   const [currentLogo, setCurrentLogo] = useState("")
+  // eslint-disable-next-line no-unused-vars
   const [mobileView, setMobileView] = useState(false)
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
@@ -90,6 +87,7 @@ const Placeholder = () => {
 export default Placeholder
 
 export const Confirm = ({ form = [], name, ev }) => {
+  console.log(name.data)
   const navigate = useNavigate()
   const completeTransaction = () => {
     ev ? ev() : navigate("/transaction")
@@ -102,7 +100,7 @@ export const Confirm = ({ form = [], name, ev }) => {
         {form.map((i) => (
           <div className="my-[16px]" key={i.name}>
             <h1 className="text-base font[600]">{i.label}</h1>
-            <p>{name[i.name]}</p>
+            <p>{name.data[i.name]}</p>
           </div>
         ))}
         <div className="my-[16px]">
@@ -117,101 +115,6 @@ export const Confirm = ({ form = [], name, ev }) => {
       <Button bg="transaprent" onClick={completeTransaction} otherClass="border border-2 my-5">
         <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
       </Button>
-    </>
-  )
-}
-
-const Form = ({ type, proceed, next, service, countries, products, ops, form = [] }) => {
-  const password = "Olumide1"
-  const userName = "volumide42@gmail.com"
-  const url = "https://sandbox.vtpass.com/api/"
-  const naviate = useNavigate()
-  const { formObj, setFormObj } = useContext(AppContext)
-
-  // submit form
-  const handleForm = async (data) => {
-    const intiDt = new Date()
-    const date = intiDt.getUTCDate()
-    const month = intiDt.getUTCMonth() + 1
-    const year = intiDt.getFullYear()
-    const hr = intiDt.getHours()
-    const sec = intiDt.getSeconds()
-
-    const request_id = `${year}0${month}${date}${hr}${sec}OWLET`
-    data["request_id"] = request_id
-    data["serviceID"] = service
-    console.log(data)
-    localStorage.setItem("_payload", JSON.stringify(data))
-    setFormObj(data)
-    next()
-  }
-
-  // send data for successful transaction
-  const sendData = async () => {
-    const formData = JSON.parse(localStorage.getItem("_payload"))
-    const req = await axios.post(`${url}pay`, formData, {
-      headers: { "Authorization": `Basic ${window.btoa(`${userName}:${password}`)}` }
-    })
-    const { data: response } = req
-    if (response.response_description === "TRANSACTION SUCCESSFUL") {
-      localStorage.removeItem("_payload")
-      naviate("/transaction")
-    } else alert("transaction failed")
-  }
-
-  const { handleSubmit, control } = useForm(handleForm)
-
-  const international = [
-    { label: "Country", name: "country", select: true, options: countries || [] },
-    { label: "Product Type", name: "product_type", select: true, options: products || [] },
-    { label: "Operator ", name: "operator", select: true, options: ops || [] }
-  ]
-
-  if (type === "International Airtime") form = [...international, ...form]
-
-  return (
-    <>
-      <form onSubmit={handleSubmit(handleForm)}>
-        {!proceed ? (
-          <>
-            <h3>{type}</h3>
-
-            {form.map((i) => (
-              <>
-                {i.select ? (
-                  <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} select={true}>
-                    {i.options.map((e) => (
-                      <option value={e.value} key={e.code}>
-                        {e.key}
-                      </option>
-                    ))}
-                  </Input>
-                ) : (
-                  <Input label={i.label} type={i?.type || "text"} key={i.label} name={i.name} control={control} />
-                )}
-              </>
-            ))}
-
-            <div className="flex gap-3 mt-[32px]">
-              <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
-                Cancel
-              </Button>
-              <Button type="submit">Proceed</Button>
-            </div>
-          </>
-        ) : (
-          <>
-            <Confirm form={form} name={formObj} />
-            <Button bg="transaprent" otherClass="border border-2">
-              <i className="fa-solid fa-building-columns mr-3" />
-              Pay with Bank Transfer
-            </Button>
-            <Button bg="transaprent" onClick={() => sendData()} otherClass="border border-2 my-5">
-              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
-            </Button>
-          </>
-        )}
-      </form>
     </>
   )
 }

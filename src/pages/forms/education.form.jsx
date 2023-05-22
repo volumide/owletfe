@@ -15,10 +15,24 @@ const Education = () => {
   const [proceed, setProceed] = useState(false)
   const [packages, setPackages] = useState([])
   const { setForm, formData } = useContext(AppContext)
+  const [newData, setNewData] = useState({})
+
   const submit = async (data) => {
     data.serviceID = queries.service
+    if (!data.quantity) data.quantity = 1
     setProceed(true)
-    setForm(data)
+    setForm({ ...data, ...newData })
+  }
+
+  const handleChange = (e) => {
+    const index = e.target.selectedIndex
+    const el = e.target.childNodes[index]
+    const vCode = el.getAttribute("data-v")
+    const exam = el.getAttribute("name")
+    console.log(el)
+    const value = e.target.value
+    console.log(vCode, value)
+    setNewData({ ...newData, amount: vCode, variation_code: value, exam_type: exam })
   }
 
   useEffect
@@ -32,38 +46,32 @@ const Education = () => {
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
-        {defaultForm.map((i) =>
-          i.select ? (
-            <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
-              {packages.map((e) => (
-                <option value={e.variation_code} key={e.code}>
-                  {e.name}
-                </option>
-              ))}
-            </Input>
-          ) : (
-            <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} />
-          )
-        )}
-        <div className="flex gap-3 mt-[32px]">
-          <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
-            Cancel
-          </Button>
-          <Button type="submit">Proceed</Button>
-        </div>
         {proceed ? (
           <>
-            <Confirm form={defaultForm} name={formData} ev={() => console.log(formData)} />
-            {/* <Button bg="transaprent" otherClass="border border-2">
-              <i className="fa-solid fa-building-columns mr-3" />
-              Pay with Bank Transfer
-            </Button>
-            <Button bg="transaprent" onClick={makePayment} otherClass="border border-2 my-5">
-              <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
-            </Button> */}
+            <Confirm form={defaultForm} name={formData} />
           </>
         ) : (
-          ""
+          <>
+            {defaultForm.map((i) =>
+              i.select ? (
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} onChange={handleChange}>
+                  {packages.map((e) => (
+                    <option value={e.variation_code} key={e.code} name={e.name} data-v={e.variation_amount}>
+                      {e.name}
+                    </option>
+                  ))}
+                </Input>
+              ) : (
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} defaultValue={newData?.[i.name]} />
+              )
+            )}
+            <div className="flex gap-3 mt-[32px]">
+              <Button type="button" bg="transaprent" otherClass="border" disabled={!proceed}>
+                Cancel
+              </Button>
+              <Button type="submit">Proceed</Button>
+            </div>
+          </>
         )}
       </form>
     </>
