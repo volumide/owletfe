@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import Button from "../components/button"
-import logo from "../utls/logo"
 import { paySubscripiton } from "../utls/url"
 const Transaction = () => {
   const [subscription, setSubscription] = useState()
