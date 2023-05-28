@@ -8,6 +8,8 @@ import Placeholder from "./pages/placeholder"
 import Transaction from "./pages/transaction"
 
 function App() {
+  const apiUrl = import.meta.env
+  console.log(apiUrl, apiUrl.VITE_APP_API_URL)
   const router = createBrowserRouter([
     {
       path: "/",

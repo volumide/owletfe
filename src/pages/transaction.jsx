@@ -1,43 +1,94 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import Button from "../components/button"
 import { paySubscripiton } from "../utls/url"
+import axios from "axios"
 const Transaction = () => {
   const [subscription, setSubscription] = useState()
   const [messsage, setMessage] = useState()
   const [details, setDetails] = useState()
   const [productName, setProductName] = useState()
   const [keys, setkeys] = useState([])
+  const [paymentLink, setPaymentLink] = useState()
   const saveLogo = localStorage.getItem("logo")
-  console.log(saveLogo)
-  const makePayment = async () => {
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
+
+  const subscribe = async () => {
+    if (queries.status !== "successful") {
+      console.log("payment fail")
+      return
+    }
     const res = JSON.parse(localStorage.getItem("fmDt"))
     const req = await paySubscripiton(res)
 
     console.log(req)
     const ans = req.content.transactions
 
-    if (req.response_description === "TRANSACTION SUCCESSFUL") {
-      setSubscription(req)
-      setDetails({
-        "Transaction Status": ans.status,
-        "Transaction ID": ans.transactionId,
-        "Phone Number": ans.phone,
-        "Date": new Date(req.transaction_date.date).toGMTString(),
-        [ans.product_name]: ans.amount
-      })
-      setProductName(ans.product_name)
-      const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
-      setkeys(keys)
-      return
+    // if (req.response_description === "TRANSACTION SUCCESSFUL") {
+    setSubscription(req)
+    setDetails({
+      "Transaction Status": ans.status,
+      "Transaction ID": ans.transactionId,
+      "Phone Number": ans.phone,
+      "Date": new Date(req.transaction_date.date).toGMTString(),
+      [ans.product_name]: ans.amount
+    })
+    setProductName(ans.product_name)
+    const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
+    setkeys(keys)
+    //   return
+    // }
+
+    const transactionBody = {
+      amount: res.amount,
+      status_flutter: queries.status,
+      status: req.response_description,
+      tx_ref: queries.tx_ref,
+      transaction_id: queries.transaction_id,
+      requestId: req.requestId,
+      phone: res.phone
     }
-    setMessage(req.response_description)
+
+    const req2 = await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, { headers: { "Content-Type": "application/json" } })
+
+    console.log(req2, "working")
+    // setMessage(req.response_description)
+  }
+
+  const makePayment = async () => {
+    const url = import.meta.env.VITE_APP_API_URL + "payment"
+    const body = JSON.parse(localStorage.getItem("fmDt"))
+    const req = await axios.post(url, body, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    const result = req.data.body
+    if (result.status === "success") {
+      // setPaymentLink(result.data.link)
+      window.open(result.data.link, "_blank")
+      // console.log(result)
+    }
   }
 
   useEffect(() => {
-    makePayment()
+    console.log(queries)
+    console.log(JSON.parse(localStorage.getItem("fmDt")))
+    subscribe()
+    // if (!Object.keys(queries).length) makePayment()
+    // else{
+    //   if(queries.status === "successful")subscribe()
+    // }
+    // subscribe()
+    // console.log(queries)
+    // if (!queries || !Object.keys(queries.length)) makePayment()
+    // else console.log(queries)
   }, [])
   return (
     <>
+      {/* loading ... */}
+      {/* {paymentLink && <iframe src={paymentLink} frameBorder="0" className=" rounded md:w-10/12 h-screen mx-auto"></iframe>} */}
       {subscription ? (
         <div className="p-[16px] ">
           <div className="md:w-[500px]  border-2 border-input  rounded-[24px] mx-auto py-[48px] px-[59px]  md:my-[40px]">
