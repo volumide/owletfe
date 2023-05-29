@@ -67,24 +67,16 @@ const Transaction = () => {
     })
     const result = req.data.body
     if (result.status === "success") {
-      // setPaymentLink(result.data.link)
-      window.open(result.data.link, "_blank")
-      // console.log(result)
+      window.open(result.data.link)
     }
   }
 
   useEffect(() => {
-    // console.log(queries)
-    // console.log(JSON.parse(localStorage.getItem("fmDt")))
-    // subscribe()
     if (!Object.keys(queries).length) makePayment()
     else {
       if (queries.status === "successful") subscribe()
+      else console.log("payment failure")
     }
-    // subscribe()
-    // console.log(queries)
-    // if (!queries || !Object.keys(queries.length)) makePayment()
-    // else console.log(queries)
   }, [])
   return (
     <>
