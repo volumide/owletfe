@@ -1,19 +1,21 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Link, useNavigate, useParams } from "react-router-dom"
 import links from "../utls/subscriptions"
 import Button from "../components/button"
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { description, placeholder } from "../utls/links"
 import logos from "../utls/logo"
 
 import allForms from "./forms"
+import AppContext from "../context/app-context"
 
 const Placeholder = () => {
   const navigate = useNavigate()
+  const { isLogged } = useContext(AppContext)
   const { name, type } = useParams()
   const [proceed, setProceed] = useState(false)
   const [currentLogo, setCurrentLogo] = useState("")
-  // eslint-disable-next-line no-unused-vars
   const [mobileView, setMobileView] = useState(false)
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
@@ -76,13 +78,21 @@ const Placeholder = () => {
   )
 
   return (
-    <div className="h-screen md:flex md:container mx-auto px-[16px] md:px-[100px]">
-      <button className="h-[50px] w-[50px] bg-input sticky top-[50px] md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => navigate(-1)}>
-        <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" />
-      </button>
-      <SideNavigations />
-      <MainForm />
-    </div>
+    <>
+      {isLogged ? (
+        <div className="h-screen md:flex md:container mx-auto px-[16px] md:px-[100px]">
+          <button className="h-[50px] w-[50px] bg-input sticky top-[50px] md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => navigate(-1)}>
+            <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" />
+          </button>
+          <SideNavigations />
+          <MainForm />
+        </div>
+      ) : (
+        <p className="text-center p-10 text-lg">
+          Login to access <span className="font-[600]">{name.toUpperCase()}</span> services
+        </p>
+      )}
+    </>
   )
 }
 export default Placeholder
