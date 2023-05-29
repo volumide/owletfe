@@ -9,7 +9,7 @@ const Transaction = () => {
   const [details, setDetails] = useState()
   const [productName, setProductName] = useState()
   const [keys, setkeys] = useState([])
-  const [paymentLink, setPaymentLink] = useState()
+  // const [paymentLink, setPaymentLink] = useState()
   const saveLogo = localStorage.getItem("logo")
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
