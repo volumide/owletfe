@@ -61,7 +61,8 @@ const Transaction = () => {
     const body = JSON.parse(localStorage.getItem("fmDt"))
     const req = await axios.post(url, body, {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     })
     const result = req.data.body
@@ -73,13 +74,13 @@ const Transaction = () => {
   }
 
   useEffect(() => {
-    console.log(queries)
-    console.log(JSON.parse(localStorage.getItem("fmDt")))
-    subscribe()
-    // if (!Object.keys(queries).length) makePayment()
-    // else{
-    //   if(queries.status === "successful")subscribe()
-    // }
+    // console.log(queries)
+    // console.log(JSON.parse(localStorage.getItem("fmDt")))
+    // subscribe()
+    if (!Object.keys(queries).length) makePayment()
+    else {
+      if (queries.status === "successful") subscribe()
+    }
     // subscribe()
     // console.log(queries)
     // if (!queries || !Object.keys(queries.length)) makePayment()
