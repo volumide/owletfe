@@ -22,11 +22,9 @@ const Transaction = () => {
     const res = JSON.parse(localStorage.getItem("fmDt"))
     const req = await paySubscripiton(res)
 
-    console.log(req)
     const ans = req.content.transactions
-
-    // if (req.response_description === "TRANSACTION SUCCESSFUL") {
     setSubscription(req)
+
     setDetails({
       "Transaction Status": ans.status,
       "Transaction ID": ans.transactionId,
@@ -34,11 +32,10 @@ const Transaction = () => {
       "Date": new Date(req.transaction_date.date).toGMTString(),
       [ans.product_name]: ans.amount
     })
+
     setProductName(ans.product_name)
     const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
     setkeys(keys)
-    //   return
-    // }
 
     const transactionBody = {
       amount: res.amount,
@@ -50,10 +47,12 @@ const Transaction = () => {
       phone: res.phone
     }
 
-    const req2 = await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, { headers: { "Content-Type": "application/json" } })
-
-    console.log(req2, "working")
-    // setMessage(req.response_description)
+    await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
   }
 
   const makePayment = async () => {
@@ -73,10 +72,7 @@ const Transaction = () => {
 
   useEffect(() => {
     if (!Object.keys(queries).length) makePayment()
-    else {
-      if (queries.status === "successful") subscribe()
-      else console.log("payment failure")
-    }
+    else subscribe()
   }, [])
   return (
     <>
