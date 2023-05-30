@@ -20,8 +20,13 @@ const Airtime = () => {
   const { setForm, formData } = useContext(AppContext)
   const submit = (data) => {
     data.serviceID = queries.service
-    setProceed(true)
     setForm(data)
+    changes()
+  }
+
+  const changes = () => {
+    console.log("working")
+    setProceed(true)
   }
 
   const international = [

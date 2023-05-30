@@ -109,3 +109,9 @@ small {
 .ed {
   background: #ecf8ff;
 }
+
+.card {
+  background-image: url(/src/assets/card-bg.png);
+  background-size: contain;
+  background-size: cover;
+}

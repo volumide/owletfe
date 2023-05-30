@@ -3,13 +3,15 @@ import InterneData from "./data.form"
 import Education from "./education.form"
 import Electricity from "./electricity.form"
 import TvForm from "./tv-sub.form"
+import Wallet from "./wallet"
 
 const forms = {
   "phone": <Airtime />,
   "internet-bill": <InterneData />,
   "tv-subscription": <TvForm />,
   "electricity-bill": <Electricity />,
-  "education": <Education />
+  "education": <Education />,
+  "wallet": <Wallet />
 }
 
 export default forms

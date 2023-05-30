@@ -58,6 +58,7 @@ const Transaction = () => {
   const makePayment = async () => {
     const url = import.meta.env.VITE_APP_API_URL + "payment"
     const body = JSON.parse(localStorage.getItem("fmDt"))
+    body["requestId"] = new Date().toISOString()
     const req = await axios.post(url, body, {
       headers: {
         "Content-Type": "application/json",
@@ -67,6 +68,7 @@ const Transaction = () => {
     const result = req.data.body
     if (result.status === "success") {
       window.open(result.data.link)
+      console.log(result.data.link)
     }
   }
 
@@ -116,3 +118,7 @@ const Transaction = () => {
 }
 
 export default Transaction
+
+// Email: therealowlet@gmail.com
+
+// Pass : Owletpay098,

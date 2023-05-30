@@ -19,12 +19,15 @@ import showmax from "../assets/services/showmax.png"
 import smile from "../assets/services/smile.png"
 import startime from "../assets/services/startime.png"
 import mtn from "../assets/services/mtn.png"
+import wallet from "../assets/services/wallet.png"
+import history from "../assets/services/history.png"
 
 const logos = {
   education: { waec },
   tv: { dstv, gotv, startime, showmax },
   electricity: { ibELectric, ikejaElectric, ekoElectric, josELectric, kanoELectric, phElectric, beninEelectric, enuguELectric, abujaElectric, kdELectric },
-  phone: { nineMobile, airtel, glo, internet, smile, mtn }
+  phone: { nineMobile, airtel, glo, internet, smile, mtn },
+  wallet: { wallet, history }
 }
 
 export default logos

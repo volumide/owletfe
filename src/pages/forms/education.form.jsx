@@ -17,9 +17,10 @@ const Education = () => {
   const { setForm, formData } = useContext(AppContext)
   const [newData, setNewData] = useState({})
 
-  const submit = async (data) => {
+  const submit = (data) => {
     data.serviceID = queries.service
     if (!data.quantity) data.quantity = 1
+    console.log(data)
     setProceed(true)
     setForm({ ...data, ...newData })
   }

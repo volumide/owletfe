@@ -3,10 +3,11 @@ import { placeholder } from "../utls/links"
 import menu from "../assets/menu.png"
 import { useContext, useState } from "react"
 import AppContext from "../context/app-context"
+import avartar from "../assets/avartar.png"
 
 const Container = () => {
   const [show, setShow] = useState(false)
-  const { isLogged, logout } = useContext(AppContext)
+  const { isLogged, logout, user } = useContext(AppContext)
   const toggle = () => {
     if (window.innerWidth <= 768) setShow(!show)
   }
@@ -25,23 +26,29 @@ const Container = () => {
             <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
                 {isLogged && (
-                  <Link to="/" className="px-5 mx-1 block lg:inline my-[16px]">
+                  <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px]">
                     Wallet
                   </Link>
                 )}
-                {placeholder.map((link, index) => (
-                  <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
-                    {link.caption}
-                  </Link>
-                ))}
+                {placeholder.map(
+                  (link, index) =>
+                    link.caption !== "Wallet" && (
+                      <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
+                        {link.caption}
+                      </Link>
+                    )
+                )}
               </div>
               {isLogged ? (
                 <>
-                  <Link onClick={logout} className="p-5  font-black underline lg:inline-block block my-[16px]">
+                  <Link onClick={logout} className="p-3 rounded-[12px] bg-black text-white  lg:inline-block block my-[16px] mr-3">
                     Log out
                   </Link>
-                  <Link to="/sign-up" className="p-5 rounded-[16px] lg:inline  mx-auto bg-primary block">
-                    Profile
+                  <Link to="/sign-up" className=" items-center gap-3  mx-auto flex">
+                    <img src={avartar} width="30px" />
+                    <span>
+                      {user?.first_name} {user?.last_name}
+                    </span>
                   </Link>
                 </>
               ) : (

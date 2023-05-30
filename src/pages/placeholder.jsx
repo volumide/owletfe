@@ -14,13 +14,13 @@ const Placeholder = () => {
   const navigate = useNavigate()
   const { isLogged } = useContext(AppContext)
   const { name, type } = useParams()
-  const [proceed, setProceed] = useState(false)
+  const [proceeds, setProceeds] = useState(false)
   const [currentLogo, setCurrentLogo] = useState("")
   const [mobileView, setMobileView] = useState(false)
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const formSum = useRef(null)
-  const next = () => setProceed(!proceed)
+  const next = () => setProceeds(!proceeds)
 
   const mobile = () => {
     if (screenSize <= 640) setMobileView(true)
@@ -30,7 +30,7 @@ const Placeholder = () => {
     <>
       <div className="md:w-2/6 shrink-0  md:border-r h-full py-10">
         <p className="flex items-center gap-4 ">
-          {proceed && (
+          {proceeds && (
             <>
               <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" onClick={next} />
             </>
@@ -51,7 +51,7 @@ const Placeholder = () => {
             }}
           >
             <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
-              <img src={logos[link.cat][link.logo]} alt="" className="w-full h-full object-contain" />
+              <img src={logos?.[link.cat]?.[link.logo] || ""} alt="" className="w-full h-full object-contain" />
             </div>
             {link.title}
           </Link>
@@ -64,9 +64,12 @@ const Placeholder = () => {
     <div className="md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px] h-full" ref={formSum}>
       {type ? (
         <>
-          <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
-            <img src={currentLogo} alt="" className="w-full h-full object-contain" />
-          </div>
+          {name !== "wallet" && (
+            <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
+              <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+            </div>
+          )}
+
           {allForms[name]}
         </>
       ) : (
@@ -98,7 +101,6 @@ const Placeholder = () => {
 export default Placeholder
 
 export const Confirm = ({ form = [], name, ev }) => {
-  console.log(name.data)
   const navigate = useNavigate()
   const completeTransaction = () => {
     ev ? ev() : navigate("/transaction")
@@ -109,9 +111,9 @@ export const Confirm = ({ form = [], name, ev }) => {
       <p>Confirm the details below are corect</p>
       <div className="bg-[#F4F6FA] p-5 rounded-[24px] my-10">
         {form.map((i) => (
-          <div className="my-[16px]" key={i.name}>
-            <h1 className="text-base font[600]">{i.label}</h1>
-            <p>{name.data[i.name]}</p>
+          <div className="my-[16px]" key={i?.name}>
+            <h1 className="text-base font[600]">{i?.label}</h1>
+            <p>{name?.data?.[i.name]}</p>
           </div>
         ))}
         <div className="my-[16px]">
