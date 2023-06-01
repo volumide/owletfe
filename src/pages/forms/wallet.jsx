@@ -25,6 +25,7 @@ const WalletBalance = () => {
   const callback = window.location.href
   const [isFund, setFund] = useState(false)
   const [amount, setAmount] = useState()
+  const url = import.meta.env.VITE_APP_API_URL
   const payment = async (e) => {
     e.preventDefault()
     if (!amount || parseInt(amount) < 1) {
@@ -36,10 +37,10 @@ const WalletBalance = () => {
       callback,
       requestId: new Date().toISOString()
     }
-    const url = import.meta.env.VITE_APP_API_URL + "payment"
+
     const user = JSON.parse(localStorage.getItem("user"))
     const req = await axios.post(
-      url,
+      url + "payment",
       { ...user, ...data },
       {
         headers: {
@@ -59,6 +60,10 @@ const WalletBalance = () => {
       console.log(result.data.link)
     }
   }
+
+  // const updateWallet =async () =>{
+
+  // }
   return (
     <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
       {isFund ? (
