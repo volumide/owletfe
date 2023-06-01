@@ -24,8 +24,8 @@ const electricity = [
     cat: "electricity"
   },
   {
-    name: "Pothacourt",
-    title: "Pothacourt Electric",
+    name: "Portharcourt",
+    title: "Portharcourt Electric",
     logo: "phElectric",
     cat: "electricity"
   },
@@ -42,7 +42,7 @@ const electricity = [
     cat: "electricity"
   },
   {
-    name: "Emugu",
+    name: "Enugu",
     title: "Enugu Electric",
     logo: "enuguELectric",
     cat: "electricity"

@@ -8,14 +8,17 @@ const Home = () => {
         <p className="text-ddgray">Select one of the services we provide below to proceed</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3  w-full gap-6 my-[56px]">
-        {placeholder.map((i, index) => (
-          <Link className={` p-3 h-[292px] rounded-[32px] flex flex-col items-center justify-center ${i.bg}`} key={index} to={`/owlet/${i.link}`}>
-            <div className="h-[70px] ">
-              <img src={i.icon} className="h-full" />
-            </div>
-            <p className="py-2">{i.caption}</p>
-          </Link>
-        ))}
+        {placeholder.map(
+          (i, index) =>
+            i.caption !== "Wallet" && (
+              <Link className={` p-3 h-[292px] rounded-[32px] flex flex-col items-center justify-center ${i.bg}`} key={index} to={`/owlet/${i.link}`}>
+                <div className="h-[70px] ">
+                  <img src={i.icon} className="h-full" />
+                </div>
+                <p className="py-2">{i.caption}</p>
+              </Link>
+            )
+        )}
       </div>
     </div>
   )

@@ -1,8 +1,11 @@
 import axios from "axios"
 
-const password = " Owletpay098"
-const userName = "therealowlet@gmail.com"
-const url = "https://vtpass.com/api/"
+const password = "Olumide1"
+const userName = "volumide42@gmail.com"
+const url = "https://sandbox.vtpass.com/api/"
+// const password = "Owletpay098,"
+// const userName = "therealowlet@gmail.com"
+// const url = "https://vtpass.com/api/"
 
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")
@@ -44,10 +47,11 @@ export const paySubscripiton = async (data) => {
   const day = String(now.getDate()).padStart(2, "0")
   const hour = String(now.getHours()).padStart(2, "0")
   const minute = String(now.getMinutes()).padStart(2, "0")
-
   const request_id = `${year}${month}${day}${hour}${minute}OWLET`
+
   data["request_id"] = request_id
   const req = await axios.post(`${url}pay`, data, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
   const { data: response } = req
+  console.log(req)
   return response
 }

@@ -1,11 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useParams } from "react-router-dom"
 import Button from "../../components/button"
+import axios from "axios"
+import { useState } from "react"
 
 const Wallet = () => {
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const { type } = useParams()
-  console.log(window.origin)
+
+  // console.log(callback)
+
   return (
     <>
       <p className="capitalize mb-[24px] text-2xl">{queries.service}</p>
@@ -17,15 +22,68 @@ const Wallet = () => {
 export default Wallet
 
 const WalletBalance = () => {
+  const callback = window.location.href
+  const [isFund, setFund] = useState(false)
+  const [amount, setAmount] = useState()
+  const payment = async (e) => {
+    e.preventDefault()
+    if (!amount || parseInt(amount) < 1) {
+      alert("invalid amount")
+      return
+    }
+    const data = {
+      amount,
+      callback,
+      requestId: new Date().toISOString()
+    }
+    const url = import.meta.env.VITE_APP_API_URL + "payment"
+    const user = JSON.parse(localStorage.getItem("user"))
+    const req = await axios.post(
+      url,
+      { ...user, ...data },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    )
+    const result = req.data.body
+    if (result.status === "success") {
+      // Close the current window
+      window.open("", "_self", "")
+      window.close()
+
+      // Open a new window
+      window.location.replace(result.data.link)
+      console.log(result.data.link)
+    }
+  }
   return (
     <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
-      <p>
-        Wallet Balance
-        <span className="block text-3xl mt-2">NGN20,000</span>
-      </p>
-      <div>
-        <Button otherClass="px-10 text-black">Fund Wallet</Button>
-      </div>
+      {isFund ? (
+        <form onSubmit={payment} className="flex gap-3 w-full">
+          <input className="bg-white text-black p-1 rounded-[16px] w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
+          <div>
+            <Button otherClass="px-10 text-black" type="submit">
+              Fund Wallet
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <p>
+            Wallet Balance
+            <span className="block text-3xl mt-2">NGN20,000</span>
+          </p>
+
+          <div>
+            <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
+              Fund Wallet
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
