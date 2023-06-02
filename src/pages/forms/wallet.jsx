@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useParams } from "react-router-dom"
 import Button from "../../components/button"
@@ -26,6 +27,7 @@ const WalletBalance = () => {
   const [isFund, setFund] = useState(false)
   const [amount, setAmount] = useState()
   const url = import.meta.env.VITE_APP_API_URL
+
   const payment = async (e) => {
     e.preventDefault()
     if (!amount || parseInt(amount) < 1) {
@@ -61,13 +63,25 @@ const WalletBalance = () => {
     }
   }
 
-  // const updateWallet =async () =>{
+  const fundWallet = async (e) => {
+    e.preventDefault()
+    const topUp = await axios.post(
+      `${url}top/up`,
+      { amount },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    )
+    console.log(topUp)
+  }
 
-  // }
   return (
     <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
       {isFund ? (
-        <form onSubmit={payment} className="flex gap-3 w-full">
+        <form onSubmit={fundWallet} className="flex gap-3 w-full">
           <input className="bg-white text-black p-1 rounded-[16px] w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
           <div>
             <Button otherClass="px-10 text-black" type="submit">
@@ -93,7 +107,7 @@ const WalletBalance = () => {
   )
 }
 
-const Transaction = () => {
+const Transaction = (transact = []) => {
   return (
     <>
       <div className="flex justify-between py-3 border-b">
@@ -101,10 +115,13 @@ const Transaction = () => {
           Wallet Funding
           <span className="block text-ddgray">Transaction ID: 168122366616812236665501858</span>
         </p>
-        <p className="text-right">
-          +20,000
-          <span className="block text-ddgray">11th April 2023, 03:34PM</span>
-        </p>
+        {transact.length &&
+          transact.map((el, i) => (
+            <p className="text-right" key={i}>
+              +20,000
+              <span className="block text-ddgray">11th April 2023, 03:34PM</span>
+            </p>
+          ))}
       </div>
     </>
   )

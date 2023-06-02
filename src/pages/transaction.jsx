@@ -16,10 +16,10 @@ const Transaction = () => {
   const queries = Object.fromEntries(query.entries())
 
   const subscribe = async () => {
-    // if (queries.status !== "successful") {
-    //   console.log("payment fail")
-    //   return
-    // }
+    if (Object.keys(queries).length && queries.status !== "successful") {
+      alert(`transaction${queries.status}`)
+      return
+    }
     const res = JSON.parse(localStorage.getItem("fmDt"))
 
     const req = await paySubscripiton(res)
@@ -28,30 +28,30 @@ const Transaction = () => {
       alert(req.content.errors)
       return
     }
-    // const ans = req.content.transactions
+    const ans = req.content.transactions
     setSubscription(req)
 
-    // setDetails({
-    //   "Transaction Status": ans.status,
-    //   "Transaction ID": ans.transactionId,
-    //   "Phone Number": ans.phone,
-    //   "Date": new Date(req.transaction_date.date).toGMTString(),
-    //   [ans.product_name]: ans.amount
-    // })
+    setDetails({
+      "Transaction Status": ans.status,
+      "Transaction ID": ans.transactionId,
+      "Phone Number": ans.phone,
+      "Date": new Date(req.transaction_date.date).toGMTString(),
+      [ans.product_name]: ans.amount
+    })
 
-    // setProductName(ans.product_name)
-    // const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
-    // setkeys(keys)
+    setProductName(ans.product_name)
+    const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
+    setkeys(keys)
 
-    // const transactionBody = {
-    //   amount: res.amount,
-    //   status_flutter: queries.status,
-    //   status: req.response_description,
-    //   tx_ref: queries.tx_ref,
-    //   transaction_id: queries.transaction_id,
-    //   requestId: req.requestId,
-    //   phone: res.phone
-    // }
+    const transactionBody = {
+      amount: res.amount,
+      status_flutter: queries.status,
+      status: req.response_description,
+      tx_ref: queries.tx_ref,
+      transaction_id: queries.transaction_id,
+      requestId: req.requestId,
+      phone: res.phone
+    }
 
     // await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, {
     //   headers: {
@@ -74,7 +74,6 @@ const Transaction = () => {
     const result = req.data.body
     if (result.status === "success") {
       window.open(result.data.link)
-      console.log(result.data.link)
     }
   }
 

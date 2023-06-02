@@ -17,19 +17,15 @@ const Placeholder = () => {
   const { name, type } = useParams()
   const [proceeds, setProceeds] = useState(false)
   const [currentLogo, setCurrentLogo] = useState("")
-  const [mobileView, setMobileView] = useState(false)
   const screenSize = window.innerWidth
   const emptyIcon = placeholder.findIndex((i) => i.link === name)
   const formSum = useRef(null)
   const next = () => setProceeds(!proceeds)
-
-  const mobile = () => {
-    if (screenSize <= 640) setMobileView(true)
-  }
+  const [showNav, setNav] = useState(true)
 
   const SideNavigations = () => (
     <>
-      <div className="md:w-2/6 shrink-0  md:border-r h-full py-10">
+      <div className={`md:w-2/6 shrink-0  md:border-r h-full py-10  ${showNav ? "block" : "hidden"} md:block `}>
         <p className="flex items-center gap-4 ">
           {proceeds && (
             <>
@@ -45,10 +41,10 @@ const Placeholder = () => {
             key={link.name}
             className="my-5 flex items-center gap-2"
             onClick={() => {
-              mobile()
+              setNav(!showNav)
               setCurrentLogo(logos[link.cat][link.logo])
               localStorage.setItem("logo", logos[link.cat][link.logo])
-              formSum.current.scrollIntoView()
+              // formSum.current.scrollIntoView()
             }}
           >
             <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
@@ -62,7 +58,7 @@ const Placeholder = () => {
   )
 
   const MainForm = () => (
-    <div className="md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px] h-full" ref={formSum}>
+    <div className={`md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
       {type ? (
         <>
           {name !== "wallet" && (
@@ -91,8 +87,8 @@ const Placeholder = () => {
     <>
       {loggedIn ? (
         <div className="h-screen md:flex md:container mx-auto px-[16px] md:px-[100px]">
-          <button className="h-[50px] w-[50px] bg-input sticky top-[50px] md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => navigate(-1)}>
-            <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" />
+          <button className="h-[50px] w-[50px] bg-input  md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => setNav(!showNav)}>
+            {!showNav ? <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" /> : <i className="fa-solid fa-arrow-right-long my-5 font-bold  cursor-pointer" role="button" />}
           </button>
           <SideNavigations />
           <MainForm />

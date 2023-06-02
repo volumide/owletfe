@@ -52,6 +52,5 @@ export const paySubscripiton = async (data) => {
   data["request_id"] = request_id
   const req = await axios.post(`${url}pay`, data, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
   const { data: response } = req
-  console.log(req)
   return response
 }
