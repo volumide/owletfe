@@ -1,28 +1,83 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Button from "../../components/button"
 import axios from "axios"
 import { useState } from "react"
+import { useEffect } from "react"
 
 const Wallet = () => {
+  const url = import.meta.env.VITE_APP_API_URL
+
+  const { type } = useParams()
+  const [transactions, setTransactions] = useState([])
+  const [latest, setLateest] = useState([])
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
-  const { type } = useParams()
+  const [wallet, setWallet] = useState("")
+  const navigate = useNavigate()
+  const getTransactions = async () => {
+    const res = await axios.get(`${url}transactions/user`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    setTransactions(res.data.data)
+    setLateest(res.data.latest)
+  }
 
-  // console.log(callback)
+  const getWallet = async () => {
+    const res = await axios.get(`${url}wallet`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    setWallet(res.data.user.wallet_balance)
+    // setWallet(res.data)
+  }
+
+  const fundWallet = async () => {
+    try {
+      const topUp = await axios.post(
+        `${url}top/up`,
+        { amount: queries.amount },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      )
+      getTransactions()
+      navigate("/owlet/wallet/Wallet%20Overview?service=wallet%20balance")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (queries.amount) {
+      console.log(queries)
+      fundWallet()
+    }
+    getTransactions()
+    getWallet()
+  }, [type])
 
   return (
     <>
       <p className="capitalize mb-[24px] text-2xl">{queries.service}</p>
-      {type === "Transaction History" ? <Transaction /> : <WalletBalance />}
+      {type === "Transaction History" ? <Transaction transact={transactions} /> : <WalletBalance transact={latest} wallet_balance={wallet || 0} />}
     </>
   )
 }
 
 export default Wallet
 
-const WalletBalance = () => {
+const WalletBalance = ({ transact = [], wallet_balance }) => {
   const callback = window.location.href
   const [isFund, setFund] = useState(false)
   const [amount, setAmount] = useState()
@@ -36,7 +91,7 @@ const WalletBalance = () => {
     }
     const data = {
       amount,
-      callback,
+      callback: callback + `&amount=${amount}`,
       requestId: new Date().toISOString()
     }
 
@@ -63,64 +118,69 @@ const WalletBalance = () => {
     }
   }
 
-  const fundWallet = async (e) => {
-    e.preventDefault()
-    const topUp = await axios.post(
-      `${url}top/up`,
-      { amount },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-      }
-    )
-    console.log(topUp)
-  }
-
   return (
-    <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
-      {isFund ? (
-        <form onSubmit={fundWallet} className="flex gap-3 w-full">
-          <input className="bg-white text-black p-1 rounded-[16px] w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
-          <div>
-            <Button otherClass="px-10 text-black" type="submit">
-              Fund Wallet
-            </Button>
-          </div>
-        </form>
-      ) : (
-        <>
-          <p>
-            Wallet Balance
-            <span className="block text-3xl mt-2">NGN20,000</span>
-          </p>
+    <div>
+      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
+        {isFund ? (
+          <form onSubmit={payment} className="flex gap-3 w-full">
+            <input className="bg-white text-black p-1 rounded-[16px] w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
+            <div>
+              <Button otherClass="px-10 text-black" type="submit">
+                Fund Wallet
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <p>
+              Wallet Balance
+              <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
+            </p>
 
-          <div>
-            <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
-              Fund Wallet
-            </Button>
+            <div>
+              <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
+                Fund Wallet
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+      <p className="text-2xl mt-[20px]">Recent Transaction</p>
+      {transact.length &&
+        transact.map((el, i) => (
+          <div className="flex justify-between py-3 border-b" key={i}>
+            <p>
+              <span className="capitalize">{el.type === "wallet" ? el.type + " Transaction" : el.type}</span>
+
+              <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
+            </p>
+            <p className="text-right">
+              NGN{el.amount}
+              <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
+            </p>
           </div>
-        </>
-      )}
+        ))}
     </div>
   )
 }
 
-const Transaction = (transact = []) => {
+const Transaction = ({ transact = [] }) => {
   return (
     <>
-      <div className="flex justify-between py-3 border-b">
-        <p>
-          Wallet Funding
-          <span className="block text-ddgray">Transaction ID: 168122366616812236665501858</span>
-        </p>
+      <div>
         {transact.length &&
           transact.map((el, i) => (
-            <p className="text-right" key={i}>
-              +20,000
-              <span className="block text-ddgray">11th April 2023, 03:34PM</span>
-            </p>
+            <div className="flex justify-between py-3 border-b" key={i}>
+              <p>
+                <span className="capitalize">{el.type === "wallet" ? el.type + " Transaction" : el.type}</span>
+
+                <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
+              </p>
+              <p className="text-right">
+                NGN{el.amount}
+                <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
+              </p>
+            </div>
           ))}
       </div>
     </>

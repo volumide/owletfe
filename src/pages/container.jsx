@@ -25,18 +25,26 @@ const Container = () => {
           <div className={`${show ? "absolute h-full w-full text-center left-0 p-5 top-[121px] bg-white z-10" : " hidden lg:block"}`} onClick={toggle}>
             <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
-                {isLogged && (
-                  <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px]">
-                    Wallet
+                {user?.type === "admin" ? (
+                  <Link to="/dashboard" className="px-5 mx-1 block lg:inline my-[16px]">
+                    Dashboard
                   </Link>
-                )}
-                {placeholder.map(
-                  (link, index) =>
-                    link.caption !== "Wallet" && (
-                      <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
-                        {link.caption}
+                ) : (
+                  <>
+                    {isLogged && (
+                      <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px]">
+                        Wallet
                       </Link>
-                    )
+                    )}{" "}
+                    {placeholder.map(
+                      (link, index) =>
+                        link.caption !== "Wallet" && (
+                          <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
+                            {link.caption}
+                          </Link>
+                        )
+                    )}
+                  </>
                 )}
               </div>
               {isLogged ? (

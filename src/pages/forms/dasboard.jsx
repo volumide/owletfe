@@ -34,12 +34,16 @@ const DashBoard = () => {
   }
 
   const defaultCommision = async (id) => {
-    const req = await axios.get(`${url}commision/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+    const req = await axios.put(
+      `${url}commision/${id}`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
       }
-    })
+    )
     allCommision()
   }
 
@@ -48,28 +52,30 @@ const DashBoard = () => {
   }, [change])
   return (
     <>
-      <div>
+      <div className=" w-100 p-5 mx-auto md:4/5 lg:w-3/5">
         <form onSubmit={handleSubmit(createCommision)}>
           <Input label="Commision" name="commision" type="number" control={control} />
-          <Button type="submit">Add Commision</Button>
+          <Button type="submit">Add Charges</Button>
         </form>
-        <p className="text-3xl py-3">Commisions</p>
-        {commision.length
-          ? commision.map((e) => (
+        {commision.length && (
+          <>
+            <p className="text-3xl py-3">Charges Logs</p>
+            {commision.map((e) => (
               <div key={e.commision} className="flex gap-5  items-center my-3">
                 <p className="p-1">
-                  {e.commision} <span>{e.created_at.split("T")[0]}</span>{" "}
+                  NGN{e.commision} <span>{e.created_at.split("T")[0]}</span>{" "}
                 </p>
                 {e.primary ? (
-                  "Primary Commision"
+                  "Primary Charge fee"
                 ) : (
                   <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e.id)}>
-                    Change Primary
+                    Change default
                   </button>
                 )}
               </div>
-            ))
-          : ""}
+            ))}
+          </>
+        )}
       </div>
     </>
   )

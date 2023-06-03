@@ -6,8 +6,9 @@ import { paySubscripiton } from "../utls/url"
 import axios from "axios"
 const Transaction = () => {
   const [subscription, setSubscription] = useState()
-  const [messsage, setMessage] = useState()
+  const [messsage, setMessage] = useState("processing transaction")
   const [details, setDetails] = useState()
+  const [error, setError] = useState("")
   const [productName, setProductName] = useState()
   const [keys, setkeys] = useState([])
   // const [paymentLink, setPaymentLink] = useState()
@@ -17,15 +18,15 @@ const Transaction = () => {
 
   const subscribe = async () => {
     if (Object.keys(queries).length && queries.status !== "successful") {
-      alert(`transaction${queries.status}`)
+      setMessage(`transaction${queries.status}`)
       return
     }
     const res = JSON.parse(localStorage.getItem("fmDt"))
 
     const req = await paySubscripiton(res)
 
-    if (req.content.errors) {
-      alert(req.content.errors)
+    if (req.response_description !== "TRANSACTION SUCCESSFUL") {
+      setMessage(req.response_description)
       return
     }
     const ans = req.content.transactions
@@ -53,72 +54,79 @@ const Transaction = () => {
       phone: res.phone
     }
 
-    // await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Authorization": `Bearer ${localStorage.getItem("token")}`
-    //   }
-    // })
-  }
-
-  const makePayment = async () => {
-    const url = import.meta.env.VITE_APP_API_URL + "payment"
-    const body = JSON.parse(localStorage.getItem("fmDt"))
-    body["requestId"] = new Date().toISOString()
-    const req = await axios.post(url, body, {
+    await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     })
-    const result = req.data.body
-    if (result.status === "success") {
-      window.open(result.data.link)
+  }
+
+  const makePayment = async () => {
+    try {
+      const url = import.meta.env.VITE_APP_API_URL + "payment"
+      const body = JSON.parse(localStorage.getItem("fmDt"))
+      body["requestId"] = new Date().toISOString()
+      const req = await axios.post(url, body, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      const result = req.data.body
+      if (result.status === "success") {
+        window.open("", "_self", "")
+        window.close()
+
+        window.location.replace(result.data.link)
+        console.log(result.data.link)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
   useEffect(() => {
-    subscribe()
-    // if (!Object.keys(queries).length) makePayment()
-    // else subscribe()
+    if (!Object.keys(queries).length) makePayment()
+    else subscribe()
   }, [])
   return (
     <>
-      {/* loading ... */}
-      {/* {paymentLink && <iframe src={paymentLink} frameBorder="0" className=" rounded md:w-10/12 h-screen mx-auto"></iframe>} */}
-      {subscription ? (
-        <div className="p-[16px] ">
-          <div className="md:w-[500px]  border-2 border-input  rounded-[24px] mx-auto py-[48px] px-[59px]  md:my-[40px]">
-            <p className="text-center text-[24px] md:text-[32px]">Transaction Details</p>
+      <div className="p-[16px] ">
+        <div className="md:w-[500px]  border-2 border-input  rounded-[24px] mx-auto py-[48px] px-[59px]  md:my-[40px]">
+          {subscription ? (
+            <>
+              <p className="text-center text-[24px] md:text-[32px]">Transaction Details</p>
 
-            <div className="w-[70px] h-[70px] p-2 mx-auto  border-2 my-[44px] rounded-full">
-              <img src={saveLogo} alt="" className="w-full h-full object-contain" />
-            </div>
-            <div className="mt-[44px] text-center">
-              <p>{productName}</p>
-              <h2>NGN{details[productName]}</h2>
-            </div>
-            <div className="grid grid-cols-2 gap-3 mt-[52px]">
-              {keys.map((i) => (
-                <p key={i}>
-                  {i}
-                  <br />
-                  <small>{details[i]}</small>
-                </p>
-              ))}
-            </div>
+              <div className="w-[70px] h-[70px] p-2 mx-auto  border-2 my-[44px] rounded-full">
+                <img src={saveLogo} alt="" className="w-full h-full object-contain" />
+              </div>
+              <div className="mt-[44px] text-center">
+                <p>{productName}</p>
+                <h2>NGN{details[productName]}</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mt-[52px]">
+                {keys.map((i) => (
+                  <p key={i}>
+                    {i}
+                    <br />
+                    <small>{details[i]}</small>
+                  </p>
+                ))}
+              </div>
 
-            <div className="md:flex gap-11 mt-[48px]">
-              <Button bg="transaparent" otherClass="border mb-[16px] md:mb-0">
-                Report Transaction
-              </Button>
-              <Button>Download Receipt</Button>
-            </div>
-          </div>
+              <div className="md:flex gap-11 mt-[48px]">
+                <Button bg="transaparent" otherClass="border mb-[16px] md:mb-0">
+                  Report Transaction
+                </Button>
+                <Button>Download Receipt</Button>
+              </div>
+            </>
+          ) : (
+            <p className="text-center"> {messsage} </p>
+          )}
         </div>
-      ) : (
-        messsage
-      )}
+      </div>
     </>
   )
 }
