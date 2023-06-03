@@ -19,11 +19,11 @@ const SignUp = () => {
 
   const signup = async (data) => {
     try {
-      const req = await axios.post(import.meta.env.VITE_APP_API_URL + "user", data, { headers: { "Content-Type": "application/json" } })
-      console.log(req.data)
+      await axios.post(import.meta.env.VITE_APP_API_URL + "user", data, { headers: { "Content-Type": "application/json" } })
+      //console.log(req.data)
       navigate("/sign-in", { replace: true })
     } catch (error) {
-      console.log(error.response.data.data)
+      //console.log(error.response.data.data)
       setErrors(error.response.data.data)
     }
   }

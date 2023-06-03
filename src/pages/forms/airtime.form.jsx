@@ -25,7 +25,7 @@ const Airtime = () => {
   }
 
   const changes = () => {
-    console.log("working")
+    //console.log("working")
     setProceed(true)
   }
 

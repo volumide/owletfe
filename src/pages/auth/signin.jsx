@@ -13,7 +13,7 @@ const SignIn = () => {
   const [error, setError] = useState()
   const navigate = useNavigate()
   const { setLogged, isLogged } = useContext(AppContext)
-  console.log
+  // //console.log
   const signIn = async (data) => {
     try {
       const req = await axios.post(import.meta.env.VITE_APP_API_URL + "login", data, { headers: { "Content-Type": "application/json" } })
@@ -27,7 +27,7 @@ const SignIn = () => {
   }
 
   useEffect(() => {
-    console.log(isLogged)
+    // //console.log(isLogged)
     if (isLogged) navigate("/")
   }, [])
 

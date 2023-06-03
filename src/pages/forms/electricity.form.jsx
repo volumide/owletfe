@@ -26,7 +26,7 @@ const Electricity = () => {
       billersCode: data.billersCode
     })
 
-    console.log(req)
+    //console.log(req)
     if (req.content.error) {
       setError(req.content.error)
       return

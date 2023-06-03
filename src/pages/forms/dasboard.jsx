@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import Input from "../../components/input"
@@ -19,7 +20,7 @@ const DashBoard = () => {
       }
     })
 
-    console.log(req)
+    // //console.log(req)
     setChange(!change)
   }
 

@@ -23,9 +23,9 @@ const InterneData = () => {
     data.serviceID = queries.service
     data = { ...data, ...newData }
     data["billersCode"] = data["phone"]
-    console.log(data)
-    const { package_type, ...others } = data
-    console.log(package_type, others)
+    // //console.log(data)
+    // const { package_type, ...others } = data
+    // //console.log(package_type, others)
     setProceed(true)
     setForm(data)
   }
@@ -35,7 +35,7 @@ const InterneData = () => {
     const el = e.target.childNodes[index]
     const amount = el.getAttribute("data-id")
     const code = el.getAttribute("value")
-    console.log(code)
+    // //console.log(code)
     setNewData({ ...newData, "variation_code": code, "amount": amount })
     setValue({ "amount": amount })
   }
@@ -43,8 +43,8 @@ const InterneData = () => {
   useEffect(() => {
     if (queries.service)
       getVariationCodes(queries.service).then((e) => {
-        console.log("working")
-        console.log(e)
+        // //console.log("working")
+        // //console.log(e)
         setPackages(e.content.varations)
       })
   }, [])

@@ -20,7 +20,7 @@ const TvForm = () => {
   const [message, setMessage] = useState()
   const [newData, setNewData] = useState({})
   const submit = async (data) => {
-    console.log(newData)
+    //console.log(newData)
     setProceed(true)
     setForm({ ...data, ...newData })
   }
@@ -28,7 +28,7 @@ const TvForm = () => {
   const handleChange = async (e) => {
     const { name, value } = e.target
     if (e.target.value.length >= 10 && name === "billersCode") {
-      console.log("working")
+      //console.log("working")
       const req = await verifyMerchant({
         serviceID: queries.service,
         billersCode: value
@@ -37,7 +37,7 @@ const TvForm = () => {
       setSubDetails(req.content)
       if (req.content.error) setMessage(req.content.error)
       else setMessage("")
-      console.log(req)
+      //console.log(req)
     } else {
       const index = e.target.selectedIndex
       const el = e.target.childNodes[index]
@@ -57,7 +57,7 @@ const TvForm = () => {
   useEffect(() => {
     if (queries.service)
       getVariationCodes(queries.service).then((e) => {
-        console.log(e)
+        //console.log(e)
         setPackages(e.content.varations)
       })
   }, [])

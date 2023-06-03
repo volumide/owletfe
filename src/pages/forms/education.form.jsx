@@ -20,7 +20,7 @@ const Education = () => {
   const submit = (data) => {
     data.serviceID = queries.service
     if (!data.quantity) data.quantity = 1
-    console.log(data)
+    //console.log(data)
     setProceed(true)
     setForm({ ...data, ...newData })
   }
@@ -30,9 +30,9 @@ const Education = () => {
     const el = e.target.childNodes[index]
     const vCode = el.getAttribute("data-v")
     const exam = el.getAttribute("name")
-    console.log(el)
+    //console.log(el)
     const value = e.target.value
-    console.log(vCode, value)
+    //console.log(vCode, value)
     setNewData({ ...newData, amount: vCode, variation_code: value, exam_type: exam })
   }
 

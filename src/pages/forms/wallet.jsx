@@ -54,13 +54,13 @@ const Wallet = () => {
       getTransactions()
       navigate("/owlet/wallet/Wallet%20Overview?service=wallet%20balance")
     } catch (error) {
-      console.log(error)
+      //console.log(error)
     }
   }
 
   useEffect(() => {
     if (queries.amount) {
-      console.log(queries)
+      //console.log(queries)
       fundWallet()
     }
     getTransactions()
@@ -114,7 +114,7 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 
       // Open a new window
       window.location.replace(result.data.link)
-      console.log(result.data.link)
+      //console.log(result.data.link)
     }
   }
 
