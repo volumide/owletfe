@@ -59,10 +59,7 @@ const Wallet = () => {
   }
 
   useEffect(() => {
-    if (queries.amount) {
-      //console.log(queries)
-      fundWallet()
-    }
+    if (queries.amount && queries.status === "successful") fundWallet()
     getTransactions()
     getWallet()
   }, [type])
