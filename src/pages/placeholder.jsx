@@ -124,10 +124,10 @@ export const Confirm = ({ form = [], name, ev }) => {
           <p>Initiated</p>
         </div>
       </div>
-      <Button bg="transaprent" otherClass="border border-2">
+      {/* <Button bg="transaprent" otherClass="border border-2">
         <i className="fa-solid fa-building-columns mr-3" />
         Pay with Bank Transfer
-      </Button>
+      </Button> */}
       <Button bg="transaprent" onClick={completeTransaction} otherClass="border border-2 my-5">
         <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
       </Button>

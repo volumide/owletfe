@@ -37,9 +37,7 @@ const SignIn = () => {
       <form onSubmit={handleSubmit(signIn)}>
         <Input label="Email Address" type="email" control={control} name="email" />
         <Input label="Password" type="password" control={control} name="password" />
-        <small className="font-[600] underline">
-          <Link to="/forgot-password">Forgot Password</Link>
-        </small>
+        <small className="font-[600] underline">{/* <Link to="/forgot-password">Forgot Password</Link> */}</small>
         <Button otherClass="mt-[32px]" type="submit">
           Sign In
         </Button>
