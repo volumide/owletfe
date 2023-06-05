@@ -41,7 +41,7 @@ const Wallet = () => {
 
   const fundWallet = async () => {
     try {
-      const topUp = await axios.post(
+      await axios.post(
         `${url}top/up`,
         { amount: queries.amount },
         {

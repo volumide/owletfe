@@ -4,6 +4,7 @@ import menu from "../assets/menu.png"
 import { useContext, useState } from "react"
 import AppContext from "../context/app-context"
 import avartar from "../assets/avartar.png"
+import logo from "../assets/logo.png"
 
 const Container = () => {
   const [show, setShow] = useState(false)
@@ -16,7 +17,9 @@ const Container = () => {
       <div className="border-b border-b-input overflow-hidden  px-[16px]">
         <div className=" md:container lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
           <h2>
-            <Link to="/">LOGO</Link>
+            <Link to="/">
+              <img src={logo} alt="owletpay logo" className="w-[150px]" />
+            </Link>
           </h2>
           <button className={`w-[50px] h-[50px] bg-input rounded-full p-3 flex items-center justify-center lg:hidden`} onClick={toggle}>
             <img src={menu} alt="" />
