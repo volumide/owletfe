@@ -86,7 +86,7 @@ const Placeholder = () => {
   return (
     <>
       {loggedIn ? (
-        <div className="h-screen md:flex md:container mx-auto px-[16px] md:px-[100px]">
+        <div className="h-screen md:flex  mx-auto px-[16px] md:px-[100px]">
           <button className="h-[50px] w-[50px] bg-input  md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => setNav(!showNav)}>
             {!showNav ? <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" /> : <i className="fa-solid fa-arrow-right-long my-5 font-bold  cursor-pointer" role="button" />}
           </button>

@@ -15,7 +15,7 @@ const Container = () => {
   return (
     <>
       <div className="border-b border-b-input overflow-hidden  px-[16px]">
-        <div className=" md:container lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
+        <div className=" lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
           <h2>
             <Link to="/">
               <img src={logo} alt="owletpay logo" className=" w-[150px]" />
