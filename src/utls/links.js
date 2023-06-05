@@ -19,5 +19,6 @@ export const description = {
   "tv-subscription": { title: "Pay Tv Subscription", caption: "Select one of the tv service below to proceed", form: "tvForn" },
   "electricity-bill": { title: "Pay Electricity Bill", caption: "Select one of the distros below to proceed", form: "electForm" },
   "education": { title: "Education Payment", caption: "Select the one applicable to you", form: "eduForm" },
-  "wallet": { title: "Wallet", caption: "", form: "" }
+  "wallet": { title: "Wallet", caption: "", form: "" },
+  "profile": { title: "Profile", caption: "", form: "" }
 }
