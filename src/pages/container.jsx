@@ -18,7 +18,7 @@ const Container = () => {
         <div className=" md:container lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
           <h2>
             <Link to="/">
-              <img src={logo} alt="owletpay logo" className="w-[150px]" />
+              <img src={logo} alt="owletpay logo" className=" w-[150px]" />
             </Link>
           </h2>
           <button className={`w-[50px] h-[50px] bg-input rounded-full p-3 flex items-center justify-center lg:hidden`} onClick={toggle}>
@@ -29,20 +29,21 @@ const Container = () => {
             <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
                 {user?.type === "admin" ? (
-                  <Link to="/dashboard" className="px-5 mx-1 block lg:inline my-[16px]">
+                  <Link to="/dashboard" className="px-5 mx-1 block lg:inline my-[16px] ">
                     Dashboard
                   </Link>
                 ) : (
                   <>
                     {isLogged && (
-                      <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px]">
+                      <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px] ">
                         Wallet
                       </Link>
                     )}{" "}
                     {placeholder.map(
                       (link, index) =>
-                        link.caption !== "Wallet" && (
-                          <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px]" key={index + link.link}>
+                        link.caption !== "Wallet" &&
+                        link.caption !== "Profile" && (
+                          <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px] " key={index + link.link}>
                             {link.caption}
                           </Link>
                         )
@@ -52,10 +53,10 @@ const Container = () => {
               </div>
               {isLogged ? (
                 <>
-                  <Link onClick={logout} className="p-3 rounded-[12px] bg-black text-white  lg:inline-block block my-[16px] mr-3">
+                  <Link onClick={logout} className="p-3 rounded-[12px] bg-black text-white  lg:inline-block block my-[16px] mr-3 ">
                     Log out
                   </Link>
-                  <Link to="/sign-up" className=" items-center gap-3  mx-auto flex">
+                  <Link to="/owlet/profile" className=" items-center gap-3  mx-auto flex ">
                     <img src={avartar} width="30px" />
                     <span>
                       {user?.first_name} {user?.last_name}
@@ -64,10 +65,10 @@ const Container = () => {
                 </>
               ) : (
                 <div className="auth">
-                  <Link to="/sign-in" className="px-10  font-black underline lg:inline-block block my-[16px]">
+                  <Link to="/sign-in" className="px-10  font-black underline lg:inline-block block my-[16px] ">
                     Log In
                   </Link>
-                  <Link to="/sign-up" className="px-10 py-5 rounded-full lg:inline w-2/4 mx-auto bg-primary block">
+                  <Link to="/sign-up" className="px-10 py-5 rounded-full lg:inline w-2/4 mx-auto bg-primary block ">
                     Sign Up
                   </Link>
                 </div>

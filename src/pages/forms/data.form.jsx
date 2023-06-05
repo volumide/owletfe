@@ -16,16 +16,13 @@ const InterneData = () => {
   const [packages, setPackages] = useState([])
   const [proceed, setProceed] = useState(false)
   const [newData, setNewData] = useState({})
-  // const [formData, setFormData] = useState(defaultForm)
   const { setForm, formData, setValue, amount } = useContext(AppContext)
 
   const submit = async (data) => {
     data.serviceID = queries.service
     data = { ...data, ...newData }
     data["billersCode"] = data["phone"]
-    // //console.log(data)
-    // const { package_type, ...others } = data
-    // //console.log(package_type, others)
+
     setProceed(true)
     setForm(data)
   }
@@ -35,7 +32,6 @@ const InterneData = () => {
     const el = e.target.childNodes[index]
     const amount = el.getAttribute("data-id")
     const code = el.getAttribute("value")
-    // //console.log(code)
     setNewData({ ...newData, "variation_code": code, "amount": amount })
     setValue({ "amount": amount })
   }
@@ -43,8 +39,6 @@ const InterneData = () => {
   useEffect(() => {
     if (queries.service)
       getVariationCodes(queries.service).then((e) => {
-        // //console.log("working")
-        // //console.log(e)
         setPackages(e.content.varations)
       })
   }, [])

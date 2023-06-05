@@ -27,7 +27,8 @@ const logos = {
   tv: { dstv, gotv, startime, showmax },
   electricity: { ibELectric, ikejaElectric, ekoElectric, josELectric, kanoELectric, phElectric, beninEelectric, enuguELectric, abujaElectric, kdELectric },
   phone: { nineMobile, airtel, glo, internet, smile, mtn },
-  wallet: { wallet, history }
+  wallet: { wallet, history },
+  profile: { wallet, history }
 }
 
 export default logos

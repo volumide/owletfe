@@ -10,7 +10,8 @@ export const placeholder = [
   { icon: tv, caption: " Tv Subscription ", bg: "sub", link: "tv-subscription" },
   { icon: electricity, caption: "Electricity Bill", bg: "elect", link: "electricity-bill" },
   { icon: education, caption: "Education", bg: "ed", link: "education" },
-  { icon: education, caption: "Wallet", bg: "", link: "wallet" }
+  { icon: education, caption: "Wallet", bg: "", link: "wallet" },
+  { icon: education, caption: "Profile", bg: "", link: "profile" }
 ]
 
 export const description = {
