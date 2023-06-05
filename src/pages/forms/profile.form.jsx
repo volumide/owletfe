@@ -49,9 +49,38 @@ const ChangeProfile = ({ user, setUser }) => {
 
 const ChangePassword = () => {
   const { handleSubmit, control } = useForm()
+  const [message, setMessage] = useState("")
+  const [error, setError] = useState("")
+  const updateProfile = async (data) => {
+    console.log(data)
+    if (data.new_password !== data.confirm_password) {
+      setError("confirm password and new password doesn't match")
+      setMessage("")
+      return
+    }
+    setError("")
+    const sentData = {}
+    Object.keys(data).map((e) => {
+      if (data[e]) sentData[e] = data[e]
+    })
+
+    if (Object.keys(sentData).length) {
+      try {
+        const v = await axios.put(import.meta.env.VITE_APP_API_URL + `change/password`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
+        setMessage(v.data.message)
+      } catch (error) {
+        console.log(error)
+      }
+      return
+    }
+
+    console.log("data does not change")
+  }
   return (
     <>
-      <form onSubmit={handleSubmit()}>
+      <form onSubmit={handleSubmit(updateProfile)}>
+        <p className="text-red-500">{error}</p>
+        <p className="text-blue-500">{message}</p>
         <Input label="Old password" control={control} type="password" name="old_password" />
         <Input label="New password" control={control} type="password" name="new_password" />
         <Input label="Confrim Password" type="Password" control={control} name="confirm_password" />
