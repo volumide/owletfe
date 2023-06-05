@@ -32,7 +32,7 @@ const SignIn = () => {
   }, [])
 
   return (
-    <Auth header="Welcome Back" caption="Sign in into your abc payment account" bg={true}>
+    <Auth header="Welcome Back" caption="Sign in into your owletpay account" bg={true}>
       {error ? <p className="text-red-500">{error.toLowerCase()}: invalid username or password</p> : ""}
       <form onSubmit={handleSubmit(signIn)}>
         <Input label="Email Address" type="email" control={control} name="email" />

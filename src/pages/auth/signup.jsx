@@ -28,7 +28,7 @@ const SignUp = () => {
     }
   }
   return (
-    <Auth header="Sign Up" caption="Create a new abc payment account">
+    <Auth header="Sign Up" caption="Create a new owletpay account">
       {Object.keys(errors).length
         ? Object.keys(errors).map((e) => (
             <p key={e} className="text-red-500">
