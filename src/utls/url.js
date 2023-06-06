@@ -8,6 +8,7 @@ const userName = "therealowlet@gmail.com"
 const url = "https://vtpass.com/api/"
 
 export const baseUrl = "/admin/public/api/"
+// export const baseUrl = "http://127.0.0.1:8000/api/"
 
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")

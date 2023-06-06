@@ -26,7 +26,7 @@ export const OwletProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token")
     const user = localStorage.getItem("user")
-    if (user) setUser(JSON.parse(user))
+    if (user && user !== "undefined") setUser(JSON.parse(user))
 
     if (token) setLogged(true)
     else setLogged(false)
