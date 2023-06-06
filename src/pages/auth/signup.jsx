@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import AppContext from "../../context/app-context"
+import { baseUrl } from "../../utls/url"
 const SignUp = () => {
   const { handleSubmit, control } = useForm()
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ const SignUp = () => {
 
   const signup = async (data) => {
     try {
-      await axios.post(import.meta.env.VITE_APP_API_URL + "user", data, { headers: { "Content-Type": "application/json" } })
+      await axios.post(baseUrl + "user", data, { headers: { "Content-Type": "application/json" } })
       //console.log(req.data)
       navigate("/sign-in", { replace: true })
     } catch (error) {

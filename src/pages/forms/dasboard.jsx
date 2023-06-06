@@ -5,11 +5,12 @@ import Input from "../../components/input"
 import Button from "../../components/button"
 import axios from "axios"
 import { useForm } from "react-hook-form"
+import { baseUrl } from "../../utls/url"
 
 const DashBoard = () => {
   const { handleSubmit, control } = useForm()
   const [change, setChange] = useState(false)
-  const url = import.meta.env.VITE_APP_API_URL
+  const url = baseUrl
 
   const [commision, setCommision] = useState([])
   const createCommision = async (data) => {

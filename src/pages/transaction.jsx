@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import Button from "../components/button"
-import { paySubscripiton } from "../utls/url"
+import { baseUrl, paySubscripiton } from "../utls/url"
 import axios from "axios"
 const Transaction = () => {
   const [subscription, setSubscription] = useState()
@@ -54,7 +54,7 @@ const Transaction = () => {
       phone: res.phone
     }
 
-    await axios.post(import.meta.env.VITE_APP_API_URL + "transaction", transactionBody, {
+    await axios.post(baseUrl + "transaction", transactionBody, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -64,7 +64,7 @@ const Transaction = () => {
 
   const makePayment = async () => {
     try {
-      const url = import.meta.env.VITE_APP_API_URL + "payment"
+      const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
       body["requestId"] = new Date().toISOString()
       const req = await axios.post(url, body, {

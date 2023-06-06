@@ -7,6 +7,8 @@ const password = "Owletpay098,"
 const userName = "therealowlet@gmail.com"
 const url = "https://vtpass.com/api/"
 
+export const baseUrl = "/admin/public/api/"
+
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")
   if (getCountries) return getCountries

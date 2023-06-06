@@ -7,16 +7,16 @@ import Auth from "./common/common"
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import AppContext from "../../context/app-context"
+import { baseUrl } from "../../utls/url"
 
 const SignIn = () => {
   const { handleSubmit, control } = useForm()
   const [error, setError] = useState()
   const navigate = useNavigate()
   const { setLogged, isLogged } = useContext(AppContext)
-  // //console.log
   const signIn = async (data) => {
     try {
-      const req = await axios.post(import.meta.env.VITE_APP_API_URL + "login", data, { headers: { "Content-Type": "application/json" } })
+      const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
       localStorage.setItem("token", req.data.token)
       localStorage.setItem("user", JSON.stringify(req.data.message))
       setLogged(true)

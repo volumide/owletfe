@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import Button from "../../components/button"
 import { useState } from "react"
 import axios from "axios"
+import { baseUrl } from "../../utls/url"
 
 const Profile = () => {
   const { type } = useParams()
@@ -22,7 +23,7 @@ const ChangeProfile = ({ user, setUser }) => {
 
     if (Object.keys(sentData).length) {
       try {
-        const v = await axios.put(import.meta.env.VITE_APP_API_URL + `user/${user.id}`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
+        const v = await axios.put(baseUrl + `user/${user.id}`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
         localStorage.setItem("user", JSON.stringify(v.data.data))
         setUser(v.data.data)
       } catch (error) {
@@ -66,7 +67,7 @@ const ChangePassword = () => {
 
     if (Object.keys(sentData).length) {
       try {
-        const v = await axios.put(import.meta.env.VITE_APP_API_URL + `change/password`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
+        const v = await axios.put(baseUrl + `change/password`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
         setMessage(v.data.message)
       } catch (error) {
         console.log(error)

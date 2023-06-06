@@ -6,9 +6,10 @@ import Button from "../../components/button"
 import axios from "axios"
 import { useState } from "react"
 import { useEffect } from "react"
+import { baseUrl } from "../../utls/url"
 
 const Wallet = () => {
-  const url = import.meta.env.VITE_APP_API_URL
+  const url = baseUrl
 
   const { type } = useParams()
   const [transactions, setTransactions] = useState([])
@@ -78,7 +79,7 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
   const callback = window.location.href
   const [isFund, setFund] = useState(false)
   const [amount, setAmount] = useState()
-  const url = import.meta.env.VITE_APP_API_URL
+  const url = baseUrl
 
   const payment = async (e) => {
     e.preventDefault()
