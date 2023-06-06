@@ -79,7 +79,6 @@ const Transaction = () => {
         window.close()
 
         window.location.replace(result.data.link)
-        // //console.log(result.data.link)
       }
     } catch (error) {
       //console.log(error)
