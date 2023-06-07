@@ -121,10 +121,10 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 
   return (
     <div>
-      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between p-[40px] items-end">
+      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] items-end">
         {isFund ? (
-          <form onSubmit={payment} className="flex gap-3 w-full">
-            <input className="bg-white text-black p-1 rounded-[16px] w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
+          <form onSubmit={payment} className="md:flex gap-3 w-full">
+            <input className="bg-white mb-3 md:mb-0 text-black py-[16px] rounded-default w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
             <div>
               <Button otherClass="px-10 text-black" type="submit">
                 Fund Wallet
