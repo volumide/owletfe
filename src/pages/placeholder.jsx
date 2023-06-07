@@ -105,9 +105,15 @@ export default Placeholder
 
 export const Confirm = ({ form = [], name, ev }) => {
   const navigate = useNavigate()
+  const user = localStorage.getItem("user")
+
+  const walletWithdraw = () => {
+    navigate("/transaction?type=wallet_withdraw")
+  }
   const completeTransaction = () => {
     ev ? ev() : navigate("/transaction")
   }
+
   return (
     <>
       <h3>Confirm Details</h3>
@@ -124,10 +130,14 @@ export const Confirm = ({ form = [], name, ev }) => {
           <p>Initiated</p>
         </div>
       </div>
-      {/* <Button bg="transaprent" otherClass="border border-2">
-        <i className="fa-solid fa-building-columns mr-3" />
-        Pay with Bank Transfer
-      </Button> */}
+
+      {user && user !== "undefined" && (
+        <Button bg="transaprent" otherClass="border border-2" onClick={walletWithdraw}>
+          <i className="fa-solid fa-building-columns mr-3" />
+          Pay with wallet
+        </Button>
+      )}
+
       <Button bg="transaprent" onClick={completeTransaction} otherClass="border border-2 my-5">
         <i className="fa-solid fa-credit-card mr-3" /> Pay with Card
       </Button>

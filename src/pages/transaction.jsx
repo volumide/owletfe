@@ -17,11 +17,30 @@ const Transaction = () => {
   const queries = Object.fromEntries(query.entries())
 
   const subscribe = async () => {
-    if (Object.keys(queries).length && queries.status !== "successful") {
-      setMessage(`transaction${queries.status}`)
-      return
+    if (!queries.type) {
+      if (Object.keys(queries).length && queries.status !== "successful") {
+        setMessage(`transaction${queries.status}`)
+        return
+      }
     }
     const res = JSON.parse(localStorage.getItem("fmDt"))
+    let newRes = ""
+    if (queries.type) {
+      console.log(res)
+      try {
+        const result = await axios.post(baseUrl + "withdraw", res, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        console.log(result)
+      } catch (error) {
+        setMessage(error.response.data.message)
+        newRes = error.response.data.message
+      }
+    }
+    if (newRes) return
 
     const req = await paySubscripiton(res)
 
@@ -44,22 +63,25 @@ const Transaction = () => {
     const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
     setkeys(keys)
 
-    const transactionBody = {
-      amount: res.amount,
-      status_flutter: queries.status,
-      status: req.response_description,
-      tx_ref: queries.tx_ref,
-      transaction_id: queries.transaction_id,
-      requestId: req.requestId,
-      phone: res.phone
-    }
-
-    await axios.post(baseUrl + "transaction", transactionBody, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+    if (!queries.type) {
+      const transactionBody = {
+        amount: res.amount,
+        type: "flutter_payment",
+        status_flutter: queries.status,
+        status: req.response_description,
+        tx_ref: queries.tx_ref,
+        transaction_id: queries.transaction_id,
+        requestId: req.requestId,
+        phone: res.phone
       }
-    })
+
+      await axios.post(baseUrl + "transaction", transactionBody, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+    }
   }
 
   const makePayment = async () => {
@@ -67,6 +89,10 @@ const Transaction = () => {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
       body["requestId"] = new Date().toISOString()
+      if (queries.wallet) {
+        return
+      }
+
       const req = await axios.post(url, body, {
         headers: {
           "Content-Type": "application/json",

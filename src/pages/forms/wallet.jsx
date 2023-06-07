@@ -60,10 +60,13 @@ const Wallet = () => {
   }
 
   useEffect(() => {
-    if (queries.amount && queries.status === "successful") fundWallet()
     getTransactions()
     getWallet()
   }, [type])
+
+  useEffect(() => {
+    if (queries.amount && queries.status === "successful") fundWallet()
+  }, [])
 
   return (
     <>
