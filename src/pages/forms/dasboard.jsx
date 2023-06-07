@@ -74,7 +74,7 @@ const DashBoard = () => {
                 <p className="p-1">
                   NGN{e.commision} <span>{e.created_at.split("T")[0]}</span>{" "}
                 </p>
-                {e.primary ? (
+                {e.primary === "1" ? (
                   "Primary Charge fee"
                 ) : (
                   <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e)}>
