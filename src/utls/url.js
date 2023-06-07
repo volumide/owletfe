@@ -1,14 +1,14 @@
 import axios from "axios"
 
-const password = "Olumide1"
-const userName = "volumide42@gmail.com"
-const url = "https://sandbox.vtpass.com/api/"
-// const password = "Owletpay098,"
-// const userName = "therealowlet@gmail.com"
-// const url = "https://vtpass.com/api/"
+// const password = "Olumide1"
+// const userName = "volumide42@gmail.com"
+// const url = "https://sandbox.vtpass.com/api/"
+const password = "Owletpay098,"
+const userName = "therealowlet@gmail.com"
+const url = "https://vtpass.com/api/"
 
-// export const baseUrl = "/admin/public/api/"
-export const baseUrl = "http://127.0.0.1:8000/api/"
+export const baseUrl = "/admin/public/api/"
+// export const baseUrl = "http://127.0.0.1:8000/api/"
 
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")
