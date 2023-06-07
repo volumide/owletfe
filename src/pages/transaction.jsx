@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Button from "../components/button"
 import { baseUrl, paySubscripiton } from "../utls/url"
 import axios from "axios"
+import AppContext from "../context/app-context"
 const Transaction = () => {
+  const { com } = useContext(AppContext)
   const [subscription, setSubscription] = useState()
   const [messsage, setMessage] = useState("processing transaction")
   const [details, setDetails] = useState()
@@ -24,6 +26,7 @@ const Transaction = () => {
       }
     }
     const res = JSON.parse(localStorage.getItem("fmDt"))
+
     let newRes = ""
     if (queries.type) {
       console.log(res)
@@ -82,12 +85,15 @@ const Transaction = () => {
         }
       })
     }
+
+    localStorage.removeItem("fmDt")
   }
 
   const makePayment = async () => {
     try {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
+      body["amount"] = parseInt(body.amount) + parseInt(com)
       body["requestId"] = new Date().toISOString()
       if (queries.wallet) {
         return

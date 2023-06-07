@@ -12,7 +12,6 @@ import AppContext from "../context/app-context"
 
 const Placeholder = () => {
   const navigate = useNavigate()
-  // const { isLogged } = useContext(AppContext)
   const [loggedIn, setLoggedIn] = useState(false)
   const { name, type } = useParams()
   const [proceeds, setProceeds] = useState(false)
@@ -85,7 +84,6 @@ const Placeholder = () => {
 
   return (
     <>
-      {/* {loggedIn ? ( */}
       <div className="h-screen md:flex  mx-auto px-[16px] md:px-[100px]">
         <button className="h-[50px] w-[50px] bg-input  md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => setNav(!showNav)}>
           {!showNav ? <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" /> : <i className="fa-solid fa-arrow-right-long my-5 font-bold  cursor-pointer" role="button" />}
@@ -93,20 +91,17 @@ const Placeholder = () => {
         <SideNavigations />
         <MainForm />
       </div>
-      {/* ) : (
-        <p className="text-center p-10 text-lg">
-          Login to access <span className="font-[600]">{name.toUpperCase()}</span> services
-        </p>
-      )} */}
     </>
   )
 }
 export default Placeholder
 
 export const Confirm = ({ form = [], name, ev }) => {
+  const { com } = useContext(AppContext)
   const navigate = useNavigate()
   const user = localStorage.getItem("user")
-
+  const formDt = JSON.parse(localStorage.getItem("fmDt"))
+  const convinience = com || 0
   const walletWithdraw = () => {
     navigate("/transaction?type=wallet_withdraw")
   }
@@ -126,8 +121,12 @@ export const Confirm = ({ form = [], name, ev }) => {
           </div>
         ))}
         <div className="my-[16px]">
-          <h1 className="text-base font[600]">Transaction satus</h1>
-          <p>Initiated</p>
+          <h1 className="text-base font[600]">Convenience Fee</h1>
+          <p>{com}</p>
+        </div>
+        <div className="my-[16px]">
+          <h1 className="text-base font[600]">Total payable amount</h1>
+          <p>{parseInt(com) + parseInt(formDt.amount)}</p>
         </div>
       </div>
 

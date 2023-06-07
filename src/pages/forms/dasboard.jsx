@@ -35,17 +35,24 @@ const DashBoard = () => {
     setCommision(req.data.data)
   }
 
-  const defaultCommision = async (id) => {
-    const req = await axios.put(
-      `${url}commision/${id}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+  const defaultCommision = async (data) => {
+    console.log(data)
+    // return
+    try {
+      const req = await axios.put(
+        `${url}commision/${data.id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
         }
-      }
-    )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+
     allCommision()
   }
 
@@ -70,7 +77,7 @@ const DashBoard = () => {
                 {e.primary ? (
                   "Primary Charge fee"
                 ) : (
-                  <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e.id)}>
+                  <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e)}>
                     Change default
                   </button>
                 )}

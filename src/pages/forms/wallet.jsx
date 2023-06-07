@@ -173,7 +173,7 @@ const Transaction = ({ transact = [] }) => {
           transact.map((el, i) => (
             <div className="flex justify-between py-3 border-b" key={i}>
               <p>
-                <span className="capitalize">{el.type === "wallet" ? el.type + " Transaction" : el.type}</span>
+                <span className="capitalize">{el.type === "wallet" ? el.type + " Top up" : el.type}</span>
 
                 <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
               </p>

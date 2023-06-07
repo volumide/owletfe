@@ -1,4 +1,6 @@
+import axios from "axios"
 import { createContext, useEffect, useState } from "react"
+import { baseUrl } from "../utls/url"
 
 const AppContext = createContext(null)
 export default AppContext
@@ -10,6 +12,7 @@ export const OwletProvider = ({ children }) => {
   const [amount, setAmount] = useState({})
   const [isLogged, setLogged] = useState()
   const [user, setUser] = useState("")
+  const [com, setCom] = useState("")
   const setForm = (data = "") => {
     localStorage.setItem("fmDt", JSON.stringify(data))
     setFormData({ data })
@@ -23,6 +26,17 @@ export const OwletProvider = ({ children }) => {
     setUser("")
   }
 
+  const getCommision = async () => {
+    try {
+      const comm = await axios.get(baseUrl + "commision")
+      sessionStorage.setItem("comm", comm.data?.data?.commision)
+      setCom(comm.data?.data?.commision || 0)
+    } catch (error) {
+      setCom(0)
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token")
     const user = localStorage.getItem("user")
@@ -32,7 +46,11 @@ export const OwletProvider = ({ children }) => {
     else setLogged(false)
   }, [isLogged])
 
+  useEffect(() => {
+    getCommision()
+  }, [])
+
   const setValue = (amount) => setAmount({ ...amount })
 
-  return <AppContext.Provider value={{ formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm }}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm }}>{children}</AppContext.Provider>
 }
