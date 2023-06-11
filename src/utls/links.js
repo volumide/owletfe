@@ -11,7 +11,8 @@ export const placeholder = [
   { icon: electricity, caption: "Electricity Bill", bg: "elect", link: "electricity-bill" },
   { icon: education, caption: "Education", bg: "ed", link: "education" },
   { icon: education, caption: "Wallet", bg: "", link: "wallet" },
-  { icon: education, caption: "Profile", bg: "", link: "profile" }
+  { icon: education, caption: "Profile", bg: "", link: "profile" },
+  { icon: education, caption: "Dashboard", bg: "", link: "dashboard" }
 ]
 
 export const description = {
@@ -21,5 +22,6 @@ export const description = {
   "electricity-bill": { title: "Pay Electricity Bill", caption: "Select one of the distros below to proceed", form: "electForm" },
   "education": { title: "Education Payment", caption: "Select the one applicable to you", form: "eduForm" },
   "wallet": { title: "Wallet", caption: "", form: "" },
-  "profile": { title: "Profile", caption: "", form: "" }
+  "profile": { title: "Profile", caption: "", form: "" },
+  "dashboard": { title: "Dashboard", caption: "", form: "" }
 }

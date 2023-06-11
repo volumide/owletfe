@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom"
 import { placeholder } from "../utls/links"
 const Home = () => {
+  // const str = localStorage.getItem("user")
+  // const user = str && str !== "undefined" ? JSON.parse(str) : ""
+
   return (
     <div className="  md:mx-auto w-screen p-[16px] md:px-[100px] md:py-[54px]">
       <div>
@@ -11,7 +14,8 @@ const Home = () => {
         {placeholder.map(
           (i, index) =>
             i.caption !== "Wallet" &&
-            i.caption !== "Profile" && (
+            i.caption !== "Profile" &&
+            i.caption !== "Dashboard" && (
               <Link className={` p-3 h-[292px] rounded-[32px] flex flex-col items-center justify-center ${i.bg}`} key={index} to={`/owlet/${i.link}`}>
                 <div className="h-[70px] ">
                   <img src={i.icon} className="h-full" />

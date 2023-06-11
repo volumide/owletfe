@@ -29,7 +29,7 @@ const Container = () => {
             <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
                 {user?.type === "admin" ? (
-                  <Link to="/dashboard" className="px-5 mx-1 block lg:inline my-[16px] ">
+                  <Link to="/owlet/dashboard" className="px-5 mx-1 block lg:inline my-[16px] ">
                     Dashboard
                   </Link>
                 ) : (
@@ -38,11 +38,12 @@ const Container = () => {
                       <Link to="/owlet/wallet" className="px-5 mx-1 block lg:inline my-[16px] ">
                         Wallet
                       </Link>
-                    )}{" "}
+                    )}
                     {placeholder.map(
                       (link, index) =>
                         link.caption !== "Wallet" &&
-                        link.caption !== "Profile" && (
+                        link.caption !== "Profile" &&
+                        link.caption !== "Dashboard" && (
                           <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px] " key={index + link.link}>
                             {link.caption}
                           </Link>

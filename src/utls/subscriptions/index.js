@@ -1,3 +1,4 @@
+import dashboard from "./dashboard"
 import edu from "./edu"
 import electricity from "./electricity"
 import intertenetData from "./internet"
@@ -13,7 +14,8 @@ const links = {
   "electricity-bill": electricity,
   "education": edu,
   "wallet": wallet,
-  "profile": profile
+  "profile": profile,
+  "dashboard": dashboard
 }
 
 export default links
