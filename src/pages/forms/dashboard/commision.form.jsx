@@ -6,6 +6,7 @@ import Button from "../../../components/button"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { baseUrl } from "../../../utls/url"
+import DataTable from "react-data-table-component"
 
 const Commision = () => {
   const { handleSubmit, control } = useForm()
@@ -56,35 +57,33 @@ const Commision = () => {
     allCommision()
   }
 
+  const columns = [
+    {
+      name: "#",
+      selector: (row, i) => i + 1
+    },
+    { name: "Commision", selector: (row) => <>&#8358;{row.commision} </> },
+    { name: "Date created", selector: (row) => row.created_at.split("T")[0] },
+    {
+      name: "Action",
+      selector: (row) => row.primary,
+      sortable: true,
+      cell: (row) => <>{row.primary || row.primary === "1" ? <i className="fa-solid fa-toggle-on text-valid text-2xl cursor-pointer"></i> : <i className="fa-solid fa-toggle-off text-error text-2xl cursor-pointer" onClick={() => defaultCommision(row)}></i>}</>
+    }
+  ]
+
   useEffect(() => {
     allCommision()
   }, [change])
+
   return (
     <>
       <div className="">
-        <form onSubmit={handleSubmit(createCommision)}>
+        <form onSubmit={handleSubmit(createCommision)} className="mb-10">
           <Input label="Commision" name="commision" type="number" control={control} />
           <Button type="submit">Add Charges</Button>
         </form>
-        {commision.length && (
-          <>
-            <p className="text-3xl py-3">Charges Logs</p>
-            {commision.map((e) => (
-              <div key={e.commision} className="flex gap-5  items-center my-3">
-                <p className="p-1">
-                  NGN{e.commision} <span>{e.created_at.split("T")[0]}</span>{" "}
-                </p>
-                {e.primary === "1" || e.primary ? (
-                  "Primary Charge fee"
-                ) : (
-                  <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e)}>
-                    Change default
-                  </button>
-                )}
-              </div>
-            ))}
-          </>
-        )}
+        {commision.length && <>{commision.length && <DataTable columns={columns} data={commision} title="Commisions" />}</>}
       </div>
     </>
   )

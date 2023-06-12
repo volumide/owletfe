@@ -1,46 +1,49 @@
 import axios from "axios"
 import { baseUrl } from "../../../utls/url"
 import { useEffect, useState } from "react"
+import DataTable from "react-data-table-component"
 
 const Users = () => {
   const [users, setUsers] = useState([])
   const getUsers = async () => {
     try {
       const res = await axios.get(baseUrl + "user", { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
-      console.log(res)
+      console.log(res.data.data)
       setUsers(res.data.data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const headers = ["Name", "Phone", "Email", "Action"]
+  const column = [
+    {
+      name: "#",
+      selector: (row, i) => i + 1
+    },
+    {
+      name: "Name",
+      minWidth: "250px",
+      selector: (row) => (
+        <>
+          {row.first_name} {row.last_name}{" "}
+        </>
+      )
+    },
+    { name: "Email", minWidth: "250px", selector: (row) => row.email },
+    { name: "Phone", minWidth: "150px", selector: (row) => row.phone },
+    {
+      name: "Action",
+
+      cell: (row) => <>{row.primary || row.primary === "1" ? <i className="fa-solid fa-toggle-on text-valid text-2xl cursor-pointer"></i> : <i className="fa-solid fa-toggle-off text-error text-2xl cursor-pointer" onClick={() => console.log(row)}></i>}</>
+    }
+  ]
+
   useEffect(() => {
     getUsers()
   }, [])
   return (
     <>
-      <p className="text-lg mb-5">All Users</p>
-      <table className="table-auto w-full">
-        <thead>
-          <tr>
-            {headers.map((head) => (
-              <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left  leading-4 font-medium text-gray-500 uppercase tracking-wider" key={head}>
-                {head}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tbody>
-            <tr>
-              <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                <div className=" leading-5 font-medium text-gray-900">John Doe</div>
-              </td>
-            </tr>
-          </tbody>
-        </tbody>
-      </table>
+      <DataTable columns={column} data={users} title="Users" />
     </>
   )
 }
