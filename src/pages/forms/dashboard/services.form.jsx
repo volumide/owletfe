@@ -14,7 +14,7 @@ const Services = () => {
   }
   return (
     <div className="py-5">
-      <p className="2xl">Manage Services</p>
+      <p className="text-lg mb-10 font-[600]">Manage Services</p>
       {placeholder.map(
         (row) =>
           !exclude.includes(row.caption) && (
