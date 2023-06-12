@@ -1,4 +1,5 @@
 import Airtime from "./airtime.form"
+import DashBoard from "./dashboard/dashboard"
 import InterneData from "./data.form"
 import Education from "./education.form"
 import Electricity from "./electricity.form"
@@ -13,7 +14,8 @@ const forms = {
   "electricity-bill": <Electricity />,
   "education": <Education />,
   "wallet": <Wallet />,
-  "profile": <Profile />
+  "profile": <Profile />,
+  "dashboard": <DashBoard />
 }
 
 export default forms

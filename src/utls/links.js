@@ -23,5 +23,5 @@ export const description = {
   "education": { title: "Education Payment", caption: "Select the one applicable to you", form: "eduForm" },
   "wallet": { title: "Wallet", caption: "", form: "" },
   "profile": { title: "Profile", caption: "", form: "" },
-  "dashboard": { title: "Dashboard", caption: "", form: "" }
+  "dashboard": { title: "Admin Dashboard", caption: "", form: "" }
 }

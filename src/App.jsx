@@ -6,7 +6,7 @@ import Home from "./pages/home"
 import Container from "./pages/container"
 import Placeholder from "./pages/placeholder"
 import Transaction from "./pages/transaction"
-import DashBoard from "./pages/forms/dasboard"
+import DashBoard from "./pages/forms/dashboard/commision.form"
 
 function App() {
   // const apiUrl = import.meta.env

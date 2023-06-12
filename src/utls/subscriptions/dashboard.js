@@ -1,8 +1,8 @@
 const dashboard = [
-  { name: "users", title: "All users", cat: "dashboard", logo: "" },
-  { name: "transactions", title: "Transactions", cat: "dashboard", logo: "" },
-  { name: "services", title: "Service", cat: "dashboard", logo: "" },
-  { name: "commisions", title: "Commisions", cat: "dashboard", logo: "" }
+  { name: "allusers", title: "All users", cat: "dashboard", logo: "" },
+  { name: "alltransactions", title: "All Transactions", cat: "dashboard", logo: "" },
+  { name: "allservices", title: "All Service", cat: "dashboard", logo: "" },
+  { name: "allcommisions", title: "Commisions", cat: "dashboard", logo: "" }
 ]
 
 export default dashboard

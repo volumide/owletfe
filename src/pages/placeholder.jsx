@@ -42,8 +42,10 @@ const Placeholder = () => {
               className="my-5 flex items-center gap-2"
               onClick={() => {
                 setNav(!showNav)
-                setCurrentLogo(logos[link.cat][link.logo])
-                localStorage.setItem("logo", logos[link.cat][link.logo])
+                if (logos?.[link.cat]?.[link.logo]) {
+                  setCurrentLogo(logos[link.cat][link.logo])
+                  localStorage.setItem("logo", logos[link.cat][link.logo])
+                }
               }}
             >
               <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
@@ -59,14 +61,15 @@ const Placeholder = () => {
 
   const MainForm = () => {
     return (
-      <div className={`md:w-4/6 grow-0 py-10 px-[16px] md:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
+      <div className={`md:w-3/6 grow-0 py-10 px-[16px] md:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
         {type ? (
           <>
-            {name !== "wallet" && (
-              <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
-                <img src={currentLogo} alt="" className="w-full h-full object-contain" />
-              </div>
-            )}
+            {name !== "wallet" ||
+              (name !== "dashboard" && (
+                <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
+                  <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+                </div>
+              ))}
             {allForms[name]}
           </>
         ) : (

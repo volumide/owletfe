@@ -28,7 +28,8 @@ const logos = {
   electricity: { ibELectric, ikejaElectric, ekoElectric, josELectric, kanoELectric, phElectric, beninEelectric, enuguELectric, abujaElectric, kdELectric },
   phone: { nineMobile, airtel, glo, internet, smile, mtn },
   wallet: { wallet, history },
-  profile: { wallet, history }
+  profile: { wallet, history },
+  dashboard: {}
 }
 
 export default logos

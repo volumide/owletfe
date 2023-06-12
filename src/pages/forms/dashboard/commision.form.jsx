@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
-import Input from "../../components/input"
-import Button from "../../components/button"
+import Input from "../../../components/input"
+import Button from "../../../components/button"
 import axios from "axios"
 import { useForm } from "react-hook-form"
-import { baseUrl } from "../../utls/url"
+import { baseUrl } from "../../../utls/url"
 
-const DashBoard = () => {
+const Commision = () => {
   const { handleSubmit, control } = useForm()
   const [change, setChange] = useState(false)
   const url = baseUrl
@@ -61,7 +61,7 @@ const DashBoard = () => {
   }, [change])
   return (
     <>
-      <div className=" w-100 p-5 mx-auto md:4/5 lg:w-3/5">
+      <div className="">
         <form onSubmit={handleSubmit(createCommision)}>
           <Input label="Commision" name="commision" type="number" control={control} />
           <Button type="submit">Add Charges</Button>
@@ -74,7 +74,7 @@ const DashBoard = () => {
                 <p className="p-1">
                   NGN{e.commision} <span>{e.created_at.split("T")[0]}</span>{" "}
                 </p>
-                {e.primary === "1" ? (
+                {e.primary === "1" || e.primary ? (
                   "Primary Charge fee"
                 ) : (
                   <button className="p-3 bg-primary rounded-[16px]" onClick={() => defaultCommision(e)}>
@@ -90,4 +90,4 @@ const DashBoard = () => {
   )
 }
 
-export default DashBoard
+export default Commision
