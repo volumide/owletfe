@@ -1,10 +1,14 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { placeholder } from "../../../utls/links"
 import links from "../../../utls/subscriptions"
 import Button from "../../../components/button"
+import axios from "axios"
+import { baseUrl } from "../../../utls/url"
+import AppContext from "../../../context/app-context"
 const Services = () => {
   const exclude = ["Wallet", "Profile", "Dashboard"]
   const [toggles, setToggles] = useState({})
+  const { restricted } = useContext(AppContext)
   const changeToggle = (e) => {
     if (toggles[e]) {
       const v = { ...toggles }
@@ -12,6 +16,25 @@ const Services = () => {
       setToggles(v)
     } else setToggles({ ...toggles, [e]: e })
   }
+
+  const submit = async () => {
+    console.log(toggles)
+    const result = await axios.post(
+      baseUrl + "service",
+      { services: JSON.stringify(toggles) },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    )
+    console.log(toggles, result)
+  }
+
+  useEffect(() => {
+    setToggles(restricted)
+  }, [])
   return (
     <div className="py-5">
       <p className="text-lg mb-10 font-[600]">Manage Services</p>
@@ -29,7 +52,9 @@ const Services = () => {
             </div>
           )
       )}
-      <Button otherClass="mt-[32px]">Submit</Button>
+      <Button otherClass="mt-[32px]" onClick={submit}>
+        Submit
+      </Button>
     </div>
   )
 }

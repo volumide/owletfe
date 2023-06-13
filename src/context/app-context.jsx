@@ -13,6 +13,7 @@ export const OwletProvider = ({ children }) => {
   const [isLogged, setLogged] = useState()
   const [user, setUser] = useState("")
   const [com, setCom] = useState("")
+  const [restricted, setRestricted] = useState({})
   const setForm = (data = "") => {
     localStorage.setItem("fmDt", JSON.stringify(data))
     setFormData({ data })
@@ -37,6 +38,18 @@ export const OwletProvider = ({ children }) => {
     }
   }
 
+  const getRestricted = async () => {
+    const res = await axios.get(baseUrl + "service/latest", {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    const result = res.data.data?.services
+    console.log(result)
+    if (result) setRestricted(JSON.parse(result))
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token")
     const user = localStorage.getItem("user")
@@ -48,9 +61,10 @@ export const OwletProvider = ({ children }) => {
 
   useEffect(() => {
     getCommision()
+    getRestricted()
   }, [])
 
   const setValue = (amount) => setAmount({ ...amount })
 
-  return <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm }}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm, restricted }}>{children}</AppContext.Provider>
 }

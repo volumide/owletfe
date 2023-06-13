@@ -23,6 +23,7 @@ const Placeholder = () => {
   const [showNav, setNav] = useState(true)
 
   const SideNavigations = () => {
+    const { restricted } = useContext(AppContext)
     return (
       <>
         <div className={`md:w-2/6 shrink-0  md:border-r h-full py-10  ${showNav ? "block" : "hidden"} md:block `}>
@@ -35,25 +36,28 @@ const Placeholder = () => {
             <span className="text-2xl">{description[name].title}</span>
           </p>
           <p className="text-ddgray">{description[name].caption}</p>
-          {links[name].map((link) => (
-            <Link
-              to={`/owlet/${name}/${link.title}?service=${link.service || link.name}`}
-              key={link.name}
-              className="my-5 flex items-center gap-2"
-              onClick={() => {
-                setNav(!showNav)
-                if (logos?.[link.cat]?.[link.logo]) {
-                  setCurrentLogo(logos[link.cat][link.logo])
-                  localStorage.setItem("logo", logos[link.cat][link.logo])
-                }
-              }}
-            >
-              <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
-                <img src={logos?.[link.cat]?.[link.logo] || ""} alt="" className="w-full h-full object-contain" />
-              </div>
-              {link.title}
-            </Link>
-          ))}
+          {links[name].map(
+            (link) =>
+              !restricted[link.title] && (
+                <Link
+                  to={`/owlet/${name}/${link.title}?service=${link.service || link.name}`}
+                  key={link.name}
+                  className="my-5 flex items-center gap-2"
+                  onClick={() => {
+                    setNav(!showNav)
+                    if (logos?.[link.cat]?.[link.logo]) {
+                      setCurrentLogo(logos[link.cat][link.logo])
+                      localStorage.setItem("logo", logos[link.cat][link.logo])
+                    }
+                  }}
+                >
+                  <div className="w-[40px] h-[40px] border-2 p-2 rounded-full overflow-hidden  ">
+                    <img src={logos?.[link.cat]?.[link.logo] || ""} alt="" className="w-full h-full object-contain" />
+                  </div>
+                  {link.title}
+                </Link>
+              )
+          )}
         </div>
       </>
     )
