@@ -12,12 +12,17 @@
   src: url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Regular.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Medium.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Semibold.ttf), url(/src/assets/fonts/GeneralSans_Complete/GeneralSans-Bold.ttf);
 }
 
-body {
+body,
+html {
   font-family: "General Sans";
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
   line-height: 24px;
+  background: #fff;
+  overflow: auto;
+  min-height: 100vh;
+  color: #000;
 }
 
 h1 {

@@ -37,7 +37,7 @@ const Commision = () => {
   }
 
   const defaultCommision = async (data) => {
-    console.log(data)
+    // console.log(data)
     // return
     try {
       const req = await axios.put(
@@ -51,7 +51,7 @@ const Commision = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
 
     allCommision()

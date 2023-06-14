@@ -27,12 +27,12 @@ const ChangeProfile = ({ user, setUser }) => {
         localStorage.setItem("user", JSON.stringify(v.data.data))
         setUser(v.data.data)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
       return
     }
 
-    console.log("data does not change")
+    // console.log("data does not change")
   }
   return (
     <>
@@ -53,7 +53,7 @@ const ChangePassword = () => {
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
   const updateProfile = async (data) => {
-    console.log(data)
+    // console.log(data)
     if (data.new_password !== data.confirm_password) {
       setError("confirm password and new password doesn't match")
       setMessage("")
@@ -70,12 +70,12 @@ const ChangePassword = () => {
         const v = await axios.put(baseUrl + `change/password`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
         setMessage(v.data.message)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
       return
     }
 
-    console.log("data does not change")
+    // console.log("data does not change")
   }
   return (
     <>

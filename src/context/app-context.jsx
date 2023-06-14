@@ -34,7 +34,7 @@ export const OwletProvider = ({ children }) => {
       setCom(comm.data?.data?.commision || 0)
     } catch (error) {
       setCom(0)
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -46,7 +46,7 @@ export const OwletProvider = ({ children }) => {
       }
     })
     const result = res.data.data?.services
-    console.log(result)
+    // console.log(result)
     if (result) setRestricted(JSON.parse(result))
   }
 

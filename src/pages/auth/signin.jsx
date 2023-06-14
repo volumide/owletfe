@@ -17,6 +17,10 @@ const SignIn = () => {
   const signIn = async (data) => {
     try {
       const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
+      if (req.data.message.suspend || req.data.message.suspend === "1") {
+        alert("account suspended")
+        return
+      }
       localStorage.setItem("token", req.data.token)
       localStorage.setItem("user", JSON.stringify(req.data.message))
       setLogged(true)
@@ -27,7 +31,6 @@ const SignIn = () => {
   }
 
   useEffect(() => {
-    // //console.log(isLogged)
     if (isLogged) navigate("/")
   }, [])
 
