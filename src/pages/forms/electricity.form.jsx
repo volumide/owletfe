@@ -19,7 +19,7 @@ const Electricity = () => {
   const { setForm, formData } = useContext(AppContext)
   const submit = async (data) => {
     data.serviceID = queries.service + "-electric"
-
+    data.reason = type
     const req = await verifyMerchant({
       serviceID: data.serviceID,
       type: data.variation_code,

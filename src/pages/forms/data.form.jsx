@@ -7,9 +7,11 @@ import Button from "../../components/button"
 import { getVariationCodes } from "../../utls/url"
 import { Confirm } from "../placeholder"
 import AppContext from "../../context/app-context"
+import { useParams } from "react-router-dom"
 
 const InterneData = () => {
   const defaultForm = internetForm
+  const { type } = useParams()
   const { handleSubmit, control } = useForm()
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
@@ -20,6 +22,7 @@ const InterneData = () => {
 
   const submit = async (data) => {
     data.serviceID = queries.service
+    data.reason = type
     data = { ...data, ...newData }
     data["billersCode"] = data["phone"]
 

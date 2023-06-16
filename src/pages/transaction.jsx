@@ -40,7 +40,9 @@ const Transaction = () => {
     const day = String(now.getDate()).padStart(2, "0")
     const hour = String(now.getHours()).padStart(2, "0")
     const minute = String(now.getMinutes()).padStart(2, "0")
-    const request_id = `${year}${month}${day}${hour}${minute}OWLET`
+    const randomNumber = Math.floor(Math.random() * 10000)
+    const rnd = randomNumber.toString().padStart(4, "0")
+    const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
     try {
       const result = await axios.post(
@@ -64,6 +66,7 @@ const Transaction = () => {
           {
             id: user?.id || "guest",
             phone: res.phone,
+            reason: res.reason,
             amount: res.amount,
             requestId: request_id,
             ref: queries.reference,
@@ -128,25 +131,6 @@ const Transaction = () => {
     const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
     setkeys(keys)
 
-    // if (!queries.type) {
-    //   const transactionBody = {
-    //     amount: res.amount,
-    //     type: "flutter_payment",
-    //     status_flutter: queries.status,
-    //     status: req.response_description,
-    //     tx_ref: queries.tx_ref,
-    //     transaction_id: queries.transaction_id,
-    //     requestId: req.requestId,
-    //     phone: res.phone
-    //   }
-
-    //   await axios.post(baseUrl + "transaction", transactionBody, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Authorization": `Bearer ${localStorage.getItem("token")}`
-    //     }
-    //   })
-    // }
     setTimeout(() => {
       generatePDF("receipt")
     }, 3000)

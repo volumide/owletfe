@@ -17,9 +17,11 @@ const Airtime = () => {
   const [formInput, setFormInput] = useState([])
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
+
   const { setForm, formData } = useContext(AppContext)
   const submit = (data) => {
     data.serviceID = queries.service
+    data.reason = type
     setForm(data)
     changes()
   }

@@ -7,6 +7,7 @@ import Button from "../../components/button"
 import { getVariationCodes } from "../../utls/url"
 import { Confirm } from "../placeholder"
 import AppContext from "../../context/app-context"
+import { useParams } from "react-router-dom"
 const Education = () => {
   const defaultForm = eduForm
   const query = new URLSearchParams(window.location.search)
@@ -16,9 +17,10 @@ const Education = () => {
   const [packages, setPackages] = useState([])
   const { setForm, formData } = useContext(AppContext)
   const [newData, setNewData] = useState({})
-
+  const { type } = useParams()
   const submit = (data) => {
     data.serviceID = queries.service
+    data.reason = type
     if (!data.quantity) data.quantity = 1
     //console.log(data)
     setProceed(true)
