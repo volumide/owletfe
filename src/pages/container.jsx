@@ -10,7 +10,7 @@ const Container = () => {
   const [show, setShow] = useState(false)
   const { isLogged, logout, user } = useContext(AppContext)
   const toggle = () => {
-    if (window.innerWidth <= 768) setShow(!show)
+    if (window.innerWidth <= 1029) setShow(!show)
   }
   return (
     <>
@@ -25,7 +25,7 @@ const Container = () => {
             <img src={menu} alt="" />
           </button>
 
-          <div className={`${show ? "absolute h-full w-full text-center left-0 p-5 top-[121px] bg-white z-10" : " hidden lg:block"}`} onClick={toggle}>
+          <div className={`${show ? "absolute h-full w-full text-center left-0 p-5 top-[121px] bg-white z-10" : " hidden md:hidden lg:block"}`} onClick={toggle}>
             <div className="lg:flex block lg:items-center lg:justify-between">
               <div className="links ">
                 {user?.type === "admin" ? (
@@ -44,7 +44,7 @@ const Container = () => {
                         link.caption !== "Wallet" &&
                         link.caption !== "Profile" &&
                         link.caption !== "Dashboard" && (
-                          <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline my-[16px] " key={index + link.link}>
+                          <Link to={`/owlet/${link.link}`} className="px-5 mx-1 block lg:inline-block my-[16px] " key={index + link.link}>
                             {link.caption}
                           </Link>
                         )
@@ -54,8 +54,8 @@ const Container = () => {
               </div>
               {isLogged ? (
                 <>
-                  <Link onClick={logout} className="p-3 rounded-[12px] bg-black text-white  lg:inline-block block my-[16px] mr-3 ">
-                    Log out
+                  <Link onClick={logout} className="p-2 rounded-[8px] bg-black text-white  lg:inline-block block my-[16px] mr-3 ">
+                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
                   </Link>
                   <Link to="/owlet/profile" className=" items-center gap-3  mx-auto flex ">
                     <img src={avartar} width="30px" />
@@ -69,7 +69,7 @@ const Container = () => {
                   <Link to="/sign-in" className="px-10  font-black underline lg:inline-block block my-[16px] ">
                     Log In
                   </Link>
-                  <Link to="/sign-up" className="px-10 py-5 rounded-full lg:inline w-2/4 mx-auto bg-primary block ">
+                  <Link to="/sign-up" className="px-10  py-5 rounded-full lg:inline w-2/4 mx-auto bg-primary block ">
                     Sign Up
                   </Link>
                 </div>

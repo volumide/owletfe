@@ -17,6 +17,7 @@ const Wallet = () => {
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const [wallet, setWallet] = useState("")
+  const [topUp, setTopUp] = useState("")
   const navigate = useNavigate()
   const getTransactions = async () => {
     const res = await axios.get(`${url}transactions/user`, {
@@ -41,45 +42,54 @@ const Wallet = () => {
   }
 
   const fundWallet = async () => {
-    try {
-      const result = await axios.post(
-        baseUrl + "payment/verify",
-        { id: queries.reference },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
+    // const top = localStorage.getItem("top-up")
+    // if (top) return
+    const result = await axios.post(
+      baseUrl + "payment/verify",
+      { id: queries.reference },
+      {
+        headers: {
+          "Content-Type": "application/json"
         }
-      )
-      const response = result.data.body.data.status
-      if (response !== "success") {
-        return
       }
-      await axios.post(
-        `${url}top/up`,
-        { amount: queries.amount },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-          }
-        }
-      )
-      getTransactions()
-      navigate("/owlet/wallet/Wallet%20Overview?service=wallet%20balance")
-    } catch (error) {
-      //console.log(error)
+    )
+    const response = result.data.body.data.status
+    setTopUp(queries.amount)
+    localStorage.setItem("top-up", queries.amount)
+    if (response !== "success") {
+      return
     }
+  }
+
+  const topIt = async () => {
+    if (!topUp) return
+    const res = await axios.post(
+      `${url}top/up`,
+      { amount: topUp },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    )
+    setTopUp("")
+    getTransactions()
+
+    navigate("/owlet/wallet/Wallet%20Overview?service=wallet%20balance")
   }
 
   useEffect(() => {
     getTransactions()
     getWallet()
+    if (queries.amount) fundWallet()
   }, [type])
 
   useEffect(() => {
-    if (queries.amount) fundWallet()
-  }, [])
+    if (topUp) {
+      topIt()
+    }
+  }, [topUp])
 
   return (
     <>

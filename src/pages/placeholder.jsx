@@ -65,7 +65,7 @@ const Placeholder = () => {
 
   const MainForm = () => {
     return (
-      <div className={`md:w-3/6 grow-0 py-10 px-[16px] md:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
+      <div className={`lg:w-3/6 grow-0 py-10 px-[16px]  lg:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
         {type ? (
           <>
             {name !== "wallet" && name !== "dashboard" && (
