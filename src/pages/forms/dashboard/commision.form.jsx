@@ -37,8 +37,6 @@ const Commision = () => {
   }
 
   const defaultCommision = async (data) => {
-    // console.log(data)
-    // return
     try {
       const req = await axios.put(
         `${url}commision/${data.id}`,
@@ -68,7 +66,7 @@ const Commision = () => {
       name: "Action",
       selector: (row) => row.primary,
       sortable: true,
-      cell: (row) => <>{row.primary || row.primary === "1" ? <i className="fa-solid fa-toggle-on text-valid text-2xl cursor-pointer"></i> : <i className="fa-solid fa-toggle-off text-error text-2xl cursor-pointer" onClick={() => defaultCommision(row)}></i>}</>
+      cell: (row) => <>{row.primary === "1" ? <i className="fa-solid fa-toggle-on text-valid text-2xl cursor-pointer" onClick={() => defaultCommision(row)}></i> : <i className="fa-solid fa-toggle-off text-error text-2xl cursor-pointer" onClick={() => defaultCommision(row)}></i>}</>
     }
   ]
 

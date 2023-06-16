@@ -12,7 +12,7 @@ import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 
 const Transaction = () => {
-  const { com } = useContext(AppContext)
+  const { com, user } = useContext(AppContext)
   const [subscription, setSubscription] = useState()
   const [messsage, setMessage] = useState("processing transaction")
   const [details, setDetails] = useState()
@@ -25,14 +25,15 @@ const Transaction = () => {
   const saveLogo = localStorage.getItem("logo")
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
+  const callback = window.location.href
 
   const subscribe = async () => {
-    if (!queries.type) {
-      if (Object.keys(queries).length && queries.status !== "successful") {
-        setMessage(`transaction${queries.status}`)
-        return
-      }
-    }
+    // if (!queries.type) {
+    //   if (Object.keys(queries).length && queries.status !== "successful") {
+    //     setMessage(`transaction${queries.status}`)
+    //     return
+    //   }
+    // }
     const now = new Date()
     const year = now.getFullYear()
     const month = String(now.getMonth() + 1).padStart(2, "0")
@@ -41,6 +42,47 @@ const Transaction = () => {
     const minute = String(now.getMinutes()).padStart(2, "0")
     const request_id = `${year}${month}${day}${hour}${minute}OWLET`
     const res = JSON.parse(localStorage.getItem("fmDt"))
+    try {
+      const result = await axios.post(
+        baseUrl + "payment/verify",
+        { id: queries.reference },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      const response = result.data.body.data.status
+      if (response !== "success") {
+        setMessage(`payment failure`)
+        return
+      }
+
+      try {
+        await axios.post(
+          baseUrl + "transaction",
+          {
+            id: user?.id || "guest",
+            phone: res.phone,
+            amount: res.amount,
+            requestId: request_id,
+            ref: queries.reference,
+            status_flutter: response
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    } catch (error) {
+      setMessage(error.response.data.message)
+      return
+    }
+
     res["request_id"] = request_id
     res["requestId"] = request_id
 
@@ -86,25 +128,25 @@ const Transaction = () => {
     const keys = ["Phone Number", "Transaction Status", "Transaction ID", "Date"]
     setkeys(keys)
 
-    if (!queries.type) {
-      const transactionBody = {
-        amount: res.amount,
-        type: "flutter_payment",
-        status_flutter: queries.status,
-        status: req.response_description,
-        tx_ref: queries.tx_ref,
-        transaction_id: queries.transaction_id,
-        requestId: req.requestId,
-        phone: res.phone
-      }
+    // if (!queries.type) {
+    //   const transactionBody = {
+    //     amount: res.amount,
+    //     type: "flutter_payment",
+    //     status_flutter: queries.status,
+    //     status: req.response_description,
+    //     tx_ref: queries.tx_ref,
+    //     transaction_id: queries.transaction_id,
+    //     requestId: req.requestId,
+    //     phone: res.phone
+    //   }
 
-      await axios.post(baseUrl + "transaction", transactionBody, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-      })
-    }
+    //   await axios.post(baseUrl + "transaction", transactionBody, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "Authorization": `Bearer ${localStorage.getItem("token")}`
+    //     }
+    //   })
+    // }
     setTimeout(() => {
       generatePDF("receipt")
     }, 3000)
@@ -116,8 +158,9 @@ const Transaction = () => {
     try {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
-      body["amount"] = parseInt(body.amount) + parseInt(com)
+      body["amount"] = (parseInt(body.amount) + parseInt(com)) * 100
       body["requestId"] = new Date().toISOString()
+      body["callback"] = callback
       if (queries.wallet) {
         return
       }
@@ -129,11 +172,11 @@ const Transaction = () => {
         }
       })
       const result = req.data.body
-      if (result.status === "success") {
+      if (result.status) {
         window.open("", "_self", "")
         window.close()
 
-        window.location.replace(result.data.link)
+        window.location.replace(result.data.authorization_url)
       }
     } catch (error) {
       //console.log(error)

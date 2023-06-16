@@ -68,12 +68,11 @@ const Placeholder = () => {
       <div className={`md:w-3/6 grow-0 py-10 px-[16px] md:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
         {type ? (
           <>
-            {name !== "wallet" ||
-              (name !== "dashboard" && (
-                <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
-                  <img src={currentLogo} alt="" className="w-full h-full object-contain" />
-                </div>
-              ))}
+            {name !== "wallet" && name !== "dashboard" && (
+              <div className="w-[70px] h-[70px] border-2 mb-[16px] p-3 rounded-full overflow-hidden  ">
+                <img src={currentLogo} alt="" className="w-full h-full object-contain" />
+              </div>
+            )}
             {allForms[name]}
           </>
         ) : (

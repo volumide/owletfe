@@ -17,7 +17,7 @@ const SignIn = () => {
   const signIn = async (data) => {
     try {
       const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
-      if (req.data.message.suspend || req.data.message.suspend === "1") {
+      if (req.data.message.suspend === "1") {
         alert("account suspended")
         return
       }

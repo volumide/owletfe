@@ -42,6 +42,19 @@ const Wallet = () => {
 
   const fundWallet = async () => {
     try {
+      const result = await axios.post(
+        baseUrl + "payment/verify",
+        { id: queries.reference },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      const response = result.data.body.data.status
+      if (response !== "success") {
+        return
+      }
       await axios.post(
         `${url}top/up`,
         { amount: queries.amount },
@@ -65,7 +78,7 @@ const Wallet = () => {
   }, [type])
 
   useEffect(() => {
-    if (queries.amount && queries.status === "successful") fundWallet()
+    if (queries.amount) fundWallet()
   }, [])
 
   return (
@@ -91,7 +104,7 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
       return
     }
     const data = {
-      amount,
+      amount: amount * 100,
       callback: callback + `&amount=${amount}`,
       requestId: new Date().toISOString()
     }
@@ -108,13 +121,15 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
       }
     )
     const result = req.data.body
-    if (result.status === "success") {
+    console.log(result)
+    if (result.status) {
       // Close the current window
       window.open("", "_self", "")
       window.close()
 
       // Open a new window
-      window.location.replace(result.data.link)
+      console.log(result.data.authorization_url)
+      window.location.replace(result.data.authorization_url)
       //console.log(result.data.link)
     }
   }
