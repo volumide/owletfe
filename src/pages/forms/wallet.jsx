@@ -7,6 +7,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useEffect } from "react"
 import { baseUrl } from "../../utls/url"
+import DataTable from "react-data-table-component"
 
 const Wallet = () => {
   const url = baseUrl
@@ -93,7 +94,7 @@ const Wallet = () => {
 
   return (
     <>
-      <p className="capitalize mb-[24px] text-2xl">{queries.service}</p>
+      {/* <p className="capitalize mb-[24px] text-2xl">{queries.service}</p> */}
       {type === "Transaction History" ? <Transaction transact={transactions} /> : <WalletBalance transact={latest} wallet_balance={wallet || 0} />}
     </>
   )
@@ -146,30 +147,32 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 
   return (
     <div>
-      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] items-end">
-        {isFund ? (
-          <form onSubmit={payment} className="md:flex gap-3 w-full">
-            <input className="bg-white mb-3 md:mb-0 text-black py-[16px] rounded-default w-full flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
-            <div>
-              <Button otherClass="px-10 text-black" type="submit">
-                Fund Wallet
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <p>
-              Wallet Balance
-              <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
-            </p>
+      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] ">
+        <>
+          <p className="text-right">
+            Wallet Balance
+            <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
+          </p>
 
-            <div>
-              <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
-                Fund Wallet
-              </Button>
-            </div>
-          </>
-        )}
+          <div>
+            {isFund ? (
+              <form onSubmit={payment} className="lg:flex lg:gap-3 w-full">
+                <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] rounded-default w-full lg:flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
+                <div>
+                  <Button otherClass="px-10 text-black" type="submit">
+                    Fund Wallet
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <div className=" flex">
+                <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
+                  Fund Wallet
+                </Button>
+              </div>
+            )}
+          </div>
+        </>
       </div>
       <p className="text-2xl mt-[20px]">Recent Transaction</p>
       {transact.length &&
@@ -191,10 +194,37 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 }
 
 const Transaction = ({ transact = [] }) => {
+  const column = [
+    {
+      name: "Type",
+      minWidth: "150px",
+      cell: (row) => (
+        <>
+          <p>
+            <span className="capitalize">{row.type === "wallet" ? row.type + " Top up" : row.type}</span>
+          </p>
+        </>
+      )
+    },
+    {
+      name: "Transaction Id",
+      minWidth: "250px",
+      selector: (row) => <span className="block text-ddgray">Transaction ID: {row.transaction_id}</span>
+    },
+    {
+      name: "Amount",
+      selector: (row) => row.amount
+    },
+    {
+      name: "Date",
+      selector: (row) => row.created_at.split("T")[0]
+    }
+  ]
   return (
     <>
       <div>
-        {transact.length &&
+        <DataTable columns={column} data={transact} title="Transaction History" />
+        {/* {transact.length &&
           transact.map((el, i) => (
             <div className="flex justify-between py-3 border-b" key={i}>
               <p>
@@ -207,7 +237,7 @@ const Transaction = ({ transact = [] }) => {
                 <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
               </p>
             </div>
-          ))}
+          ))} */}
       </div>
     </>
   )

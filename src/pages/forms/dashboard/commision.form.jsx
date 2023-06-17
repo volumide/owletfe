@@ -81,7 +81,7 @@ const Commision = () => {
           <Input label="Commision" name="commision" type="number" control={control} />
           <Button type="submit">Add Charges</Button>
         </form>
-        {commision.length && <>{commision.length && <DataTable columns={columns} data={commision} title="Commisions" />}</>}
+        {commision.length && <>{commision.length && <DataTable columns={columns} data={commision} title="Commisions" pagination paginationPerPage="15" responsive />}</>}
       </div>
     </>
   )

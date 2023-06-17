@@ -10,6 +10,7 @@ import AppContext from "../../context/app-context"
 import { baseUrl } from "../../utls/url"
 const SignUp = () => {
   const { handleSubmit, control } = useForm()
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [errors, setErrors] = useState([])
   const { isLogged } = useContext(AppContext)
@@ -19,6 +20,7 @@ const SignUp = () => {
   }, [])
 
   const signup = async (data) => {
+    setLoading(true)
     try {
       await axios.post(baseUrl + "user", data, { headers: { "Content-Type": "application/json" } })
       //console.log(req.data)
@@ -26,6 +28,7 @@ const SignUp = () => {
     } catch (error) {
       //console.log(error.response.data.data)
       setErrors(error.response.data.data)
+      setLoading(false)
     }
   }
   return (
@@ -44,7 +47,7 @@ const SignUp = () => {
         <Input label="Email Address" type="email" control={control} name="email" />
         <Input label="Password" type="password" control={control} name="password" />
         {/* <Input label="Confirm Password" type="password" control={control} /> */}
-        <Button otherClass="mt-[32px]" type="submit">
+        <Button otherClass="mt-[32px]" type="submit" disabled={loading}>
           Sign Up
         </Button>
         <small className="text-center my-[16px] block">

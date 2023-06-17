@@ -11,10 +11,12 @@ import { baseUrl } from "../../utls/url"
 
 const SignIn = () => {
   const { handleSubmit, control } = useForm()
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   const navigate = useNavigate()
   const { setLogged, isLogged } = useContext(AppContext)
   const signIn = async (data) => {
+    setLoading(true)
     try {
       const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
       if (req.data.message.suspend === "1") {
@@ -27,6 +29,7 @@ const SignIn = () => {
       navigate("/", { replace: true })
     } catch (error) {
       setError(error.response.statusText)
+      setLoading(false)
     }
   }
 
@@ -41,7 +44,7 @@ const SignIn = () => {
         <Input label="Email Address" type="email" control={control} name="email" />
         <Input label="Password" type="password" control={control} name="password" />
         <small className="font-[600] underline">{/* <Link to="/forgot-password">Forgot Password</Link> */}</small>
-        <Button otherClass="mt-[32px]" type="submit">
+        <Button otherClass="mt-[32px]" type="submit" disabled={loading}>
           Sign In
         </Button>
         <small className="text-center my-[16px] block">

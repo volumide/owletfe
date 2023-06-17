@@ -89,7 +89,7 @@ const Transactions = () => {
         </div>
       </label>
       <div className="mb-10">
-        <DataTable columns={column} data={allTrans} title="All Transactions" responsive />
+        <DataTable columns={column} data={allTrans} title="All Transactions" pagination paginationPerPage="15" responsive />
       </div>
     </div>
   )

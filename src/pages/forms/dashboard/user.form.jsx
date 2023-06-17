@@ -52,7 +52,7 @@ const Users = () => {
   }, [])
   return (
     <>
-      <DataTable columns={column} data={users} title="Users" />
+      <DataTable columns={column} data={users} title="Users" pagination paginationPerPage="15" />
     </>
   )
 }

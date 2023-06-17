@@ -44,47 +44,48 @@ const Transaction = () => {
     const rnd = randomNumber.toString().padStart(4, "0")
     const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
-    try {
-      const result = await axios.post(
-        baseUrl + "payment/verify",
-        { id: queries.reference },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      )
-      const response = result.data.body.data.status
-      if (response !== "success") {
-        setMessage(`payment failure`)
-        return
-      }
-
+    if (!queries.type)
       try {
-        await axios.post(
-          baseUrl + "transaction",
-          {
-            id: user?.id || "guest",
-            phone: res.phone,
-            reason: res.reason,
-            amount: res.amount,
-            requestId: request_id,
-            ref: queries.reference,
-            status_flutter: response
-          },
+        const result = await axios.post(
+          baseUrl + "payment/verify",
+          { id: queries.reference },
           {
             headers: {
               "Content-Type": "application/json"
             }
           }
         )
+        const response = result.data.body.data.status
+        if (response !== "success") {
+          setMessage(`payment failure`)
+          return
+        }
+
+        try {
+          await axios.post(
+            baseUrl + "transaction",
+            {
+              id: user?.id || "guest",
+              phone: res.phone,
+              reason: res.reason,
+              amount: res.amount,
+              requestId: request_id,
+              ref: queries.reference,
+              status_flutter: response
+            },
+            {
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          )
+        } catch (error) {
+          console.log(error)
+        }
       } catch (error) {
-        console.log(error)
+        setMessage(error.response.data.message)
+        return
       }
-    } catch (error) {
-      setMessage(error.response.data.message)
-      return
-    }
 
     res["request_id"] = request_id
     res["requestId"] = request_id
@@ -216,7 +217,7 @@ const Transaction = () => {
                 <p>{productName}</p>
                 <h2>NGN{details?.[productName]}</h2>
               </div>
-              <div className="grid grid-cols-2 gap-3 mt-[52px]">
+              <div className="md:flex md:flex-wrap md:justify-between lg:grid lg:grid-cols-2 gap-3 mt-[52px]">
                 {keys.map((i) => (
                   <p key={i}>
                     {i}
