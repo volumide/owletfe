@@ -44,6 +44,7 @@ const Transaction = () => {
     const rnd = randomNumber.toString().padStart(4, "0")
     const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
+
     if (!queries.type)
       try {
         const result = await axios.post(
@@ -71,7 +72,8 @@ const Transaction = () => {
               amount: res.amount,
               requestId: request_id,
               ref: queries.reference,
-              status_flutter: response
+              status_flutter: response,
+              "data": JSON.stringify(res)
             },
             {
               headers: {
@@ -87,20 +89,25 @@ const Transaction = () => {
         return
       }
 
-    res["request_id"] = request_id
+    // res["request_id"] = request_id
     res["requestId"] = request_id
 
     let newRes = ""
     if (queries.type) {
       try {
-        const result = await axios.post(baseUrl + "withdraw", res, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        const result = await axios.post(
+          baseUrl + "withdraw",
+          { ...res, "data": JSON.stringify(res) },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
           }
-        })
+        )
         // console.log(result)
       } catch (error) {
+        console.log(error)
         setMessage(error.response.data.message)
         newRes = error.response.data.message
       }

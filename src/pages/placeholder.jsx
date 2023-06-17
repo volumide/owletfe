@@ -104,7 +104,7 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-export const Confirm = ({ form = [], name, ev }) => {
+export const Confirm = ({ form = [], obj = {}, name, ev }) => {
   const { com } = useContext(AppContext)
   const navigate = useNavigate()
   const user = localStorage.getItem("user")
@@ -116,6 +116,7 @@ export const Confirm = ({ form = [], name, ev }) => {
   const completeTransaction = () => {
     ev ? ev() : navigate("/transaction")
   }
+  const exept = ["requestId", "request_id", "serviceID"]
 
   return (
     <>
@@ -128,6 +129,17 @@ export const Confirm = ({ form = [], name, ev }) => {
             <p>{name?.data?.[i.name]}</p>
           </div>
         ))}
+        {Object.keys(obj).length
+          ? Object.keys(obj).map(
+              (i) =>
+                !exept.includes(i) && (
+                  <div className="my-[16px]" key={i}>
+                    <h1 className="text-base font[600] capitalize">{i === "reason" ? "Service" : i}</h1>
+                    <p>{obj[i]}</p>
+                  </div>
+                )
+            )
+          : ""}
         <div className="my-[16px]">
           <h1 className="text-base font[600]">Convenience Fee</h1>
           <p>{com}</p>

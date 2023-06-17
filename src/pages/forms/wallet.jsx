@@ -8,6 +8,8 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { baseUrl } from "../../utls/url"
 import DataTable from "react-data-table-component"
+import { Confirm } from "../placeholder"
+import { toast } from "react-toastify"
 
 const Wallet = () => {
   const url = baseUrl
@@ -104,18 +106,25 @@ export default Wallet
 
 const WalletBalance = ({ transact = [], wallet_balance }) => {
   const callback = window.location.href
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
   const [isFund, setFund] = useState(false)
   const [amount, setAmount] = useState()
   const url = baseUrl
 
-  const payment = async (e) => {
-    e.preventDefault()
-    if (!amount || parseInt(amount) < 1) {
-      alert("invalid amount")
+  const payment = async () => {
+    let realValue = ""
+    if (amount && parseInt(amount) >= 1 && !queries.reload) realValue = amount
+    if (queries.reload && parseInt(queries.reload) > 0) realValue = queries.reload
+
+    if (!realValue) {
+      toast.error("invalid amount")
+      // alert("invalid amount")
       return
     }
+
     const data = {
-      amount: amount * 100,
+      amount: realValue * 100,
       callback: callback + `&amount=${amount}`,
       requestId: new Date().toISOString()
     }
@@ -132,18 +141,25 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
       }
     )
     const result = req.data.body
-    console.log(result)
+    // console.log(result)
     if (result.status) {
       // Close the current window
       window.open("", "_self", "")
       window.close()
 
       // Open a new window
-      console.log(result.data.authorization_url)
       window.location.replace(result.data.authorization_url)
       //console.log(result.data.link)
     }
   }
+
+  useEffect(() => {
+    if (queries.reload) {
+      setTimeout(() => {
+        payment()
+      }, 1000)
+    }
+  }, [])
 
   return (
     <div>
@@ -156,10 +172,10 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 
           <div>
             {isFund ? (
-              <form onSubmit={payment} className="lg:flex lg:gap-3 w-full">
+              <form className="lg:flex lg:gap-3 w-full">
                 <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] rounded-default w-full lg:flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
                 <div>
-                  <Button otherClass="px-10 text-black" type="submit">
+                  <Button otherClass="px-10 text-black" type="button" onClick={payment}>
                     Fund Wallet
                   </Button>
                 </div>
@@ -194,6 +210,26 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 }
 
 const Transaction = ({ transact = [] }) => {
+  const [proceed, setProceed] = useState(false)
+  const [form, setForm] = useState()
+  const navigate = useNavigate()
+
+  const reWork = (data) => {
+    if (!data.requestId) {
+      navigate(`/owlet/wallet/Wallet%20Overview?service=wallet%20balance&reload=${data.amount}`)
+      return
+    }
+    if (!data.data) {
+      console.log("can't perfom trnasaction")
+      return
+    }
+
+    const resp = data.data
+    localStorage.setItem("fmDt", resp)
+    setForm(JSON.parse(resp))
+    setProceed(true)
+  }
+
   const column = [
     {
       name: "Type",
@@ -218,27 +254,20 @@ const Transaction = ({ transact = [] }) => {
     {
       name: "Date",
       selector: (row) => row.created_at.split("T")[0]
+    },
+    {
+      name: "Action",
+      selector: (row) => (
+        <button title="redo" onClick={() => reWork(row)}>
+          <i className="fa-solid fa-arrow-rotate-right"></i>
+        </button>
+      )
     }
   ]
+
   return (
     <>
-      <div>
-        <DataTable columns={column} data={transact} title="Transaction History" />
-        {/* {transact.length &&
-          transact.map((el, i) => (
-            <div className="flex justify-between py-3 border-b" key={i}>
-              <p>
-                <span className="capitalize">{el.type === "wallet" ? el.type + " Top up" : el.type}</span>
-
-                <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
-              </p>
-              <p className="text-right">
-                NGN{el.amount}
-                <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
-              </p>
-            </div>
-          ))} */}
-      </div>
+      <div>{proceed ? <Confirm obj={form} /> : <DataTable columns={column} data={transact} title="Transaction History" responsive pagination paginationPerPage="15" />}</div>
     </>
   )
 }
