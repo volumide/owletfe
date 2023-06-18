@@ -2,7 +2,7 @@ import axios from "axios"
 
 const password = "Olumide1"
 const userName = "volumide42@gmail.com"
-const url = "https://sandbox.vtpass.com/api/"
+export const url = "https://sandbox.vtpass.com/api/"
 export const baseUrl = "http://127.0.0.1:8000/api/"
 
 export const getCountries = async () => {

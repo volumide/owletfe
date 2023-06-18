@@ -8,9 +8,12 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import AppContext from "../../context/app-context"
 import { baseUrl } from "../../utls/url"
+import { toast } from "react-toastify"
 
 const SignIn = () => {
   const { handleSubmit, control } = useForm()
+  const query = new URLSearchParams(window.location.search)
+  const queries = Object.fromEntries(query.entries())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   const navigate = useNavigate()
@@ -20,15 +23,17 @@ const SignIn = () => {
     try {
       const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
       if (req.data.message.suspend === "1") {
-        alert("account suspended")
+        toast.warn("account suspended")
         return
       }
       localStorage.setItem("token", req.data.token)
       localStorage.setItem("user", JSON.stringify(req.data.message))
       setLogged(true)
+      toast.success("login successfull")
       navigate("/", { replace: true })
     } catch (error) {
-      setError(error.response.statusText)
+      toast.error("invalid username or password")
+      setError(error.response.statusText || "unauthtorize")
       setLoading(false)
     }
   }
@@ -39,11 +44,14 @@ const SignIn = () => {
 
   return (
     <Auth header="Welcome Back" caption="Sign in into your owletpay account" bg={true}>
+      {queries?.reset ? <span className="text-valid"> A temporal password as been sent to your email </span> : ""}
       {error ? <p className="text-red-500">{error.toLowerCase()}: invalid username or password</p> : ""}
       <form onSubmit={handleSubmit(signIn)}>
         <Input label="Email Address" type="email" control={control} name="email" />
         <Input label="Password" type="password" control={control} name="password" />
-        <small className="font-[600] underline">{/* <Link to="/forgot-password">Forgot Password</Link> */}</small>
+        <small className="font-[600] underline">
+          <Link to="/forgot-password">Forgot Password</Link>
+        </small>
         <Button otherClass="mt-[32px]" type="submit" disabled={loading}>
           Sign In
         </Button>

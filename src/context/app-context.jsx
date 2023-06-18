@@ -66,5 +66,10 @@ export const OwletProvider = ({ children }) => {
 
   const setValue = (amount) => setAmount({ ...amount })
 
-  return <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm, restricted }}>{children}</AppContext.Provider>
+  return (
+    <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm, restricted }}>
+      {user?.temporal === "true" ? <p className="text-center text-error p-1">You are using a temporal password, change your password</p> : ""}
+      {children}
+    </AppContext.Provider>
+  )
 }

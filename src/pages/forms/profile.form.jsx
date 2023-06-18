@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form"
 import Input from "../../components/input"
 import { useParams } from "react-router-dom"
 import Button from "../../components/button"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import axios from "axios"
 import { baseUrl } from "../../utls/url"
+import AppContext from "../../context/app-context"
 
 const Profile = () => {
   const { type } = useParams()
@@ -50,6 +51,7 @@ const ChangeProfile = ({ user, setUser }) => {
 
 const ChangePassword = () => {
   const { handleSubmit, control } = useForm()
+  const { setUser } = useContext(AppContext)
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
   const updateProfile = async (data) => {
@@ -68,6 +70,10 @@ const ChangePassword = () => {
     if (Object.keys(sentData).length) {
       try {
         const v = await axios.put(baseUrl + `change/password`, sentData, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
+        const user = JSON.parse(localStorage.getItem("user"))
+        user["temporal"] = "false"
+        setUser(user)
+        localStorage.setItem("user", JSON.stringify(user))
         setMessage(v.data.message)
       } catch (error) {
         // console.log(error)

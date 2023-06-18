@@ -190,21 +190,26 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
           </div>
         </>
       </div>
-      <p className="text-2xl mt-[20px]">Recent Transaction</p>
-      {transact.length &&
-        transact.map((el, i) => (
-          <div className="flex justify-between py-3 border-b" key={i}>
-            <p>
-              <span className="capitalize">{el.type === "wallet" ? el.type + " Transaction" : el.type}</span>
 
-              <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
-            </p>
-            <p className="text-right">
-              NGN{el.amount}
-              <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
-            </p>
-          </div>
-        ))}
+      {transact.length ? (
+        <>
+          <p className="text-2xl mt-[20px]">Recent Transaction</p>
+          {transact.map((el, i) => (
+            <div className="flex justify-between py-3 border-b" key={i}>
+              <p>
+                <span className="capitalize">{el.type === "wallet" ? el.type + " Transaction" : el.type}</span>
+                <span className="block text-ddgray">Transaction ID: {el.transaction_id}</span>
+              </p>
+              <p className="text-right">
+                NGN{el.amount}
+                <span className="block text-ddgray">{el.created_at.split("T")[0]}</span>
+              </p>
+            </div>
+          ))}
+        </>
+      ) : (
+        <p className="text-center mt-[20px]">No record found</p>
+      )}
     </div>
   )
 }
