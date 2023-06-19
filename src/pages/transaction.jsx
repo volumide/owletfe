@@ -151,7 +151,7 @@ const Transaction = () => {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
       body["amount"] = (parseInt(body.amount) + parseInt(com)) * 100
-      body["request_Id"] = new Date().toISOString()
+      body["requestId"] = new Date().toISOString()
       body["callback"] = callback
       if (queries.wallet) {
         return
