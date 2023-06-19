@@ -57,7 +57,7 @@ const Education = () => {
           <>
             {defaultForm.map((i) =>
               i.select ? (
-                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} onChange={handleChange}>
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} onChange={handleChange} required>
                   {packages.map((e) => (
                     <option value={e.variation_code} key={e.code} name={e.name} data-v={e.variation_amount}>
                       {e.name}
@@ -65,7 +65,7 @@ const Education = () => {
                   ))}
                 </Input>
               ) : (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} defaultValue={newData?.[i.name]} />
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} defaultValue={newData?.[i.name]} required />
               )
             )}
             <div className="flex gap-3 mt-[32px]">

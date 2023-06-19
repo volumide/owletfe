@@ -250,7 +250,7 @@ const Transaction = ({ transact = [] }) => {
     {
       name: "Transaction Id",
       minWidth: "250px",
-      selector: (row) => <span className="block text-ddgray">Transaction ID: {row.transaction_id}</span>
+      selector: (row) => <span className="block text-ddgray">{row.transaction_id}</span>
     },
     {
       name: "Amount",
@@ -263,9 +263,11 @@ const Transaction = ({ transact = [] }) => {
     {
       name: "Action",
       selector: (row) => (
-        <button title="redo" onClick={() => reWork(row)}>
-          <i className="fa-solid fa-arrow-rotate-right"></i>
-        </button>
+        <div className="p-1">
+          <button title="redo" onClick={() => reWork(row)}>
+            <i className="fa-solid fa-arrow-rotate-right mr-1 p-1 bg-valid font-[600]"></i> Repeat
+          </button>
+        </div>
       )
     }
   ]

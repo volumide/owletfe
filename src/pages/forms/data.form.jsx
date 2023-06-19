@@ -56,7 +56,7 @@ const InterneData = () => {
           <>
             {defaultForm.map((i) =>
               i.label === "Package" ? (
-                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} onChange={options}>
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} onChange={options} required>
                   {packages.map((e) => (
                     <option value={e.variation_code} key={e.name} data-id={e.variation_amount}>
                       {e.name}
@@ -64,7 +64,7 @@ const InterneData = () => {
                   ))}
                 </Input>
               ) : (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} disabled={i.disabled} value={amount[i.name]} />
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} disabled={i.disabled} value={amount[i.name]} required />
               )
             )}
             <div className="flex gap-3 mt-[32px]">

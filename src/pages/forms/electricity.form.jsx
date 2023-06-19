@@ -63,7 +63,7 @@ const Electricity = () => {
           <>
             {electForms.map((i) =>
               i.select ? (
-                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true}>
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i} name={i.name} select={true} required>
                   {i.options.map((e) => (
                     <option value={e.toLocaleLowerCase()} key={e}>
                       {e}
@@ -71,7 +71,7 @@ const Electricity = () => {
                   ))}
                 </Input>
               ) : (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} />
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} required />
               )
             )}
             <div className="flex gap-3 mt-[32px]">

@@ -123,7 +123,7 @@ const Airtime = () => {
           <div>
             {type == "International Airtime" ? (
               <div>
-                <Input label="Country" control={control} name="country_code" select onChange={getProductType}>
+                <Input label="Country" control={control} name="country_code" select onChange={getProductType} required>
                   {countries.map((country) => (
                     <option value={country.code} key={country.prefix}>
                       {country.name}
@@ -131,7 +131,7 @@ const Airtime = () => {
                   ))}
                 </Input>
                 {products.length ? (
-                  <Input label="Product Type" control={control} name="product_type_id" select onChange={getOperators}>
+                  <Input label="Product Type" control={control} name="product_type_id" select onChange={getOperators} required>
                     {products.map((i) =>
                       i.product_type_id === 1 ? (
                         <option value={i.product_type_id} key={i.name}>
@@ -146,7 +146,7 @@ const Airtime = () => {
                   <></>
                 )}
                 {operator.length ? (
-                  <Input label="Operator" control={control} name="operator_id" select onChange={getCodes}>
+                  <Input label="Operator" control={control} name="operator_id" select onChange={getCodes} required>
                     {operator.map((i) => (
                       <option value={i.operator_id} key={i.name}>
                         {i.name}
@@ -157,7 +157,7 @@ const Airtime = () => {
                   <></>
                 )}
                 {varia.length ? (
-                  <Input label="Type" control={control} name="variation_code" select onChange={variationCode}>
+                  <Input label="Type" control={control} name="variation_code" select onChange={variationCode} required>
                     {varia.map((i) => (
                       <option value={i.variation_code} data-amount={i.variation_amount} key={i.name}>
                         {i.name}
@@ -173,7 +173,7 @@ const Airtime = () => {
             )}
             {defaultForm.map((i) =>
               i.select ? (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} select={true}>
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} select={true} required>
                   {i.options.map((e) => (
                     <option value={e.value} key={e.code}>
                       {e.key}
@@ -181,7 +181,7 @@ const Airtime = () => {
                   ))}
                 </Input>
               ) : (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} value={newData?.[i.name]} />
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} value={newData?.[i.name]} required />
               )
             )}
             <div className="flex gap-3 mt-[32px]">

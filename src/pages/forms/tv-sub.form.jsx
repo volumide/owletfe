@@ -71,7 +71,7 @@ const TvForm = () => {
           </>
         ) : (
           <>
-            <Input label="Smart Card Number" name="billersCode" onChange={handleChange} control={control} />
+            <Input label="Smart Card Number" name="billersCode" onChange={handleChange} control={control} required />
             {!message && subDetails && queries.service === "dstv" && (
               <div className="rounded-[16px] bg-input p-5">
                 {dstvDetails.map((e) => (
@@ -85,7 +85,7 @@ const TvForm = () => {
             {message && <p className="bg-red-400 text-white my-3 p-5 rounded-[16px]">{message}</p>}
 
             {["dstv", "gotv"].includes(queries.service) && (
-              <Input label="What do you want to do" name="subscription_type" onChange={handleChange} control={control} select>
+              <Input label="What do you want to do" name="subscription_type" onChange={handleChange} control={control} select required>
                 <option value="renew">Renew</option>
                 <option value="change">Change</option>
               </Input>
@@ -93,7 +93,7 @@ const TvForm = () => {
 
             {tvForms.map((i) =>
               i.select ? (
-                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i.name} name={i.name} select onChange={handleChange}>
+                <Input label={i.label || "moving"} type={i?.type || "text"} control={control} key={i.name} name={i.name} select onChange={handleChange} required>
                   {packages.map((e) => (
                     <option value={e.variation_amount} key={e.name} name={e.name} code={e.variation_code}>
                       {e.name}
@@ -101,7 +101,7 @@ const TvForm = () => {
                   ))}
                 </Input>
               ) : (
-                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} value={newData?.[i.name]} />
+                <Input label={i.label} type={i?.type || "text"} control={control} key={i.label} name={i.name} value={newData?.[i.name]} required />
               )
             )}
 
