@@ -7,6 +7,7 @@ import { useContext, useState } from "react"
 import axios from "axios"
 import { baseUrl } from "../../utls/url"
 import AppContext from "../../context/app-context"
+import { toast } from "react-toastify"
 
 const Profile = () => {
   const { type } = useParams()
@@ -61,6 +62,8 @@ const ChangePassword = () => {
       setMessage("")
       return
     }
+    // console.log(data)
+    // return
     setError("")
     const sentData = {}
     Object.keys(data).map((e) => {
@@ -75,8 +78,10 @@ const ChangePassword = () => {
         setUser(user)
         localStorage.setItem("user", JSON.stringify(user))
         setMessage(v.data.message)
+        setTimeout(() => setMessage(""), 2000)
+        toast.success(v.data.message)
       } catch (error) {
-        // console.log(error)
+        console.log(error)
       }
       return
     }

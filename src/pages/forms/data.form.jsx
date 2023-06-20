@@ -18,9 +18,10 @@ const InterneData = () => {
   const [packages, setPackages] = useState([])
   const [proceed, setProceed] = useState(false)
   const [newData, setNewData] = useState({})
-  const { setForm, formData, setValue, amount } = useContext(AppContext)
+  const { setForm, formData, setValue, amount, setCommision, com } = useContext(AppContext)
 
   const submit = async (data) => {
+    setCommision(com?.[queries.service || 0])
     data.serviceID = queries.service
     data.reason = type
     data = { ...data, ...newData }
@@ -50,7 +51,7 @@ const InterneData = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
-            <Confirm form={defaultForm} name={formData} />
+            <Confirm form={defaultForm} name={formData} type={queries.service} />
           </>
         ) : (
           <>

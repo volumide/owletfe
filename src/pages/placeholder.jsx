@@ -104,12 +104,12 @@ const Placeholder = () => {
 }
 export default Placeholder
 
-export const Confirm = ({ form = [], obj = {}, name, ev }) => {
+export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
   const { com } = useContext(AppContext)
   const navigate = useNavigate()
   const user = localStorage.getItem("user")
   const formDt = JSON.parse(localStorage.getItem("fmDt"))
-  const convinience = com || 0
+  const convinience = com?.[type] || 0
   const walletWithdraw = () => {
     navigate("/transaction?type=wallet_withdraw")
   }
@@ -142,11 +142,11 @@ export const Confirm = ({ form = [], obj = {}, name, ev }) => {
           : ""}
         <div className="my-[16px]">
           <h1 className="text-base font[600]">Convenience Fee</h1>
-          <p>{com}</p>
+          <p>{com?.[type] || 0}</p>
         </div>
         <div className="my-[16px]">
           <h1 className="text-base font[600]">Total payable amount</h1>
-          <p>{parseInt(com) + parseInt(formDt.amount)}</p>
+          <p>{parseInt(com?.[type] || 0) + parseInt(formDt.amount)}</p>
         </div>
       </div>
 

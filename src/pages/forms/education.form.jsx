@@ -15,10 +15,11 @@ const Education = () => {
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
   const [packages, setPackages] = useState([])
-  const { setForm, formData } = useContext(AppContext)
+  const { setForm, formData, setCommision, com } = useContext(AppContext)
   const [newData, setNewData] = useState({})
   const { type } = useParams()
   const submit = (data) => {
+    setCommision(com?.[queries.service || 0])
     data.serviceID = queries.service
     data.reason = type
     if (!data.quantity) data.quantity = 1
@@ -51,7 +52,7 @@ const Education = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
-            <Confirm form={defaultForm} name={formData} />
+            <Confirm form={defaultForm} name={formData} type={queries.service} />
           </>
         ) : (
           <>

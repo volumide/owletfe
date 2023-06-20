@@ -25,8 +25,9 @@ const Airtime = () => {
   const [ct, setCt] = useState("")
   const [op, setOp] = useState("")
   const [newData, setNewData] = useState({})
-  const { setForm, formData } = useContext(AppContext)
+  const { setForm, formData, setCommision, com } = useContext(AppContext)
   const submit = (data) => {
+    setCommision(com?.[queries.service || 0])
     data.serviceID = queries.service
     data.reason = type
     data.billersCode = data.phone
@@ -59,7 +60,7 @@ const Airtime = () => {
       }
       setNewData({ ...newData, "country_code": e.target.value })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -71,7 +72,7 @@ const Airtime = () => {
 
       setNewData({ ...newData, "product_type_id": "1" })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -79,7 +80,7 @@ const Airtime = () => {
     const res = await getVariationCodes(`foreign-airtime&operator_id=${op}&product_type_id=1`)
     setVaria(res.content.variations)
     setNewData({ ...newData, "operator_id": e.target.value })
-    console.log(res)
+    // console.log(res)
   }
 
   const variationCode = async (e) => {
@@ -117,7 +118,7 @@ const Airtime = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
-            <Confirm form={formInput} name={formData} />
+            <Confirm form={formInput} name={formData} type={queries.service} />
           </>
         ) : (
           <div>

@@ -12,7 +12,7 @@ import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 
 const Transaction = () => {
-  const { com, user } = useContext(AppContext)
+  const { commision, user } = useContext(AppContext)
   const [subscription, setSubscription] = useState()
   const [messsage, setMessage] = useState("processing transaction")
   const [details, setDetails] = useState()
@@ -82,7 +82,7 @@ const Transaction = () => {
             }
           )
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       } catch (error) {
         setMessage(error.response.data.message)
@@ -150,7 +150,7 @@ const Transaction = () => {
     try {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
-      body["amount"] = (parseInt(body.amount) + parseInt(com)) * 100
+      body["amount"] = (parseInt(body.amount) + parseInt(commision)) * 100
       body["requestId"] = new Date().toISOString()
       body["callback"] = callback
       if (queries.wallet) {

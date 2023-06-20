@@ -22,6 +22,7 @@ const Wallet = () => {
   const [wallet, setWallet] = useState("")
   const [topUp, setTopUp] = useState("")
   const navigate = useNavigate()
+
   const getTransactions = async () => {
     const res = await axios.get(`${url}transactions/user`, {
       headers: {
@@ -217,6 +218,7 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 const Transaction = ({ transact = [] }) => {
   const [proceed, setProceed] = useState(false)
   const [form, setForm] = useState()
+  const [detail, setDetail] = useState({})
   const navigate = useNavigate()
 
   const reWork = (data) => {
@@ -233,6 +235,11 @@ const Transaction = ({ transact = [] }) => {
     localStorage.setItem("fmDt", resp)
     setForm(JSON.parse(resp))
     setProceed(true)
+  }
+
+  const seeDetails = (dt) => {
+    setDetail({})
+    if (dt) setDetail(JSON.parse(dt))
   }
 
   const column = [
@@ -262,19 +269,47 @@ const Transaction = ({ transact = [] }) => {
     },
     {
       name: "Action",
-      minWidth: "150px",
+      minWidth: "250px",
       selector: (row) => (
         <div className="p-1">
-          <button title="redo" onClick={() => reWork(row)}>
-            <i className="fa-solid fa-arrow-rotate-right mr-1 p-1 px-3 bg-valid font-[600] rounded-full"></i> Repeat
+          <button title="redo" onClick={() => reWork(row)} className="bg-valid font-[600] rounded-full p-1 px-3 text-white">
+            <i className="fa-solid fa-arrow-rotate-right mr-1  "></i> Repeat
           </button>
+          <label htmlFor="my-modal-5" role="button" id="md-button" title="details" onClick={() => seeDetails(row.data)} className="font-[600] rounded-full p-1 px-3 border border-stroke ml-1">
+            Details
+          </label>
         </div>
       )
     }
   ]
 
+  const Det = ({ title, content }) => (
+    <>
+      {content && (
+        <>
+          {/* <small className="capitalize p-1 px-2 rounded-full bg-success text-white ">{detail?.status}</small> */}
+          <p className="py-2">
+            <span className="text-xs">{title}</span>
+            <span className="block">{content} </span>
+          </p>
+        </>
+      )}
+    </>
+  )
+
   return (
     <>
+      <input type="checkbox" id="my-modal-5" className="modal-toggle" />
+      <label className="modal" htmlFor="my-modal-5">
+        <div className="modal-box  bg-white">
+          {/* <small className="capitalize p-1 px-2 rounded-full bg-success text-white ">{detail?.status}</small> */}
+          <Det title="Product" content={detail?.reason} />
+          <Det title="Amount" content={detail?.amount} />
+          <Det title="Contact" content={detail?.phone} />
+          <Det title="Subscribed Number" content={detail?.billersCode} />
+          <Det title="Type" content={detail?.variation_code} />
+        </div>
+      </label>
       <div>{proceed ? <Confirm obj={form} /> : <DataTable columns={column} data={transact} title="Transaction History" responsive pagination paginationPerPage="15" />}</div>
     </>
   )

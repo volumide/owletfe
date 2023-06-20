@@ -16,8 +16,9 @@ const Electricity = () => {
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
   const [error, setError] = useState()
-  const { setForm, formData } = useContext(AppContext)
+  const { setForm, formData, setCommision, com } = useContext(AppContext)
   const submit = async (data) => {
+    setCommision(com?.[queries.service || 0])
     data.serviceID = queries.service + "-electric"
     data.reason = type
     const req = await verifyMerchant({
@@ -57,7 +58,7 @@ const Electricity = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
-            <Confirm form={electForm} name={formData} />
+            <Confirm form={electForm} name={formData} type={queries.service} />
           </>
         ) : (
           <>

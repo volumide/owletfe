@@ -7,21 +7,25 @@ import Button from "../../components/button"
 import { getVariationCodes, verifyMerchant } from "../../utls/url"
 import { Confirm } from "../placeholder"
 import AppContext from "../../context/app-context"
+import { useParams } from "react-router-dom"
 
 const TvForm = () => {
   const [subDetails, setSubDetails] = useState()
   const tvForms = tvForn
+  const { type } = useParams()
   const { handleSubmit, control } = useForm()
   const [proceed, setProceed] = useState(false)
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const [packages, setPackages] = useState([])
-  const { setForm, formData } = useContext(AppContext)
+  const { setForm, formData, setCommision, com } = useContext(AppContext)
   const [message, setMessage] = useState()
   const [newData, setNewData] = useState({})
   const submit = async (data) => {
     //console.log(newData)
+    setCommision(com?.[queries.service || 0])
     setProceed(true)
+    data.reason = type
     setForm({ ...data, ...newData })
   }
 
@@ -67,7 +71,7 @@ const TvForm = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
-            <Confirm form={tvForn} name={formData} />
+            <Confirm form={tvForn} name={formData} type={queries.service} />
           </>
         ) : (
           <>

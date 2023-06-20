@@ -8,6 +8,7 @@ export default AppContext
 // eslint-disable-next-line react/prop-types
 export const OwletProvider = ({ children }) => {
   const [formData, setFormData] = useState({})
+  const [commision, setCommision] = useState()
   const [confirm, setConfirm] = useState(false)
   const [amount, setAmount] = useState({})
   const [isLogged, setLogged] = useState()
@@ -31,7 +32,7 @@ export const OwletProvider = ({ children }) => {
     try {
       const comm = await axios.get(baseUrl + "commision")
       sessionStorage.setItem("comm", comm.data?.data?.commision)
-      setCom(comm.data?.data?.commision || 0)
+      setCom(JSON.parse(comm.data?.data?.commision) || 0)
     } catch (error) {
       setCom(0)
       // console.log(error)
@@ -67,7 +68,7 @@ export const OwletProvider = ({ children }) => {
   const setValue = (amount) => setAmount({ ...amount })
 
   return (
-    <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, confirm, setConfirm, restricted }}>
+    <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, setUser, confirm, setConfirm, restricted, commision, setCommision }}>
       {user?.temporal === "true" ? <p className="text-center text-error p-1">You are using a temporal password, change your password</p> : ""}
       {children}
     </AppContext.Provider>
