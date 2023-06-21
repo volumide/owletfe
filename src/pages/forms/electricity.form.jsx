@@ -25,7 +25,7 @@ const Electricity = () => {
       return
     }
     setCommision(com?.[queries.service || 0])
-    data.serviceID = queries.service + "-electric"
+    data.serviceID = queries.service.toLowerCase() + "-electric"
     data.reason = type
     const req = await verifyMerchant({
       serviceID: data.serviceID,

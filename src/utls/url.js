@@ -5,12 +5,6 @@ const userName = "volumide42@gmail.com"
 export const url = "https://sandbox.vtpass.com/api/"
 export const baseUrl = "http://127.0.0.1:8000/api/"
 
-// const password = "Owletpay098,"
-// const userName = "therealowlet@gmail.com"
-// export const url = "https://vtpass.com/api/"
-
-// export const baseUrl = "/admin/public/api/"
-
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")
   if (getCountries) return getCountries
