@@ -79,6 +79,11 @@ const Container = () => {
         </div>
       </div>
       <Outlet />
+      <div className="bg-signify p-[16px] text-center gap-10 flex justify-center">
+        <Link to="/terms">Terms & Condition</Link>
+        <Link to="/about-us">About Us</Link>
+        <Link to="/faq">FAQs</Link>
+      </div>
     </>
   )
 }

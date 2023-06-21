@@ -7,6 +7,9 @@ import Container from "./pages/container"
 import Placeholder from "./pages/placeholder"
 import Transaction from "./pages/transaction"
 import DashBoard from "./pages/forms/dashboard/commision.form"
+import About from "./pages/about"
+import Terms from "./pages/terms"
+import Faq from "./pages/faq"
 
 function App() {
   // const apiUrl = import.meta.env
@@ -36,6 +39,18 @@ function App() {
         {
           path: "/dashboard",
           element: <DashBoard />
+        },
+        {
+          path: "/about-us",
+          element: <About />
+        },
+        {
+          path: "/terms",
+          element: <Terms />
+        },
+        {
+          path: "/faq",
+          element: <Faq />
         }
       ]
     },

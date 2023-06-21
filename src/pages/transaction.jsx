@@ -21,6 +21,7 @@ const Transaction = () => {
   const [keys, setkeys] = useState([])
   const [detail, setDetail] = useState({})
   const [pdf, setPdf] = useState({})
+  const [allRes, setAllRes] = useState()
   // const [paymentLink, setPaymentLink] = useState()
   const saveLogo = localStorage.getItem("logo")
   const query = new URLSearchParams(window.location.search)
@@ -126,6 +127,7 @@ const Transaction = () => {
     setDetail(ans)
     const { content, code, ...others } = ans
     setPdf(others)
+    setAllRes(req)
 
     setDetails({
       "Transaction Status": ans.status,
@@ -150,7 +152,13 @@ const Transaction = () => {
     try {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
-      body["amount"] = (parseInt(body.amount) + parseInt(commision)) * 100
+      console.log(body.amount)
+      if (commision) {
+        body["amount"] = (parseInt(body.amount) + parseInt(commision)) * 100
+      } else {
+        body["amount"] = parseInt(body.amount) * 100
+      }
+      console.log(body.amount)
       body["requestId"] = new Date().toISOString()
       body["callback"] = callback
       if (queries.wallet) {
@@ -264,19 +272,34 @@ const Transaction = () => {
         </div>
         <hr className="my-2" />
         <div className="grid grid-cols-2">
-          <Test title="Name" content={pdf?.customerName} />
+          <Test title="Customer Name" content={allRes?.customerName} />
+          <Test title="Name" content={allRes?.Name} />
+          <Test title="Address" content={allRes?.Address} />
           <Test title="Subsription Number" content={detail?.unique_element} />
           <Test title="Service" content={detail?.product_name} />
           <Test title="Amount" content={detail?.amount} />
-          <Test title="Date" content={pdf?.transaction_date?.date} />
+          <Test title="Date" content={allRes?.transaction_date?.date} />
         </div>
         <hr className="my-2" />
         <div className="flex justify-between flex-wrap">
-          <Test title="Token" content={pdf?.mainToken} />
-          <Test title="Tax" content={pdf?.mainTokenTax} />
-          <Test title="Token Unit" content={pdf?.mainTokenUnits} />
+          <Test title="Purchase code" content={allRes?.purchased_code} />
+          <Test title="Token" content={allRes?.mainToken} />
+          <Test title="Bonus Token" content={allRes?.bonusToken} />
+          <Test title="Tax" content={allRes?.mainTokenTax} />
+          <Test title="Token Unit" content={allRes?.mainTokenUnits} />
         </div>
-        {pdf?.cards && <DataTable data={pdf?.cards} columns={columns} />}
+
+        <div className="flex justify-between flex-wrap">
+          <Test title="Token" content={allRes?.Token} />
+          <Test title="Meter Number" content={allRes?.MeterNumber} />
+          <Test title="Tarif Rate" content={allRes?.TariffRate} />
+          <Test title="Unit" content={allRes?.PurchasedUnits} />
+          <Test title="Meter category" content={allRes?.MeterCategory} />
+        </div>
+        <div className="flex justify-between flex-wrap">
+          <Test title="Code " content={allRes?.purchased_code} />
+        </div>
+        {allRes?.cards && <DataTable data={allRes?.cards} columns={columns} />}
       </div>
     </div>
   )

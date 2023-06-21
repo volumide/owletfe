@@ -21,9 +21,23 @@ const TvForm = () => {
   const { setForm, formData, setCommision, com } = useContext(AppContext)
   const [message, setMessage] = useState()
   const [newData, setNewData] = useState({})
+  // const [code, setCode] = useState("")
   const submit = async (data) => {
     //console.log(newData)
     setCommision(com?.[queries.service || 0])
+    const req = await verifyMerchant({
+      serviceID: queries.service,
+      billersCode: newData["billersCode"]
+    })
+    if (req.content.error) {
+      setMessage(req.content.error)
+      return
+    }
+    if (req.response_description === "BILLER NOT REACHEABLE AT THIS POINT") {
+      setMessage(req.response_description)
+      return
+    }
+    setSubDetails(req.content)
     setProceed(true)
     data.reason = type
     setForm({ ...data, ...newData })
@@ -31,16 +45,23 @@ const TvForm = () => {
 
   const handleChange = async (e) => {
     const { name, value } = e.target
-    if (e.target.value.length >= 10 && name === "billersCode") {
+    if (name === "billersCode") {
       //console.log("working")
-      const req = await verifyMerchant({
-        serviceID: queries.service,
-        billersCode: value
-      })
+      // const req = await verifyMerchant({
+      //   serviceID: queries.service,
+      //   billersCode: value
+      // })
       setNewData({ ...newData, "billersCode": value, serviceID: queries.service })
-      setSubDetails(req.content)
-      if (req.content.error) setMessage(req.content.error)
-      else setMessage("")
+      // setSubDetails(req.content)
+
+      // if (req.content.error) setMessage(req.content.error)
+      // else setMessage("")
+
+      // if (req.response_description === "BILLER NOT REACHEABLE AT THIS POINT") {
+      //   setMessage(req.response_description)
+      //   return
+      // } else setMessage("")
+
       //console.log(req)
     } else {
       const index = e.target.selectedIndex
@@ -54,8 +75,14 @@ const TvForm = () => {
   const dstvDetails = [
     { name: "Name", pointer: "Customer_Name" },
     { name: "Current Bouquet(s)", pointer: "Current_Bouquet" },
+    { name: "Bouquet(s) Name", pointer: "Customer_Name" },
     { name: "Due Date", pointer: "Due_Date" },
-    { name: "Renewal Amount", pointer: "Renewal_Amount" }
+    { name: "Renewal Amount", pointer: "Renewal_Amount" },
+    { name: "Customer Number", pointer: "Customer_Number" },
+    { name: "Type", pointer: "Customer_Type" },
+    { name: "Smart Card Number", pointer: "Smartcard_Number" },
+    { name: "Balance", pointer: "Balance" },
+    { name: "Status", pointer: "Status" }
   ]
 
   useEffect(() => {
@@ -71,21 +98,25 @@ const TvForm = () => {
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
           <>
+            {!message && subDetails && (
+              <div className="rounded-[16px] bg-input p-5 my-10">
+                {dstvDetails.map(
+                  (e) =>
+                    subDetails?.[e.pointer] && (
+                      <p className="py-3" key={e.pointer}>
+                        <span className="block">{e.name}</span>
+                        <span className="font-[700]">{subDetails?.[e.pointer]}</span>
+                      </p>
+                    )
+                )}
+              </div>
+            )}
             <Confirm form={tvForn} name={formData} type={queries.service} />
           </>
         ) : (
           <>
             <Input label="Smart Card Number" name="billersCode" onChange={handleChange} control={control} required />
-            {!message && subDetails && queries.service === "dstv" && (
-              <div className="rounded-[16px] bg-input p-5">
-                {dstvDetails.map((e) => (
-                  <p className="py-3" key={e.pointer}>
-                    <span className="block">{e.name}</span>
-                    <span className="font-[700]">{subDetails?.[e.pointer]}</span>
-                  </p>
-                ))}
-              </div>
-            )}
+
             {message && <p className="bg-red-400 text-white my-3 p-5 rounded-[16px]">{message}</p>}
 
             {["dstv", "gotv"].includes(queries.service) && (
