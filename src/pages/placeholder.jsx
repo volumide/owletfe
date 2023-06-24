@@ -26,7 +26,7 @@ const Placeholder = () => {
     const { restricted } = useContext(AppContext)
     return (
       <>
-        <div className={`md:w-2/6 shrink-0  md:border-r h-full py-10  ${showNav ? "block" : "hidden"} md:block `}>
+        <div className={`md:w-2/6 shrink-0  md:border-r h-screen py-10  ${showNav ? "block" : "hidden"} md:block `}>
           <p className="flex items-center gap-4 ">
             {proceeds && (
               <>
@@ -65,7 +65,7 @@ const Placeholder = () => {
 
   const MainForm = () => {
     return (
-      <div className={`lg:w-3/6 grow-0 py-10 px-[16px]  lg:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
+      <div className={`lg:w-3/6 grow-0 py-10 px-[16px] lg:px-[127px] h-full ${showNav ? "hidden" : "block"} md:block`} ref={formSum}>
         {type ? (
           <>
             {name !== "wallet" && name !== "dashboard" && (
@@ -92,7 +92,7 @@ const Placeholder = () => {
 
   return (
     <>
-      <div className="h-screen md:flex  mx-auto px-[16px] md:px-[100px]">
+      <div className="h-screen overflow-auto md:flex  mx-auto px-[16px] md:px-[100px]">
         <button className="h-[50px] w-[50px] bg-input  md:hidden  text-center rounded-full flex justify-center items-center mt-5" onClick={() => setNav(!showNav)}>
           {!showNav ? <i className="fa-solid fa-arrow-left-long my-5 font-bold  cursor-pointer" role="button" /> : <i className="fa-solid fa-arrow-right-long my-5 font-bold  cursor-pointer" role="button" />}
         </button>
@@ -149,7 +149,6 @@ export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
           <p>{parseInt(com?.[type] || 0) + parseInt(formDt.amount)}</p>
         </div>
       </div>
-
       {user && user !== "undefined" && (
         <Button bg="transaprent" otherClass="border border-2" onClick={walletWithdraw}>
           <i className="fa-solid fa-building-columns mr-3" />

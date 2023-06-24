@@ -13,8 +13,8 @@ const Container = () => {
     if (window.innerWidth <= 1029) setShow(!show)
   }
   return (
-    <>
-      <div className="border-b border-b-input overflow-hidden  px-[16px]">
+    <div className="">
+      <div className="border-b border-b-input   px-[16px]">
         <div className=" lg:px-[100px] py-[35px] mx-auto flex items-center justify-between">
           <h2>
             <Link to="/">
@@ -79,12 +79,14 @@ const Container = () => {
         </div>
       </div>
       <Outlet />
-      <div className="bg-signify p-[16px] text-center gap-10 flex justify-center">
+      <div className="bg-signify p-[16px] text-center ">
         <Link to="/terms">Terms & Condition</Link>
-        <Link to="/about-us">About Us</Link>
+        <Link to="/about-us" className="mx-5">
+          About Us
+        </Link>
         <Link to="/faq">FAQs</Link>
       </div>
-    </>
+    </div>
   )
 }
 export default Container

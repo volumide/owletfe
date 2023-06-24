@@ -67,32 +67,36 @@ const Electricity = () => {
 
       <form onSubmit={handleSubmit(submit)}>
         {proceed ? (
-          <>
+          <div className="overflow-auto">
             <div className="bg-[#F4F6FA] p-5 rounded-[24px] my-10">
               <div className="my-[16px]">
                 <h1 className="text-base font[600]">Customer Name </h1>
                 <p>{meter?.Customer_Name}</p>
               </div>
+
               <div className="my-[16px]">
                 <h1 className="text-base font[600]">Address</h1>
                 <p>{meter?.Address}</p>
               </div>
-              <div className="my-[16px]">
-                <h1 className="text-base font[600]">Address</h1>
-                <p>{meter?.Address}</p>
-              </div>
+
               <div className="my-[16px]">
                 <h1 className="text-base font[600]">Meter Number</h1>
-                <p>{meter?.MeterNumber}</p>
+                <p>{meter?.MeterNumber || meter?.Meter_Number}</p>
               </div>
+
               <div className="my-[16px]">
                 <h1 className="text-base font[600]">Meter Type</h1>
                 <p>{meter?.Meter_Type}</p>
               </div>
+
+              <div className="my-[16px]">
+                <h1 className="text-base font[600]">Account Number</h1>
+                <p>{meter?.Account_Number}</p>
+              </div>
             </div>
 
             <Confirm form={electForm} name={formData} type={queries.service} />
-          </>
+          </div>
         ) : (
           <>
             {electForms.map((i) =>

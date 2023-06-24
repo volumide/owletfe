@@ -48,6 +48,7 @@ const Faq = () => (
     </p>
 
     <p className="py-3">Remember, these FAQs provide general information about a bill payment platform similar to quickteller.com. Specific details and features may vary depending on the platform you are using.</p>
+    <p className="py-3 font[600]">Contact us at support@owletpay.com</p>
   </div>
 )
 export default Faq

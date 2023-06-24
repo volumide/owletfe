@@ -2,7 +2,7 @@
 const Terms = () => {
   return (
     <div className="lg:px-[100px] px-5 py-[35px] mx-auto">
-      <h2>Terms & Condition : </h2>
+      <h2>Terms & Condition</h2>
 
       <h4>Terms & Conditions for OwletPay</h4>
 
