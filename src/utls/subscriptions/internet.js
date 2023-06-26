@@ -1,5 +1,5 @@
 const intertenetData = [
-  { name: "airtel", title: "Aitel Data ", logo: "airtel", cat: "phone", service: "airtel-data" },
+  { name: "airtel", title: "Airtel Data ", logo: "airtel", cat: "phone", service: "airtel-data" },
   { name: "mtn", title: "MTN Data ", logo: "mtn", cat: "phone", service: "mtn-data" },
   { name: "glo", title: "GLO Data ", logo: "glo", cat: "phone", service: "glo-data" },
   { name: "9mobile", title: "9Mobile Data ", logo: "nineMobile", cat: "phone", service: "etisalat-data" },

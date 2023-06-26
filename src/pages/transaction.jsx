@@ -147,8 +147,8 @@ const Transaction = () => {
     } else {
       try {
         axios.put(
-          baseUrl,
-          { ref: queries?.reference || `wall_${transId}`, status: "fail", status_flutter: "fail" },
+          baseUrl + `transaction/${transId}`,
+          { tx_ref: queries?.reference || `wall_${transId}`, status: "fail", status_flutter: "fail" },
           {
             headers: {
               "Content-Type": "application/json",
@@ -279,6 +279,14 @@ const Transaction = () => {
                     <small>{details?.[i]}</small>
                   </p>
                 ))}
+              </div>
+
+              <div className="flex justify-between flex-wrap">
+                <Test title="Purchase code" content={allRes?.purchased_code} />
+                <Test title="Token" content={allRes?.mainToken} />
+                <Test title="Bonus Token" content={allRes?.bonusToken} />
+                <Test title="Tax" content={allRes?.mainTokenTax} />
+                <Test title="Token Unit" content={allRes?.mainTokenUnits} />
               </div>
 
               <div className="md:flex gap-11 mt-[48px]">
