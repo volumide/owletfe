@@ -10,6 +10,7 @@ import logo from "../assets/logo.png"
 import DataTable from "react-data-table-component"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
+import { toast } from "react-toastify"
 
 const Transaction = () => {
   const { commision, user } = useContext(AppContext)
@@ -29,12 +30,6 @@ const Transaction = () => {
   const callback = window.location.href
 
   const subscribe = async () => {
-    // if (!queries.type) {
-    //   if (Object.keys(queries).length && queries.status !== "successful") {
-    //     setMessage(`transaction${queries.status}`)
-    //     return
-    //   }
-    // }
     const now = new Date()
     const year = now.getFullYear()
     const month = String(now.getMonth() + 1).padStart(2, "0")
@@ -45,6 +40,33 @@ const Transaction = () => {
     const rnd = randomNumber.toString().padStart(4, "0")
     const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
+    let transId = ""
+
+    try {
+      const result = await axios.post(
+        baseUrl + "transaction",
+        {
+          id: user?.id || "guest",
+          phone: res.phone,
+          reason: res.reason,
+          amount: res.amount,
+          requestId: request_id,
+          ref: queries?.reference || "initiated",
+          status_flutter: "initiated",
+          "data": JSON.stringify(res)
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      transId = result.data.id
+    } catch (error) {
+      // console.log(error)
+      toast.error("error connecting to server!")
+      return
+    }
 
     if (!queries.type)
       try {
@@ -60,30 +82,17 @@ const Transaction = () => {
         const response = result.data.body.data.status
         if (response !== "success") {
           setMessage(`payment failure`)
-          return
-        }
-
-        try {
-          await axios.post(
-            baseUrl + "transaction",
-            {
-              id: user?.id || "guest",
-              phone: res.phone,
-              reason: res.reason,
-              amount: res.amount,
-              requestId: request_id,
-              ref: queries.reference,
-              status_flutter: response,
-              "data": JSON.stringify(res)
-            },
+          axios.put(
+            baseUrl + `transaction/${transId}`,
+            { tx_ref: queries?.reference, status: "inititated", status_flutter: "fail" },
             {
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
               }
             }
           )
-        } catch (error) {
-          // console.log(error)
+          return
         }
       } catch (error) {
         setMessage(error.response.data.message)
@@ -94,6 +103,7 @@ const Transaction = () => {
     res["requestId"] = request_id
 
     let newRes = ""
+
     if (queries.type) {
       try {
         const result = await axios.post(
@@ -113,13 +123,42 @@ const Transaction = () => {
         newRes = error.response.data.message
       }
     }
+
     if (newRes) return
 
     const req = await paySubscripiton(res)
 
     if (req.response_description !== "TRANSACTION SUCCESSFUL") {
       setMessage(req.response_description)
-      // return
+      try {
+        axios.put(
+          baseUrl + `transaction/${transId}`,
+          { tx_ref: queries?.reference || `wall_${transId}`, status: "success", status_flutter: "success" },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+          }
+        )
+      } catch (error) {
+        // console.log(error)
+      }
+    } else {
+      try {
+        axios.put(
+          baseUrl,
+          { ref: queries?.reference || `wall_${transId}`, status: "fail", status_flutter: "fail" },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+          }
+        )
+      } catch (error) {
+        // console.log(error)
+      }
     }
     const ans = req.content.transactions
     setSubscription(req)
@@ -152,13 +191,13 @@ const Transaction = () => {
     try {
       const url = baseUrl + "payment"
       const body = JSON.parse(localStorage.getItem("fmDt"))
-      console.log(body.amount)
+      // console.log(body.amount)
       if (commision) {
         body["amount"] = (parseInt(body.amount) + parseInt(commision)) * 100
       } else {
         body["amount"] = parseInt(body.amount) * 100
       }
-      console.log(body.amount)
+      // console.log(body.amount)
       body["requestId"] = new Date().toISOString()
       body["callback"] = callback
       if (queries.wallet) {
