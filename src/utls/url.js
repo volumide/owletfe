@@ -8,7 +8,6 @@ import axios from "axios"
 const password = "Owletpay098,"
 const userName = "therealowlet@gmail.com"
 export const url = "https://vtpass.com/api/"
-
 export const baseUrl = "/admin/public/api/"
 
 export const getCountries = async () => {

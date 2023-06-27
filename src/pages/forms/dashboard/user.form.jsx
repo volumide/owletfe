@@ -2,9 +2,12 @@ import axios from "axios"
 import { baseUrl } from "../../../utls/url"
 import { useEffect, useState } from "react"
 import DataTable from "react-data-table-component"
+import { toast } from "react-toastify"
 
 const Users = () => {
   const [users, setUsers] = useState([])
+  const [wallet, setWallet] = useState("")
+  const [newValue, setNewValue] = useState("")
   const getUsers = async () => {
     try {
       const res = await axios.get(baseUrl + "user", { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
@@ -19,6 +22,20 @@ const Users = () => {
     try {
       await axios.put(baseUrl + `user/${id}`, { suspend: data }, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
       getUsers()
+    } catch (error) {
+      //   console.log(error)
+    }
+  }
+
+  const topUpWallet = async (id, data) => {
+    const wallet = parseInt(data) + parseInt(newValue)
+    try {
+      await axios.put(baseUrl + `user/${id}`, { wallet_balance: wallet }, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
+      getUsers()
+      document.getElementById("controller").click()
+      setNewValue("")
+      toast("wallet top up successfully")
+      // document.getElementById("input").val
     } catch (error) {
       //   console.log(error)
     }
@@ -43,16 +60,39 @@ const Users = () => {
     {
       name: "Action",
 
-      cell: (row) => <>{row.suspend === "0" ? <i className="fa-solid fa-toggle-on text-valid text-lg cursor-pointer" onClick={() => suspendUser(row.id, "1")}></i> : <i className="fa-solid fa-toggle-off text-error text-lg cursor-pointer" onClick={() => suspendUser(row.id, "0")}></i>}</>
+      cell: (row) => (
+        <>
+          {row.suspend === "0" ? <i className="fa-solid fa-toggle-on text-valid text-lg cursor-pointer" onClick={() => suspendUser(row.id, "1")}></i> : <i className="fa-solid fa-toggle-off text-error text-lg cursor-pointer" onClick={() => suspendUser(row.id, "0")}></i>}
+
+          <label className="ml-3" htmlFor="my-modal-4" role="button" id="md-button" onClick={() => setWallet(row)}>
+            <i className="fa-solid fa-wallet"></i>
+          </label>
+        </>
+      )
     }
   ]
 
   useEffect(() => {
     getUsers()
   }, [])
+
   return (
     <>
       <DataTable columns={column} data={users} title="Users" pagination paginationPerPage="15" />
+
+      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+      <label className="modal" htmlFor="my-modal-4" id="controller">
+        <div className="modal-box  bg-white">
+          <p className="py-2">
+            <span className="text-xs">Wallet Balance</span>
+            <span className="block"> {wallet.wallet_balance || 0} </span>
+          </p>
+          <input className="border rounded-[16px] p-3 bg-white my-3 w-full" type="number" onChange={(e) => setNewValue(e.target.value)} value={newValue} />
+          <button className="bg-black text-white rounded-[16px] ml-auto p-3 block" onClick={() => topUpWallet(wallet.id, wallet.wallet_balance)}>
+            TopUp User Wallet
+          </button>
+        </div>
+      </label>
     </>
   )
 }

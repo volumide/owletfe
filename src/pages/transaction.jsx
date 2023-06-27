@@ -163,6 +163,13 @@ const Transaction = () => {
     const ans = req.content.transactions
     setSubscription(req)
 
+    try {
+      req.to = res.email
+      await axios.post(baseUrl + "send/receipt", req, { headers: { "Content-Type": "application/json" } })
+    } catch (error) {
+      toast("unable to send receipt")
+      console.log(error)
+    }
     setDetail(ans)
     const { content, code, ...others } = ans
     setPdf(others)
