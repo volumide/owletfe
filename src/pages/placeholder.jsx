@@ -113,11 +113,11 @@ export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
   console.log(formDt.amount)
   const convinience = com?.[type] || 0
   const walletWithdraw = () => {
-    if (parseInt(formDt.amount) < 1) navigate("/")
+    // if (parseInt(formDt.amount.trim()) < 1) navigate("/")
     navigate("/transaction?type=wallet_withdraw")
   }
   const completeTransaction = () => {
-    if (parseInt(formDt.amount) < 1) navigate("/")
+    // if (parseInt(formDt.amount.trim()) < 1) navigate("/")
     ev ? ev() : navigate("/transaction")
   }
   const exept = ["requestId", "request_id", "serviceID"]
@@ -155,7 +155,7 @@ export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
       </div>
       {user && user !== "undefined" && (
         <Button bg="transaprent" otherClass="border border-2" onClick={walletWithdraw}>
-          <i className="fa-solid fa-building-columns mr-3" />
+          <i className="fa-solid fa-building-columns mr-3" disabled />
           Pay with wallet
         </Button>
       )}

@@ -43,10 +43,24 @@ const Transaction = () => {
     const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
 
-    if (res.amount < 1) {
-      navigate("/")
+    try {
+      const result = await axios.post(baseUrl + "check/value", res, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(result)
+    } catch (error) {
+      console.log(error.response)
+      setMessage(error.response.data.message)
       return
     }
+
+    // if (!parseInt(res.amount) || parseInt(res.amount) < 1) {
+    //   navigate("/")
+    //   return
+    // }
+
     let transId = ""
 
     try {
@@ -112,6 +126,9 @@ const Transaction = () => {
     let newRes = ""
 
     if (queries.type) {
+      // toast("cannot perfom operation")
+      // navigate("/")
+      if (parseInt(res.amount) < 1) return
       try {
         const result = await axios.post(
           baseUrl + "withdraw",
@@ -128,10 +145,16 @@ const Transaction = () => {
         console.log(error)
         setMessage(error.response.data.message)
         newRes = error.response.data.message
+        return
       }
     }
 
     if (newRes) return
+
+    if (!parseInt(res.amount) || parseInt(res.amount) < 1) {
+      toast("cannot not topup wallet at this moment")
+      return
+    }
 
     const req = await paySubscripiton(res)
 
