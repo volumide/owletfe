@@ -109,11 +109,15 @@ export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
   const navigate = useNavigate()
   const user = localStorage.getItem("user")
   const formDt = JSON.parse(localStorage.getItem("fmDt"))
+
+  console.log(formDt.amount)
   const convinience = com?.[type] || 0
   const walletWithdraw = () => {
+    if (parseInt(formDt.amount) < 1) navigate("/")
     navigate("/transaction?type=wallet_withdraw")
   }
   const completeTransaction = () => {
+    if (parseInt(formDt.amount) < 1) navigate("/")
     ev ? ev() : navigate("/transaction")
   }
   const exept = ["requestId", "request_id", "serviceID"]

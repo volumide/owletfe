@@ -6,13 +6,16 @@ import { toast } from "react-toastify"
 
 const Users = () => {
   const [users, setUsers] = useState([])
+  const [unfiltered, setUnfiltered] = useState([])
   const [wallet, setWallet] = useState("")
   const [newValue, setNewValue] = useState("")
   const getUsers = async () => {
     try {
       const res = await axios.get(baseUrl + "user", { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
       //   console.log(res.data.data)
-      setUsers(res.data.data)
+      const result = res.data.data.reverse()
+      setUsers(result)
+      setUnfiltered(result)
     } catch (error) {
       //   console.log(error)
     }
@@ -39,6 +42,20 @@ const Users = () => {
     } catch (error) {
       //   console.log(error)
     }
+  }
+
+  const search = (e) => {
+    const value = e.target.value
+    if (value.length >= 3) {
+      const dt = unfiltered.filter((ev) => ev?.first_name.toLowerCase().includes(value) || ev?.last_name.toLowerCase().includes(value.toLowerCase()) || ev?.email.toLowerCase().includes(value.toLowerCase()))
+
+      if (dt.length) setUsers(dt)
+      else setUsers(unfiltered)
+      return
+    }
+    setTimeout(() => toast.info("No infomation found"), 2000)
+
+    setUsers(unfiltered)
   }
 
   const column = [
@@ -78,7 +95,19 @@ const Users = () => {
 
   return (
     <>
-      <DataTable columns={column} data={users} title="Users" pagination paginationPerPage="15" />
+      <DataTable
+        columns={column}
+        data={users}
+        title="Users"
+        pagination
+        paginationPerPage="15"
+        subHeader
+        subHeaderComponent={
+          <div className=" w-full mb-3">
+            <input type="search" className="border p-3 bg-transparent rounded-[16px]  w-full " placeholder="Search by payment id, transaction type" onChange={search} />{" "}
+          </div>
+        }
+      />
 
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <label className="modal" htmlFor="my-modal-4" id="controller">

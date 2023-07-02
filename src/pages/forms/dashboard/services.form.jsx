@@ -27,7 +27,7 @@ const Services = () => {
   }
 
   const getCommision = async () => {
-    console.log(com)
+    // console.log(com)
     const defaultCommision = com
     if (Object.keys(defaultCommision).length) {
       setCommitions(defaultCommision)

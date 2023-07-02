@@ -3,8 +3,10 @@ import axios from "axios"
 import { baseUrl, verifySubscription } from "../../../utls/url"
 import { useEffect, useState } from "react"
 import DataTable from "react-data-table-component"
+import { toast } from "react-toastify"
 const Transactions = () => {
   const [allTrans, setAllTrans] = useState([])
+  const [filtered, setFiltered] = useState([])
   const [detail, setDetail] = useState({})
   const getTransactionDetails = async (data) => {
     try {
@@ -14,6 +16,7 @@ const Transactions = () => {
       //   console.log(error)
     }
   }
+
   const column = [
     {
       name: "#",
@@ -49,6 +52,7 @@ const Transactions = () => {
       )
     }
   ]
+
   const getAllTransactions = async () => {
     try {
       const res = await axios.get(baseUrl + "transactions", {
@@ -57,10 +61,24 @@ const Transactions = () => {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
-      setAllTrans(res.data.data)
+      const result = res.data.data.reverse()
+      setAllTrans(result)
+      setFiltered(result)
     } catch (error) {
       //   console.log(error)
     }
+  }
+
+  const search = (e) => {
+    const value = e.target.value
+    if (value.length >= 3) {
+      const dt = filtered.filter((ev) => ev?.transaction_id.includes(value) || ev?.type.toLowerCase().includes(value.toLowerCase()))
+      if (dt.length) setAllTrans(dt)
+      else setAllTrans(filtered)
+      return
+    }
+    setTimeout(() => toast.info("No infomation found"), 2000)
+    setAllTrans(filtered)
   }
 
   useEffect(() => {
@@ -89,7 +107,20 @@ const Transactions = () => {
         </div>
       </label>
       <div className="mb-10">
-        <DataTable columns={column} data={allTrans} title="All Transactions" pagination paginationPerPage="15" responsive />
+        <DataTable
+          columns={column}
+          data={allTrans}
+          title="All Transactions"
+          pagination
+          paginationPerPage="15"
+          responsive
+          subHeader
+          subHeaderComponent={
+            <div className=" w-full mb-3">
+              <input type="search" className="border p-3 bg-transparent rounded-[16px]  w-full " placeholder="Search by payment id, transaction type" onChange={search} />{" "}
+            </div>
+          }
+        />
       </div>
     </div>
   )

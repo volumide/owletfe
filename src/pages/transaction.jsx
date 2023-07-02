@@ -11,6 +11,7 @@ import DataTable from "react-data-table-component"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
 
 const Transaction = () => {
   const { commision, user } = useContext(AppContext)
@@ -28,6 +29,7 @@ const Transaction = () => {
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const callback = window.location.href
+  const navigate = useNavigate()
 
   const subscribe = async () => {
     const now = new Date()
@@ -40,6 +42,11 @@ const Transaction = () => {
     const rnd = randomNumber.toString().padStart(4, "0")
     const request_id = `${year}${month}${day}${hour}${minute}OWLET${rnd}`
     const res = JSON.parse(localStorage.getItem("fmDt"))
+
+    if (res.amount < 1) {
+      navigate("/")
+      return
+    }
     let transId = ""
 
     try {
