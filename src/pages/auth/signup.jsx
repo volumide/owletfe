@@ -8,6 +8,7 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import AppContext from "../../context/app-context"
 import { baseUrl } from "../../utls/url"
+import { toast } from "react-toastify"
 const SignUp = () => {
   const { handleSubmit, control } = useForm()
   const [loading, setLoading] = useState(false)
@@ -20,11 +21,13 @@ const SignUp = () => {
   }, [])
 
   const signup = async (data) => {
+    // console.log(data)
     setLoading(true)
     try {
       await axios.post(baseUrl + "user", data, { headers: { "Content-Type": "application/json" } })
-      //console.log(req.data)
-      navigate("/sign-in", { replace: true })
+      localStorage.setItem("verify", data.email)
+      toast.info("check your email for verification code")
+      navigate("/verify-email", { replace: true })
     } catch (error) {
       //console.log(error.response.data.data)
       setErrors(error.response.data.data)

@@ -4,12 +4,13 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Button from "../../components/button"
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useEffect } from "react"
 import { baseUrl } from "../../utls/url"
 import DataTable from "react-data-table-component"
 import { Confirm } from "../placeholder"
 import { toast } from "react-toastify"
+import AppContext from "../../context/app-context"
 
 const Wallet = () => {
   const url = baseUrl
@@ -98,20 +99,26 @@ const Wallet = () => {
   return (
     <>
       {/* <p className="capitalize mb-[24px] text-2xl">{queries.service}</p> */}
-      {type === "Transaction History" ? <Transaction transact={transactions} /> : <WalletBalance transact={latest} wallet_balance={wallet || 0} />}
+      {type === "Transaction History" ? <Transaction transact={transactions} /> : <WalletBalance transact={latest} wallet_balance={wallet || 0} setWallet={setWallet} />}
     </>
   )
 }
 
 export default Wallet
 
-const WalletBalance = ({ transact = [], wallet_balance }) => {
+const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
   const callback = window.location.href
   const query = new URLSearchParams(window.location.search)
   const queries = Object.fromEntries(query.entries())
   const [isFund, setFund] = useState(false)
+  const [transfer, setTransfer] = useState(false)
   const [amount, setAmount] = useState()
   const url = baseUrl
+  const { userName, user } = useContext(AppContext)
+  const [allUsers, setUsers] = useState([])
+  const [list, setList] = useState([])
+  const [search, setSearch] = useState("")
+  const [data, setData] = useState({})
 
   const payment = async () => {
     let realValue = ""
@@ -154,6 +161,63 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
     }
   }
 
+  const getAllUsers = async () => {
+    try {
+      const users = await axios.get(baseUrl + "user", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      setUsers(users.data.data)
+    } catch (error) {
+      // console.log(error)
+    }
+  }
+
+  const filterUsers = async (e) => {
+    const value = e.target.value
+    setSearch(value)
+    if (value && value.startsWith("@") && value.length > 1) {
+      const dt = allUsers.filter((ev) => ev.id !== user.id && ev.first_name.toLowerCase().includes(value.substring(1).toLowerCase()))
+      setList(dt)
+      return
+    }
+    setList([])
+  }
+
+  const transferFund = async () => {
+    if (data.amount < 1) {
+      toast.error("cannot procced with transfer")
+      return
+    }
+
+    if (parseInt(wallet_balance) < data.amount) {
+      toast.warn("insufficient balance")
+      return
+    }
+
+    if (!data.id || !data.amount) {
+      toast.info("all fields are compulsory")
+      return
+    }
+
+    try {
+      const res = await axios.post(baseUrl + "transfer", data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      console.log(res)
+      setWallet(parseInt(wallet_balance) - data.amount)
+      setFund(!isFund)
+      setTransfer(!transfer)
+    } catch (err) {
+      toast.info("unable to perfom operation")
+    }
+  }
+
   useEffect(() => {
     if (queries.reload) {
       setTimeout(() => {
@@ -164,25 +228,54 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
 
   return (
     <div>
-      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] ">
+      <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] relative">
         <>
-          <p className="text-right">
-            Wallet Balance
-            <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
+          <p className="flex justify-between items-center">
+            <span className="text-signify">@{userName}</span>
+            <span>
+              Wallet Balance
+              <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
+            </span>
           </p>
 
           <div>
             {isFund ? (
-              <form className="lg:flex lg:gap-3 w-full">
-                <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] rounded-default w-full lg:flex-1" type="number" onChange={(e) => setAmount(e.target.value)} />
-                <div>
-                  <Button otherClass="px-10 text-black" type="button" onClick={payment}>
-                    Fund Wallet
-                  </Button>
-                </div>
-              </form>
+              <>
+                {!transfer ? (
+                  <form className="lg:flex lg:gap-3 w-full">
+                    <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] rounded-default w-full lg:flex-1" type="number" onChange={(e) => setAmount(e.target.value)} min={1} />
+                    <div>
+                      <Button otherClass="px-10 text-black" type="button" onClick={payment}>
+                        Fund Wallet
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <form>
+                    <div className="lg:flex lg:gap-3 w-full">
+                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] p-1 rounded-default w-full lg:flex-1" type="number" onChange={(e) => setData({ ...data, amount: e.target.value })} placeholder="amount" min={1} />
+                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] p-1 rounded-default w-full lg:flex-1" type="test" onChange={filterUsers} placeholder="@user" value={search} />
+                    </div>
+                    <div className="w-full mt-3">
+                      <Button otherClass="px-10 text-black" type="button" onClick={transferFund}>
+                        Transfer
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </>
             ) : (
-              <div className=" flex">
+              <div className="flex gap-2 md:gap-5 flex-wrap lg:flex-nowrap">
+                <Button
+                  otherClass="px-10 text-black"
+                  onClick={() => {
+                    getAllUsers()
+                    setFund(!isFund)
+                    setTransfer(!transfer)
+                  }}
+                >
+                  Wallet Transfer
+                </Button>
                 <Button otherClass="px-10 text-black" onClick={() => setFund(!isFund)}>
                   Fund Wallet
                 </Button>
@@ -191,6 +284,29 @@ const WalletBalance = ({ transact = [], wallet_balance }) => {
           </div>
         </>
       </div>
+      {list.length ? (
+        <div className="bg-white text-black shadow-sm mt-5 max-h-[500px] overflow-auto p-5 rounded-[8px]">
+          {list.map((l) => (
+            <p
+              className="my-1 p-2 block"
+              key={l.id}
+              role="button"
+              onClick={() => {
+                setData({ ...data, id: l.id })
+                setSearch("@" + l.first_name.replace(/ /g, "_") + l.id.toString().padStart(3, "0"))
+                setList([])
+              }}
+            >
+              {l.first_name.replace(/ /g, "_") + l.id.toString().padStart(3, "0")}
+              <small className="block text-gray">
+                {l.first_name} {l.last_name}{" "}
+              </small>
+            </p>
+          ))}
+        </div>
+      ) : (
+        ""
+      )}
 
       {transact.length ? (
         <>

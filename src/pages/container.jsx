@@ -8,7 +8,7 @@ import logo from "../assets/logo.png"
 
 const Container = () => {
   const [show, setShow] = useState(false)
-  const { isLogged, logout, user } = useContext(AppContext)
+  const { isLogged, logout, user, userName } = useContext(AppContext)
   const toggle = () => {
     if (window.innerWidth <= 1029) setShow(!show)
   }
@@ -54,13 +54,14 @@ const Container = () => {
               </div>
               {isLogged ? (
                 <>
-                  <Link onClick={logout} className="p-2 rounded-[8px] bg-black text-white  lg:inline-block block my-[16px] mr-3 ">
-                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                  <Link onClick={logout} className="p-2 flex items-center justify-center bg-black text-white h-[40px] lg:w-[40px] rounded-full  mr-3 my-3 lg:my-0 w-full ">
+                    <i className="fa-solid fa-arrow-right-from-bracket block"></i>
                   </Link>
-                  <Link to="/owlet/profile" className=" items-center gap-3  mx-auto flex ">
+                  <Link to="/owlet/profile" className=" items-center gap-3  mx-auto flex">
                     <img src={avartar} width="30px" />
                     <span>
-                      {user?.first_name} {user?.last_name}
+                      {userName}
+                      {/* {user?.first_name} {user?.last_name} */}
                     </span>
                   </Link>
                 </>

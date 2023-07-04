@@ -110,7 +110,7 @@ export const Confirm = ({ form = [], obj = {}, name, ev, type }) => {
   const user = localStorage.getItem("user")
   const formDt = JSON.parse(localStorage.getItem("fmDt"))
 
-  console.log(formDt.amount)
+  // console.log(formDt.amount)
   const convinience = com?.[type] || 0
   const walletWithdraw = () => {
     // if (parseInt(formDt.amount.trim()) < 1) navigate("/")

@@ -10,6 +10,7 @@ import DashBoard from "./pages/forms/dashboard/commision.form"
 import About from "./pages/about"
 import Terms from "./pages/terms"
 import Faq from "./pages/faq"
+import Email from "./pages/auth/email"
 
 function App() {
   // const apiUrl = import.meta.env
@@ -65,6 +66,10 @@ function App() {
     {
       path: "/forgot-password",
       element: <ForgotPassword />
+    },
+    {
+      path: "/verify-email",
+      element: <Email />
     }
   ])
   return <RouterProvider router={router}></RouterProvider>

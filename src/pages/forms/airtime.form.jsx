@@ -26,7 +26,7 @@ const Airtime = () => {
   const [op, setOp] = useState("")
   const [newData, setNewData] = useState({})
   const { setForm, formData, setCommision, com } = useContext(AppContext)
-  const submit = (data) => {
+  const submit = async (data) => {
     setCommision(com?.[queries.service || 0])
     data.serviceID = queries.service
     data.reason = type

@@ -14,6 +14,8 @@ export const OwletProvider = ({ children }) => {
   const [isLogged, setLogged] = useState()
   const [user, setUser] = useState("")
   const [com, setCom] = useState("")
+  const [userName, setUserName] = useState("")
+
   const [restricted, setRestricted] = useState({})
   const setForm = (data = "") => {
     localStorage.setItem("fmDt", JSON.stringify(data))
@@ -54,7 +56,21 @@ export const OwletProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token")
     const user = localStorage.getItem("user")
-    if (user && user !== "undefined") setUser(JSON.parse(user))
+    if (user && user !== "undefined") {
+      const userObj = JSON.parse(user)
+      if (!userObj.email_verified_at) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        setUser("")
+        setLogged(false)
+        return
+      }
+      const pad = userObj.id.toString()
+      const paddedSt = pad.padStart(3, "0")
+      userObj.first_name.replace(/ /g, "_")
+      setUserName(`${userObj.first_name}${paddedSt}`)
+      setUser(userObj)
+    }
 
     if (token) setLogged(true)
     else setLogged(false)
@@ -68,7 +84,7 @@ export const OwletProvider = ({ children }) => {
   const setValue = (amount) => setAmount({ ...amount })
 
   return (
-    <AppContext.Provider value={{ com, formData, setForm, amount, setValue, setLogged, isLogged, logout, user, setUser, confirm, setConfirm, restricted, commision, setCommision }}>
+    <AppContext.Provider value={{ com, formData, setForm, amount, userName, setValue, setLogged, isLogged, logout, user, setUser, confirm, setConfirm, restricted, commision, setCommision }}>
       {user?.temporal === "true" ? <p className="text-center text-error p-1">You are using a temporal password, change your password</p> : ""}
       {children}
     </AppContext.Provider>

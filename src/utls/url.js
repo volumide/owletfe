@@ -1,14 +1,9 @@
 import axios from "axios"
 
-// const password = "Olumide1"
-// const userName = "volumide42@gmail.com"
-// export const url = "https://sandbox.vtpass.com/api/"
-// export const baseUrl = "http://127.0.0.1:8000/api/"
-
-const password = "Owletpay098,"
-const userName = "therealowlet@gmail.com"
-export const url = "https://vtpass.com/api/"
-export const baseUrl = "/admin/public/api/"
+const password = "Olumide1"
+const userName = "volumide42@gmail.com"
+export const url = "https://sandbox.vtpass.com/api/"
+export const baseUrl = "http://127.0.0.1:8000/api/"
 
 export const getCountries = async () => {
   const getCountries = localStorage.getItem("countries")
@@ -52,4 +47,10 @@ export const verifySubscription = async (data) => {
   const req = await axios.post(`${url}requery`, { request_id: data }, { headers: { "Authorization": `Basic ${window.btoa(userName + ":" + password)}` } })
   const { data: response } = req
   return response
+}
+
+export const verifyPhone = async (data) => {
+  const req = await axios.get(`http://phone-number-api.com/json/?number=${data}`, { headers: { "Content-type": `application/json` } })
+
+  return req
 }

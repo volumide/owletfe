@@ -22,16 +22,24 @@ const SignIn = () => {
     setLoading(true)
     try {
       const req = await axios.post(baseUrl + "login", data, { headers: { "Content-Type": "application/json" } })
+      if (!req.data.message.email_verified_at) {
+        toast("Email not verified")
+        navigate("/verify-email")
+        return
+      }
+
       if (req.data.message.suspend === "1") {
         toast.warn("account suspended")
         return
       }
+
       localStorage.setItem("token", req.data.token)
       localStorage.setItem("user", JSON.stringify(req.data.message))
       setLogged(true)
       toast.success("login successfull")
       navigate("/", { replace: true })
     } catch (error) {
+      // console.log(error)
       toast.error("invalid username or password")
       setError(error.response.statusText || "unauthtorize")
       setLoading(false)

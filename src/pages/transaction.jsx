@@ -49,17 +49,11 @@ const Transaction = () => {
           "Content-Type": "application/json"
         }
       })
-      console.log(result)
     } catch (error) {
-      console.log(error.response)
       setMessage(error.response.data.message)
       return
     }
 
-    // if (!parseInt(res.amount) || parseInt(res.amount) < 1) {
-    //   navigate("/")
-    //   return
-    // }
 
     let transId = ""
 
@@ -142,7 +136,7 @@ const Transaction = () => {
         )
         // console.log(result)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         setMessage(error.response.data.message)
         newRes = error.response.data.message
         return
