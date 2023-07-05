@@ -4,6 +4,7 @@ import Services from "./services.form"
 import Transactions from "./transactions.form"
 import Users from "./user.form"
 import AirtimeNumbers from "./airtime.form"
+import Transfers from "./transfer"
 
 const DashBoard = () => {
   const { type } = useParams()
@@ -14,6 +15,7 @@ const DashBoard = () => {
       {type === "All Transactions" && <Transactions />}
       {type === "All users" && <Users />}
       {type === "Cashback provider" && <AirtimeNumbers />}
+      {type === "Airtime to cash" && <Transfers />}
     </>
   )
 }
