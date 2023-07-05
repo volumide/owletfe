@@ -22,7 +22,6 @@ const Commision = () => {
       }
     })
 
-    // //console.log(req)
     setChange(!change)
   }
 

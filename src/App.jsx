@@ -13,8 +13,6 @@ import Faq from "./pages/faq"
 import Email from "./pages/auth/email"
 
 function App() {
-  // const apiUrl = import.meta.env
-  // //console.log(apiUrl, apiUrl.VITE_APP_API_URL)
   const router = createBrowserRouter([
     {
       path: "/",

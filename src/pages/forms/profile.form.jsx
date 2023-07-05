@@ -16,6 +16,7 @@ const Profile = () => {
 }
 
 const ChangeProfile = ({ user, setUser }) => {
+  const { userName } = useContext(AppContext)
   const { handleSubmit, control } = useForm()
   const updateProfile = async (data) => {
     const sentData = {}
@@ -39,11 +40,17 @@ const ChangeProfile = ({ user, setUser }) => {
   return (
     <>
       <form onSubmit={handleSubmit(updateProfile)}>
+        <div className="my-[16px]">
+          <label className="block text-[12px] ">Username</label>
+          <input className="block mb-[8px]  mt-[8px] rounded-default px-5 py-[16px] bg-input w-full" defaultValue={userName} readOnly />
+        </div>
         <Input label="First Name" control={control} name="first_name" defaultValue={user?.first_name || ""} />
         <Input label="Last Name" control={control} name="last_name" defaultValue={user?.last_name || ""} />
         <Input label="Email" control={control} name="first_name" defaultValue={user?.email || ""} disabled />
         <Input label="Phone Number" control={control} name="phone" defaultValue={user?.phone || ""} />
         <Input label="Country" control={control} name="country" defaultValue={user?.country || ""} />
+        <Input label="Bank Name" control={control} name="bank_name" defaultValue={user?.country || ""} />
+        <Input label="Account Number" type="number" control={control} name="acct_number" defaultValue={user?.country || ""} />
         <Button type="submit">Update Profile</Button>
       </form>
     </>
@@ -93,6 +100,7 @@ const ChangePassword = () => {
       <form onSubmit={handleSubmit(updateProfile)}>
         <p className="text-red-500">{error}</p>
         <p className="text-blue-500">{message}</p>
+
         <Input label="Old password" control={control} type="password" name="old_password" />
         <Input label="New password" control={control} type="password" name="new_password" />
         <Input label="Confrim Password" type="Password" control={control} name="confirm_password" />

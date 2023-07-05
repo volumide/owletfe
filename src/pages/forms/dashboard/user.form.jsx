@@ -12,7 +12,6 @@ const Users = () => {
   const getUsers = async () => {
     try {
       const res = await axios.get(baseUrl + "user", { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
-      //   console.log(res.data.data)
       const result = res.data.data.reverse()
       setUsers(result)
       setUnfiltered(result)
@@ -38,7 +37,6 @@ const Users = () => {
       document.getElementById("controller").click()
       setNewValue("")
       toast("wallet top up successfully")
-      // document.getElementById("input").val
     } catch (error) {
       //   console.log(error)
     }
@@ -53,8 +51,6 @@ const Users = () => {
       else setUsers(unfiltered)
       return
     }
-    setTimeout(() => toast.info("No infomation found"), 2000)
-
     setUsers(unfiltered)
   }
 

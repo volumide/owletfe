@@ -178,8 +178,8 @@ const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
   const filterUsers = async (e) => {
     const value = e.target.value
     setSearch(value)
-    if (value && value.startsWith("@") && value.length > 1) {
-      const dt = allUsers.filter((ev) => ev.id !== user.id && ev.first_name.toLowerCase().includes(value.substring(1).toLowerCase()))
+    if (value && value.length > 1) {
+      const dt = allUsers.filter((ev) => (ev.id !== user.id && ev.first_name.toLowerCase().includes(value.toLowerCase())) || ev.last_name.toLowerCase().includes(value.toLowerCase()))
       setList(dt)
       return
     }
@@ -231,7 +231,7 @@ const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
       <div className="card bg-black text-white h-[300px] rounded-[24px] flex justify-between  p-3 md:p-[40px] relative">
         <>
           <p className="flex justify-between items-center">
-            <span className="text-signify">@{userName}</span>
+            <span className="text-[#acff28]">@{userName}</span>
             <span>
               Wallet Balance
               <span className="block text-3xl mt-2">NGN{wallet_balance}</span>
@@ -253,8 +253,8 @@ const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
                 ) : (
                   <form>
                     <div className="lg:flex lg:gap-3 w-full">
-                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] p-1 rounded-default w-full lg:flex-1" type="number" onChange={(e) => setData({ ...data, amount: e.target.value })} placeholder="amount" min={1} />
-                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] p-1 rounded-default w-full lg:flex-1" type="test" onChange={filterUsers} placeholder="@user" value={search} />
+                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] px-3 w-full lg:flex-1" type="number" onChange={(e) => setData({ ...data, amount: e.target.value })} placeholder="amount" min={1} />
+                      <input className="bg-white mb-3 block md:mb-0 text-black py-[16px] px-3 w-full lg:flex-1" type="test" onChange={filterUsers} placeholder="@user" value={search} />
                     </div>
                     <div className="w-full mt-3">
                       <Button otherClass="px-10 text-black" type="button" onClick={transferFund}>
@@ -267,7 +267,7 @@ const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
             ) : (
               <div className="flex gap-2 md:gap-5 flex-wrap lg:flex-nowrap">
                 <Button
-                  otherClass="px-10 text-black"
+                  otherClass="px-10 text-black bg-white border-primary"
                   onClick={() => {
                     getAllUsers()
                     setFund(!isFund)
