@@ -209,7 +209,7 @@ const WalletBalance = ({ transact = [], wallet_balance, setWallet }) => {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
-      console.log(res)
+      // console.log(res)
       setWallet(parseInt(wallet_balance) - data.amount)
       setFund(!isFund)
       setTransfer(!transfer)
@@ -343,7 +343,8 @@ const Transaction = ({ transact = [] }) => {
       return
     }
     if (!data.data) {
-      console.log("can't perfom trnasaction")
+      // console.log("can't perfom trnasaction")
+      toast("can't perform transaction")
       return
     }
 

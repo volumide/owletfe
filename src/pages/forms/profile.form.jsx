@@ -127,7 +127,7 @@ const AirtimeToCash = ({ user }) => {
       const res = await axios.get(baseUrl + "providers", { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` } })
       setProviders(res.data.data)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -148,7 +148,7 @@ const AirtimeToCash = ({ user }) => {
       const location = window.location.pathname + "?service=Airtime"
       navigate(location)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

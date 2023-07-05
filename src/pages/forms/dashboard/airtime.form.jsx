@@ -28,7 +28,7 @@ const AirtimeNumbers = () => {
         toast.success("provider number updated successfuly")
       } catch (error) {
         toast.error("unable to process")
-        console.log(error)
+        // console.log(error)
       }
 
       return
@@ -44,7 +44,7 @@ const AirtimeNumbers = () => {
       toast.success("provider created success")
     } catch (error) {
       toast.error("unable to process")
-      console.log(error)
+      //   console.log(error)
     }
   }
 
@@ -57,9 +57,10 @@ const AirtimeNumbers = () => {
         }
       })
       setProvider(res.data.data)
-      console.log(res.data.data)
+      //   console.log(res.data.data)
     } catch (error) {
-      console.log(error)
+      toast.error("unable to process")
+      //   console.log(error)
     }
   }
 
